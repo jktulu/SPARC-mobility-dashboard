@@ -2,6 +2,7 @@ import React from 'react';
 import { AppBar, Toolbar, Typography, Button, Stack, Box } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { Link } from 'react-router-dom'; // Or use next/link if using Next.js
+import logo from '../assets/logo.png'; // Adjust the path to your logo image
 
 const navItems = [
   // { label: 'Home', path: '/' },
@@ -22,7 +23,7 @@ const Header = () => {
           to="/"
           sx={{ display: 'flex', alignItems: 'center', textDecoration: 'none' }}        >
           <img
-            src="/logo.png" // Replace with your logo path
+            src={logo} // Replace with your logo path
             alt="Logo"
             style={{ width: '40px', height: '40px', marginRight: '8px' }} // Adjust size as needed
           />
