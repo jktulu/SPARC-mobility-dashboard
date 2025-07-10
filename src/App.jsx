@@ -6,9 +6,11 @@ import DataCatalogue from './pages/DataCatalogue';
 import WebMap from './pages/WebMap';
 import About from './pages/About';
 
+const base = import.meta.env.PROD ? '/mobility-dash' : '/';
+
 function App() {
   return (
-    <Router>
+    <Router basename={base}>
       <Header />
       <Routes>
         <Route path="/" element={<Home />} />
