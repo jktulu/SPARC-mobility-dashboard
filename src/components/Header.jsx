@@ -21,14 +21,15 @@ const Header = () => {
         <Box
           component={Link}
           to="/"
-          sx={{ display: 'flex', alignItems: 'center', textDecoration: 'none' }}        >
+          sx={{ display: 'flex', alignItems: 'center'}}       
+        >
           <img
             src={logo} // Replace with your logo path
             alt="Logo"
             style={{ width: '40px', height: '40px', marginRight: '8px' }} // Adjust size as needed
           />
-
         </Box>
+        
         {/* <Typography
           variant="h6"
           component={Link}
@@ -50,8 +51,9 @@ const Header = () => {
               to={item.path}
               sx={{
                 color: theme.palette.roseShades.lightest,
+                
                 '&:hover': {
-                  backgroundColor: theme.palette.roseShades.dark,
+                  backgroundColor: theme.palette.roseShades.main,
                 },
               }}
             >
