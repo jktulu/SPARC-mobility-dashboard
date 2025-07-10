@@ -22,7 +22,7 @@ const Header = () => {
           to="/"
           sx={{ display: 'flex', alignItems: 'center', textDecoration: 'none' }}        >
           <img
-            src="/src/assets/logo.png" // Replace with your logo path
+            src="/logo.png" // Replace with your logo path
             alt="Logo"
             style={{ width: '40px', height: '40px', marginRight: '8px' }} // Adjust size as needed
           />

@@ -5,12 +5,12 @@ import { Box, Typography, Grid  } from '@mui/material';
 
 const WebMap = () => {
   return (
-    <div style={{ padding: '1rem' ,alignItems: 'center' }}>
+    <div style={{ padding: '4rem' ,alignItems: 'center' }}>
       
       <div style={{marginBottom : '2rem',display: 'flex', flexDirection: 'column', gap: '0.75rem'}}>
               <Box sx={{ height: 15, display: 'flex'}} >
           <img 
-            src="src\assets\home-icon-silhouette.svg" 
+            src="\home-icon-silhouette.svg" 
             style={{maxHeight: '100%'}}
           />
           <Typography
