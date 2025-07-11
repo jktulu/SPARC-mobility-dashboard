@@ -8,6 +8,8 @@ import {
 import NavRow from '../components/NavRow';
 import VerticalTabs from '../components/VerticalTabs';
 import ActionAreaCard from '../components/ActionAreaCard';
+import { Link } from 'react-router-dom'; // Or use next/link if using Next.js
+
 
 // const images = [
 //   {
@@ -98,20 +100,7 @@ const cardData = [
       'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
     altText: 'highlight-4',
   },
-  {
-    image: '#',
-    title: 'Highlight 5',
-    description:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-    altText: 'highlight-5',
-  },
-  {
-    image: '#',
-    title: 'Highlight 6',
-    description:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-    altText: 'highlight-6',
-  },
+
 ];
 
 const Home = () => {
@@ -144,13 +133,20 @@ const Home = () => {
 
       <div style={{marginBottom : '2rem',display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.75rem'}}>
         
-        <Grid container spacing={2} sx={{ justifyContent: 'center' }}>
-          <Button variant="contained" sx={{ width: '200px' }} href="/smart-mobility-goals">Mobility Goals</Button>
-          <Button variant="contained" sx={{ width: '200px' }} href="/data-catalogue">Data Catalogue</Button>
-        </Grid>
-        <Grid>
-          <Button variant="contained" sx={{ width: '200px' }} href="/webmap">Explore Map</Button>
-        </Grid>
+      <Grid container spacing={2} sx={{ justifyContent: 'center' }}>
+          {/* 2. Change href to "to" and add component={Link} */}
+          <Button variant="contained" sx={{ width: '200px' }} component={Link} to="/smart-mobility-goals">
+              Mobility Goals
+          </Button>
+          <Button variant="contained" sx={{ width: '200px' }} component={Link} to="/data-catalogue">
+              Data Catalogue
+          </Button>
+      </Grid>
+      <Grid>
+          <Button variant="contained" sx={{ width: '200px' }} component={Link} to="/webmap">
+              Explore Map
+          </Button>
+      </Grid>
       </div>
 
       <div style={{marginBottom : '2rem',display: 'flex', flexDirection: 'column', gap: '0.75rem'}}>

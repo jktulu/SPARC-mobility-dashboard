@@ -101,10 +101,11 @@ const DataCatalogue = ({ datasets }) => {
             What visitors can expect to find here...
           </Typography>
         </Box> 
+        
       </div>
 
-      <div style={{marginBottom : '2rem',display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.75rem'}}>
-        <Container maxWidth="lg" sx={{ py: 2 }}>
+      <div style={{display: 'flex', flexDirection: 'column', gap: '0.75rem'}}>
+        <Box sx={{ mt: 2, mb: 2, p: 2, backgroundColor: 'white', borderRadius: 1, boxShadow: 1 }}>
           <SearchBar query={searchQuery} onQueryChange={setSearchQuery} />
           
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mt: 1 }}>
@@ -132,7 +133,7 @@ const DataCatalogue = ({ datasets }) => {
             </Box>
           )}
           <DetailsDrawer item={selectedDataset} open={isDrawerOpen} onClose={handleDrawerClose} />
-        </Container>
+        </Box>
       </div>
     </div>
   );
