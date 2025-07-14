@@ -1,10 +1,42 @@
-import * as React from 'react';
+import {
+  Box,
+  Button,
+  Paper,
+  Tab,
+  Tabs,
+  Typography,
+  Divider
+} from '@mui/material';
 import PropTypes from 'prop-types';
-import { useRef, useState, useLayoutEffect } from 'react';
-import { Box, Typography, Grid , Tab, Tabs  } from '@mui/material';
+import { useEffect, useState } from 'react';
 
+// Define Tab
 function TabPanel(props) {
-  const { children, value, index, ...other } = props;
+  const { tab, value, index, ...other } = props;
+  const [currentVisualIndex, setCurrentVisualIndex] = useState(0);
+
+  const handleNextVisual = () => {
+    setCurrentVisualIndex((prevIndex) =>
+      (prevIndex + 1) % tab.visuals.length);
+  }
+  const handlePrevVisual = () => {
+    setCurrentVisualIndex((prevIndex) =>
+      prevIndex === 0 ? tab.visuals.length - 1 : prevIndex - 1
+    );
+    ;
+  };
+
+  // This effect handles the automatic cycling of the carousel.
+  useEffect(() => {
+    // Only run the timer if this tab is active and there's more than one visual.
+    if (value === index && tab.visuals.length > 1) {
+      const timer = setInterval(() => {
+        setCurrentVisualIndex(prevIndex => (prevIndex + 1) % tab.visuals.length);
+      }, 5000);
+      return () => clearInterval(timer);   // Cleanup: clear the interval when the tab is hidden or component unmounts.
+    }
+  }, [value, index, tab.visuals.length]); // Rerun effect if these change
+
 
   return (
     <div
@@ -13,21 +45,104 @@ function TabPanel(props) {
       id={`vertical-tabpanel-${index}`}
       aria-labelledby={`vertical-tab-${index}`}
       {...other}
-      // This style makes the panel grow to fill available space and scroll internally
-      style={{ flexGrow: 1, overflow: 'auto' }}
+      style={{ flexGrow: 1, overflowY: 'auto', height: '100%' }}
     >
       {value === index && (
-        <Box sx={{ p: 2 , height : '100%'}}>
-          {/* Use component="div" to allow complex children */}
-          <Typography component="div" sx={{ p: 2 , height : '100%'}}>{children}</Typography>
+        <Box sx={{ p: 5, display: 'flex', flexDirection: 'column', height: '100%' }}>
+          {/* Title */}
+          <Typography variant="h5" sx={{ mb: 2 }}>
+            {tab.title}
+          </Typography>
+
+          {/* Description */}
+          <Typography component="p" color="text.primary">
+            {tab.description}
+          </Typography>
+
+          <Divider sx={{ my: 3 }} />
+
+          {/* Carousel Visual Area */}
+          <Box sx={{ my: 2, flexGrow: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: 250 }}>
+            <Box sx={{ width: '100%', position: 'relative', height: '100%' }}>
+              {tab.visuals.map((item, itemIndex) => (
+                <Box
+                  key={itemIndex}
+                  sx={{
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    width: '100%',
+                    height: '100%',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    transition: 'opacity 0.5s ease-in-out',
+                    opacity: itemIndex === currentVisualIndex ? 1 : 0,
+                  }}
+                >
+                  {item.type === 'image' && (
+                    <Box
+                      component="img"
+                      src={item.src}
+                      alt={item.alt}
+                      sx={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '8px' }}
+                    />
+                  )}
+
+                </Box>
+              ))}
+            </Box>
+          </Box>
+
+          {/* Carousel Dots and Explore Button */}
+          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mt: 'auto', pt: 2, flexShrink: 0 }}>
+            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+              <Button
+                variant="text"
+                onClick={handlePrevVisual}
+                sx={{ mr: 1, minWidth: '40px', minHeight: '40px' }}
+              >
+                Prev
+              </Button>
+              {tab.visuals.map((_, dotIndex) => (
+                <Box
+                  key={dotIndex}
+                  onClick={() => setCurrentVisualIndex(dotIndex)}
+                  sx={{
+                    width: 10, height: 10, borderRadius: '50%',
+                    backgroundColor: dotIndex === currentVisualIndex ? 'primary.main' : 'grey.400',
+                    mx: 1, cursor: 'pointer', transition: 'background-color 0.3s',
+                  }}
+                />
+
+              ))}
+
+              <Button
+                variant="text"
+                onClick={handleNextVisual}
+                sx={{ ml: 1, minWidth: '40px', minHeight: '40px' }}
+              >
+                Next
+              </Button>
+            </Box>
+            <Button
+              variant="contained"
+              href="a"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Explore
+            </Button>
+          </Box>
         </Box>
       )}
     </div>
   );
 }
 
+// Update Prop types
 TabPanel.propTypes = {
-  children: PropTypes.node,
+  tab: PropTypes.object.isRequired,
   index: PropTypes.number.isRequired,
   value: PropTypes.number.isRequired,
 };
@@ -39,112 +154,83 @@ function a11yProps(index) {
   };
 }
 
-export default function VerticalTabs({ tabs }) {
-  const [value, setValue] = React.useState(0);
-  const [containerHeight, setContainerHeight] = useState('auto');
-  const tabsRef = useRef(null);
-  useLayoutEffect(() => {
-    if (tabsRef.current) {
-      setContainerHeight(tabsRef.current.clientHeight);
-    }
-  }, [tabs]);
+
+// --- The Main VerticalTabs Component ---
+const VerticalTabs = ({ tabs }) => {
+  const [value, setValue] = useState(0);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
 
   return (
-    <Box 
-        sx={{ 
-            flexGrow: 1, 
-            bgcolor: 'background.paper', 
-            display: 'flex', 
-            height: containerHeight, 
-            borderRadius: '8px',
-            boxShadow: 1,
-            overflow: 'hidden' 
-            }}>
-    <Tabs
+    <Paper
+      sx={{
+        display: 'flex',
+        height: 900,
+        boxShadow: 3,
+      }}
+    >
+      <Tabs
         orientation="vertical"
         variant="scrollable"
         value={value}
         onChange={handleChange}
-        aria-label="Vertical tabs"
+        aria-label="Vertical tabs example"
         textColor="inherit"
-        indicatorColor="none"
+        indicatorColor="primary"
         sx={{
           borderRight: 1,
           borderColor: 'divider',
-          flexShrink: 0,    // Prevent the tab list from shrinking
-          minWidth: 160, 
+          flexShrink: 0,
+          minWidth: 200,
         }}
       >
         {tabs.map((tab, index) => (
-            <Tab
-                key={index}
-                label={tab.label}
-                {...a11yProps(index)}
-                sx={{
-                    textTransform: 'none',
-                    fontSize: '1rem',
-                    bgcolor: value === index ? 'primary.main' : 'transparent',
-                    color: value === index ? '#fff' : 'text.primary',
-                    '&:hover': {bgcolor: value === index ? 'primary.dark' : 'action.hover'},
-                    '& .MuiTab-wrapper': {color: value === index ? '#fff' : 'inherit',},
-                }}
-            />
+          <Tab
+            key={index}
+            label={tab.label}
+            {...a11yProps(index)}
+            sx={{
+              textTransform: 'none',
+              fontSize: '1rem',
+              alignItems: 'flex-start',
+              p: 2,
+              opacity: 0.7,
+              '&.Mui-selected': {
+                color: 'primary.main',
+                fontWeight: 'bold',
+                opacity: 1,
+              },
+
+            }}
+          />
         ))}
-    </Tabs>
+      </Tabs>
 
-
-    {tabs.map((tab, index) => (
-    <TabPanel key={index} value={value} index={index}>
-        <Grid container direction="column" justifyContent="space-between" sx={{ flexGrow: 1, height: '100%' }}>
-
-            <Grid item>
-                <Typography variant="body1" gutterBottom>
-                    {tab.contentText}
-                </Typography>
-            </Grid>
-
-            <Grid item textAlign={'right'} >
-                <Box
-                    component="a"
-                    href={tab.learnMoreLink}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    sx={{
-                    display: 'inline-block',
-                    mt: 2,
-                    px: 3,
-                    py: 1,
-                    backgroundColor: 'primary.dark',
-                    borderRadius: 2,
-                    boxShadow: 2,
-                    color: '#fff',
-                    textDecoration: 'none',
-                    '&:hover': {
-                        backgroundColor: 'primary.dark',
-                    },
-                    }}
-                >
-                    Explore
-                </Box>
-            </Grid>
-        </Grid>
-    </TabPanel>
-    ))}
-    </Box>
+      {tabs.map((tab, index) => (
+        <TabPanel key={index} value={value} index={index} tab={tab} />
+      ))}
+    </Paper>
   );
-}
+};
 
 VerticalTabs.propTypes = {
   tabs: PropTypes.arrayOf(
     PropTypes.shape({
       label: PropTypes.string.isRequired,
-      contentText: PropTypes.string.isRequired,
-      backgroundImage: PropTypes.string.isRequired,
-      exploreLink: PropTypes.string.isRequired,
+      title: PropTypes.string.isRequired,
+      description: PropTypes.string.isRequired,
+      visuals: PropTypes.arrayOf(
+        PropTypes.shape({
+          type: PropTypes.oneOf(['image']).isRequired,
+          src: PropTypes.string,
+          alt: PropTypes.string,
+          title: PropTypes.string,
+        })
+      ).isRequired,
     })
   ).isRequired,
 };
+
+export default VerticalTabs;

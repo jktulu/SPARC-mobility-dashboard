@@ -6,8 +6,7 @@ import {
   CardContent,
   CardMedia,
   Grid,
-  Paper,
-  Typography,
+  Typography
 } from '@mui/material';
 
 // --- Mock Data ---
@@ -75,10 +74,10 @@ const highlightCards = [
 const About = () => {
   return (
     <Box sx={{ p: { xs: 2, sm: 4 } }}>
-      <Grid container spacing={5}>
+      <Grid container spacing={5} >
 
         {/* --- About Section --- */}
-        <Grid item xs={12} lg={4}>
+        <Grid item size={6}>
           <Typography variant="h5" sx={{ color: 'roseShades.dark', fontWeight: 'bold', mb: 2 }}>
             About the Initiative
           </Typography>
@@ -107,7 +106,7 @@ const About = () => {
         </Grid>
 
         {/* --- Highlights Section --- */}
-        <Grid item xs={12} lg={6}>
+        <Grid item size={6}>
           <Box>
             <Typography variant="h5" sx={{ color: 'roseShades.dark', fontWeight: 'bold', mb: 2 }}>
               Highlights

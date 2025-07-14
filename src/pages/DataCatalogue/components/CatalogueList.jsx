@@ -75,7 +75,7 @@ const CatalogueListItem = ({ item, onClick, isMobile }) => (
 );
 
 const CatalogueList = ({ items, onItemClick, isMobile }) => (
-  <Box sx={{ border: '1px solid', borderColor: 'divider', borderRadius: 2, overflow: 'hidden', minHeight: 400 }}>
+  <Box sx={{ border: '1px solid', borderColor: 'divider', overflow: 'hidden', minHeight: 400 }}>
     <List disablePadding>
       {items.length > 0 ? (
         items.map((item) => (

@@ -3,7 +3,7 @@ import { Box, Typography } from '@mui/material';
 // The component now accepts an 'onButtonClick' function as a prop.
 const Title = () => {
   return (
-    <div style={{ marginBottom: '2rem', display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+    <Box sx={{ marginBottom: '2rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
             
             <Box component="section">
             <Typography
@@ -20,7 +20,7 @@ const Title = () => {
             </Typography>
             </Box>
 
-        </div>
+        </Box>
   );
 };
 

@@ -90,7 +90,7 @@ const Catalogue = ({ datasets = [] }) => {
 
     <div>
 
-      <Box sx={{ p: 2, backgroundColor: 'white', borderRadius: '8px', boxShadow: 1 }}>
+      <Box sx={{ p: 2, backgroundColor: 'white', boxShadow: 1 }}>
         <SearchBar query={searchQuery} onQueryChange={setSearchQuery} />
 
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>

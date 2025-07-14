@@ -1,6 +1,6 @@
 import { AppBar, Box, Toolbar, Typography } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import logo from '../../assets/logo.png';
+import logo from './components/logo.png'
 
 const Header = () => {
 
@@ -35,7 +35,6 @@ const Header = () => {
             Smart Mobility
           </Typography          >
         </Box>
-
       </Toolbar>
     </AppBar>
   );
