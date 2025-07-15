@@ -1,27 +1,25 @@
 import { createTheme } from '@mui/material/styles';
 
-// Define the custom color palette first for easy reference
 const roseShades = {
   lightest: '#FAD4D4',   // For card backgrounds or subtle highlights
-  lighter: '#F8B2B2',  // A light coral, good for hover states
-  light: '#F8B2B2',      // A light coral, good for hover states
-  main: '#E26D5C',       // The main, vibrant coral
-  dark: '#B9473D',       // A stronger, deeper red tone
-  darker: '#A03B32',      // A darker, more muted red
-  darkest: '#7E2C27',     // A rich crimson, good for nav/footers
+  lighter: '#F8B2B2',      // A light coral, good for hover states
+  light: '#E26D5C',       // The main, vibrant coral
+  main: '#B9473D',       // A stronger, deeper red tone
+  dark: '#A03B32',      // A darker, more muted red
+  darker: '#7E2C27',     // A rich crimson, good for nav/footers
+  darkest: '#6B2622',    // A very dark, almost brownish red
 };
 
 const theme = createTheme({
   palette: {
-    // Integrate your custom shades directly into the primary palette
     primary: {
-      light: roseShades.light,
+      light: roseShades.lighter,
       main: roseShades.main,
-      dark: roseShades.dark,
-      contrastText: '#ffffff', // White text works well on these primary colors
+      dark: roseShades.darker,
+      contrastText: '#ffffff', 
     },
     secondary: {
-      main: roseShades.darkest, // Use the darkest shade as a secondary color
+      main: roseShades.darkest, 
       contrastText: '#ffffff',
     },
     background: {
@@ -34,13 +32,21 @@ const theme = createTheme({
     },
     roseShades: roseShades,
   },
-  typography: {
-    fontFamily: `'Titillium Web', 'Noto Sans', 'Helvetica', 'Arial', sans-serif`,
-    h1: { fontWeight: 700 },
-    h2: { fontWeight: 600 },
-    h3: { fontWeight: 500 },
-    body1: { fontWeight: 400 },
-    button: { textTransform: 'none' }, 
+ typography: {
+    fontFamily: `'Inter', 'Helvetica', 'Arial', sans-serif`,
+    h1: { fontSize: '2.5rem', fontWeight: 700 },   // Page titles
+    h2: { fontSize: '2rem', fontWeight: 700 },    // Major section titles
+    h3: { fontSize: '1.75rem', fontWeight: 600 },  // Sub-section titles
+    h4: { fontSize: '1.5rem', fontWeight: 600 },   // Smaller sub-sections
+    h5: { fontSize: '1.25rem', fontWeight: 600 },  // Card headers, etc.
+    h6: { fontSize: '1.1rem', fontWeight: 600 },   // Smaller card headers
+    body1: { fontSize: '1rem', lineHeight: 1.6 },   // Main paragraph text
+    body2: { fontSize: '0.875rem', lineHeight: 1.5 },// Secondary text, captions
+    
+    button: { 
+      textTransform: 'none', // Keeps button text in its original case
+      fontWeight: 600,
+    },
   },
 
   shape: {
@@ -59,15 +65,15 @@ const theme = createTheme({
       },
     },
     MuiTab: {
-        styleOverrides: {
-            root: {
-                '&.Mui-selected': {
-                    fontWeight: 700,
-                    color: roseShades.main,
-                    backgroundColor: roseShades.lightest,
-                }
-            }
+      styleOverrides: {
+        root: {
+          '&.Mui-selected': {
+            fontWeight: 700,
+            color: roseShades.main,
+            backgroundColor: roseShades.lightest,
+          }
         }
+      }
     }
   },
 });

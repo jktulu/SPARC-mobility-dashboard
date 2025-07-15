@@ -1,4 +1,4 @@
-import { Box, Typography, Button, Grid } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import VerticalTabs from './components/VerticalTabs';
 
 const tabData = [
@@ -91,7 +91,7 @@ const tabData = [
   {
     label: 'Sustainable Mobility',
     title: 'Path to Sustainable Mobility',
-    description: 'Creating a transport system that is good for people and the environment.', 
+    description: 'Creating a transport system that is good for people and the environment.',
     visuals: [
       {
         type: 'image',
@@ -165,7 +165,7 @@ const MobilityKPIs = () => {
       <Box>
         <VerticalTabs tabs={tabData} />
       </Box>
-{/* 
+      {/* 
       <Box sx={{
         mt: 4,
         display: 'flex',

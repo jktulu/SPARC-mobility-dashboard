@@ -31,12 +31,7 @@ const keyMembers = [
 
 // Data for the highlight cards
 const highlightCards = [
-  {
-    title: 'Interactive Data Map',
-    description: 'Explore real-time mobility data across the city with our interactive mapping tool.',
-    image: 'https://placehold.co/600x300/9DB5B2/FFFFFF?text=Interactive+Map',
-    alt: 'Map of a city with data points',
-  },
+
   {
     title: '2024 Mobility Report',
     description: 'Our comprehensive annual report on the state of urban mobility and future trends.',
@@ -54,12 +49,6 @@ const highlightCards = [
     description: 'Read about the outcomes and key findings from our recent community engagement workshop.',
     image: 'https://placehold.co/600x300/E8D1C5/FFFFFF?text=Workshop',
     alt: 'People collaborating in a workshop',
-  },
-  {
-    title: 'Open Data API Launch',
-    description: 'Access our datasets directly through our newly launched, free-to-use public API.',
-    image: 'https://placehold.co/600x300/BFA89E/FFFFFF?text=API+Launch',
-    alt: 'Computer code on a screen',
   },
   {
     title: 'Interactive Data Map',
@@ -119,7 +108,7 @@ const About = () => {
                 <Grid item xs={12} sm={4} key={card.title}>
                   <Card sx={{
                     maxWidth: 325,
-                    maxHeight: 400,
+                    minHeight: 300,
                     borderRadius: '8px',
                     transition: 'transform 0.2s',
                     '&:hover': { transform: 'scale(1.03)' }

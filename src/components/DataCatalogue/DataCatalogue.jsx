@@ -1,26 +1,24 @@
 import {
-  Box,
-  Divider,
+  Box, Divider,
   FormControl,
   InputLabel,
   MenuItem,
   Pagination,
-  Select,
-  Typography,
-  useMediaQuery,
-  useTheme,
+  Select, Typography, useMediaQuery,
+  useTheme
 } from '@mui/material';
-
 import { useEffect, useMemo, useState } from 'react';
-import { coverages, fileFormats, themes } from '../../../data/mockData';
-import CatalogueList from './CatalogueList';
-import DetailsDrawer from './DetailsDrawer';
-import FilterBar from './FilterBar';
-import ResultsSummary from './ResultsSummary';
-import SearchBar from './SearchBar';
-import ToggleFilterButton from './ToggleFilterButton';
+import { coverages, fileFormats, generateMockData, themes } from '../../data/mockData';
 
-const Catalogue = ({ datasets = [] }) => {
+import CatalogueList from './components/CatalogueList';
+import DetailsDrawer from './components/DetailsDrawer';
+import FilterBar from './components/FilterBar';
+import ResultsSummary from './components/ResultsSummary';
+import SearchBar from './components/SearchBar';
+import ToggleFilterButton from './components/ToggleFilterButton';
+
+const DataCatalogue = () => {
+  const [datasets] = useState(() => generateMockData(300));
   const [searchQuery, setSearchQuery] = useState('');
   const [filters, setFilters] = useState({
     format: '',
@@ -86,9 +84,17 @@ const Catalogue = ({ datasets = [] }) => {
 
   const filterOptions = { fileFormats, coverages, themes };
 
-  return (
 
-    <div>
+  return (
+    <Box sx={{ p: { xs: 2, sm: 4 } }}>
+      <Box component="section">
+        <Typography variant="h5" sx={{ color: 'roseShades.dark', fontWeight: 'bold', mb: 2 }}>
+          Open Mobility Data Repository
+        </Typography>
+        <Typography variant="body1" color="text.secondary" sx={{ mb: 2 }}>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+        </Typography>
+      </Box>
 
       <Box sx={{ p: 2, backgroundColor: 'white', boxShadow: 1 }}>
         <SearchBar query={searchQuery} onQueryChange={setSearchQuery} />
@@ -106,15 +112,15 @@ const Catalogue = ({ datasets = [] }) => {
         <ResultsSummary count={filteredDatasets.length} />
 
         {pageCount > 1 && (
-          <Box 
+          <Box
             sx={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                flexWrap: 'wrap',
-                gap: 2
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              flexWrap: 'wrap',
+              gap: 2
             }}>
-                          <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
+            <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
               <InputLabel>Items per page</InputLabel>
               <Select
                 value={itemsPerPage}
@@ -136,14 +142,15 @@ const Catalogue = ({ datasets = [] }) => {
               showLastButton
             />
           </Box>
-          
+
         )}
 
         <CatalogueList items={currentItems} onItemClick={handleItemClick} isMobile={isMobile} />
         <DetailsDrawer item={selectedDataset} open={isDrawerOpen} onClose={handleDrawerClose} />
       </Box>
-    </div>
+
+    </Box>
   );
 };
 
-export default Catalogue;
+export default DataCatalogue;

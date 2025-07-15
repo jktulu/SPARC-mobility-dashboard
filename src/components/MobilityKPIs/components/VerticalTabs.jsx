@@ -1,11 +1,11 @@
 import {
   Box,
   Button,
+  Divider,
   Paper,
   Tab,
   Tabs,
-  Typography,
-  Divider
+  Typography
 } from '@mui/material';
 import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
@@ -26,16 +26,15 @@ function TabPanel(props) {
     ;
   };
 
-  // This effect handles the automatic cycling of the carousel.
+  // Automatic cycling of the carousel.
   useEffect(() => {
-    // Only run the timer if this tab is active and there's more than one visual.
     if (value === index && tab.visuals.length > 1) {
       const timer = setInterval(() => {
         setCurrentVisualIndex(prevIndex => (prevIndex + 1) % tab.visuals.length);
       }, 5000);
       return () => clearInterval(timer);   // Cleanup: clear the interval when the tab is hidden or component unmounts.
     }
-  }, [value, index, tab.visuals.length]); // Rerun effect if these change
+  }, [value, index, tab.visuals.length]);
 
 
   return (

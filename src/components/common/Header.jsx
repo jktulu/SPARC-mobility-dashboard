@@ -1,6 +1,6 @@
 import { AppBar, Box, Toolbar, Typography } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import logo from './components/logo.png'
+import logo from '../../assets/logo.png';
 
 const Header = () => {
 
