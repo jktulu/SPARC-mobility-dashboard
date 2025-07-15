@@ -26,7 +26,7 @@ export const generateMockData = (count) => {
     data.push({
       id: i,
       name: `Dataset ${i}`,
-      description: `This is a detailed description for dataset ${i}. It explains the purpose, scope, and potential use cases of the data provided. The data is collected annually and updated every quarter.`,
+      description: `This is a detailed description for dataset ${i}. It explains the purpose, scope, and potential use cases of the data provided. The data is collected annually and updated every quarter. This is a detailed description for dataset ${i}. It explains the purpose, scope, and potential use cases of the data provided. The data is collected annually and updated every quarter.`,
       format: fileFormats[i % fileFormats.length],
       coverage: coverages[i % coverages.length],
       theme: themes[i % themes.length],

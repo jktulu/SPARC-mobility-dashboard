@@ -88,7 +88,7 @@ const DataCatalogue = () => {
   return (
     <Box sx={{ p: { xs: 2, sm: 4 } }}>
       <Box component="section">
-        <Typography variant="h5" sx={{ color: 'roseShades.dark', fontWeight: 'bold', mb: 2 }}>
+        <Typography variant="h5" sx={{ color: 'primary.dark', fontWeight: 'bold', mb: 2 }}>
           Open Mobility Data Repository
         </Typography>
         <Typography variant="body1" color="text.secondary" sx={{ mb: 2 }}>

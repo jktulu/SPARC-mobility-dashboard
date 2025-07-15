@@ -1,6 +1,5 @@
 import ContactFormPopup from './components/common/ContactFormPopup';
 import Header from './components/common/Header';
-import About from './pages/About';
 import Home from './pages/Home';
 
 
@@ -9,7 +8,6 @@ function App() {
     <div>
       <Header />
       <Home />
-      <About />
       <ContactFormPopup />
     </div>
   );

@@ -3,11 +3,12 @@
 import { Divider } from '@mui/material';
 import { useState } from 'react';
 
-import Header from '../components/common/Header';
 import NavigationButtons from '../components/common/NavigationButtons';
 import Title from '../components/common/Title';
 import DataCatalogue from '../components/DataCatalogue/DataCatalogue';
 import MobilityKPIs from '../components/MobilityKPIs/MobilityKPIs';
+import AboutHighlights from './AboutHighlights';
+
 
 function Home() {
     const [activeLayer, setActiveLayer] = useState('goals');
@@ -35,12 +36,17 @@ function Home() {
 
             <Divider style={{ margin: '1rem' }} />
 
-            <div style={{ marginTop: '2rem' }}>
+            <div>
                 {activeLayer === 'goals' && <MobilityKPIs />}
                 {activeLayer === 'catalogue' && <DataCatalogue />}
             </div>
 
+            {/* Debugging */}
+
+
             <Divider style={{ margin: '1rem' }} />
+
+            <AboutHighlights />
 
         </div>
 
