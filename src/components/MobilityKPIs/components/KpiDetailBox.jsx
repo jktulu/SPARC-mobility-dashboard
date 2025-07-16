@@ -1,8 +1,47 @@
-import { Box, Paper, Typography } from '@mui/material';
+import { Box, CircularProgress, Paper, Typography } from '@mui/material';
+import { useEffect, useState } from 'react';
+
 import KpiChart from './KpiChart';
 
 
 const KpiDetailBox = ({ kpi }) => {
+    // 1. Add state for loading, data, and errors
+    const [chartData, setChartData] = useState(null);
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState(null);
+
+    // 2. Use useEffect to fetch data when the kpi prop changes
+    useEffect(() => {
+        if (kpi) {
+            setIsLoading(true);
+            setError(null);
+            setChartData(null);
+
+            // Fetch the JSON file
+            fetch(`/data/kpi/${kpi.code}.json`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Cannot connect to the server');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    setChartData(data);
+                    setIsLoading(false);
+                })
+                .catch(fetchError => {
+                    console.error("Failed to fetch chart data:", fetchError);
+                    setError("Failed to load chart data or no chart data available");
+                    setIsLoading(false);
+                });
+        } else {
+            // Reset state if the new KPI has no chart
+            setChartData(null);
+            setError(null);
+            setIsLoading(false);
+        }
+    }, [kpi]); // re-runs every time the selected KPI changes
+
     // If no KPI is selected, show a placeholder message.
     if (!kpi) {
         return (
@@ -18,35 +57,17 @@ const KpiDetailBox = ({ kpi }) => {
                 {kpi.title}
             </Typography>
             <Box sx={{
-                width:'100%',
+                width: '100%',
                 height: 500,
                 display: 'flex',
                 flexDirection: 'column',
-                }}
-                >
+            }}
+            >
 
-                {/* Display the image if it exists */}
-                {kpi.image && (
-                    <Box
-                        component="img"
-                        src={kpi.image}
-                        alt={kpi.title}
-                        sx={{
-                            width: 'auto',
-                            height: '100%',
-                        }}
-                    />
-                )}
+                {isLoading && <Box sx={{ display: 'flex', justifyContent: 'center', my: 4 }}><CircularProgress /></Box>}
+                {error && <Typography color="error" sx={{ my: 2 }}>{error}</Typography>}
+                {chartData && <KpiChart data={chartData} />}
 
-                {/* Conditionally render the chart if data exists */}
-                {kpi.graphData && (
-                    <KpiChart data={kpi.graphData} />
-                )}
-
-                {/* Description of the KPI */}
-                {/* <Typography sx={{ textAlign: 'center' }}>
-                {kpi.description}
-            </Typography> */}
             </Box>
 
         </Paper>

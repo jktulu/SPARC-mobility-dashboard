@@ -1,24 +1,32 @@
 import {
-  Box, Divider,
+  Box,
+  CircularProgress,
+  Divider,
   FormControl,
   InputLabel,
   MenuItem,
   Pagination,
-  Select, Typography, useMediaQuery,
+  Select,
+  Typography,
+  useMediaQuery,
   useTheme
 } from '@mui/material';
 import { useEffect, useMemo, useState } from 'react';
-import { coverages, fileFormats, generateMockData, themes } from '../../data/mockData';
 
-import CatalogueList from './components/CatalogueList';
+// These components would be in their own files in a real project
 import DetailsDrawer from '../common/DetailsDrawer';
+import CatalogueList from './components/CatalogueList';
 import FilterBar from './components/FilterBar';
 import ResultsSummary from './components/ResultsSummary';
 import SearchBar from './components/SearchBar';
 import ToggleFilterButton from './components/ToggleFilterButton';
 
 const DataCatalogue = () => {
-  const [datasets] = useState(() => generateMockData(300));
+  // 1. State for the fetched data, loading, and errors
+  const [datasets, setDatasets] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+  // State for UI controls remains the same
   const [searchQuery, setSearchQuery] = useState('');
   const [filters, setFilters] = useState({
     format: '',
@@ -32,6 +40,52 @@ const DataCatalogue = () => {
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+
+  // 2. useEffect to fetch data when the component mounts
+  useEffect(() => {
+    fetch('/data/datacatalogue/datacatalogue.json')
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Cannot connnect to the server');
+        }
+        return response.json();
+      })
+      .then(data => {
+        setDatasets(data);
+        setIsLoading(false);
+      })
+      .catch(fetchError => {
+        console.error("Failed to fetch data catalogue:", fetchError);
+        setError("Could not load the data catalogue. Please try again later.");
+        setIsLoading(false);
+      });
+  }, []); // The empty array means this effect runs only once
+
+    // FIX: Dynamically generate filter options from the fetched data.
+  const filterOptions = useMemo(() => {
+    // Return empty arrays if data hasn't loaded yet
+    if (!datasets || datasets.length === 0) {
+      return { fileFormats: [], coverages: [], themes: [] };
+    }
+
+    // Use a Set to automatically handle unique values
+    const formats = new Set();
+    const coverages = new Set();
+    const themes = new Set();
+
+    datasets.forEach(item => {
+      if (item.format) formats.add(item.format);
+      if (item.coverage) coverages.add(item.coverage);
+      if (item.theme) themes.add(item.theme);
+    });
+
+    // Convert sets to sorted arrays for the dropdowns
+    return {
+      fileFormats: [...formats].sort(),
+      coverages: [...coverages].sort(),
+      themes: [...themes].sort(),
+    };
+  }, [datasets]); // This memo will only re-run when the datasets array changes
 
   const handleItemClick = (item) => {
     setSelectedDataset(item);
@@ -82,8 +136,22 @@ const DataCatalogue = () => {
   const currentItems = filteredDatasets.slice(indexOfFirstItem, indexOfLastItem);
   const pageCount = Math.ceil(filteredDatasets.length / itemsPerPage);
 
-  const filterOptions = { fileFormats, coverages, themes };
+  // 3. Conditional rendering for loading and error states
+  if (isLoading) {
+    return (
+      <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '80vh' }}>
+        <CircularProgress />
+      </Box>
+    );
+  }
 
+  if (error) {
+    return (
+      <Box sx={{ p: 4, textAlign: 'center' }}>
+        <Typography color="error">{error}</Typography>
+      </Box>
+    );
+  }
 
   return (
     <Box sx={{ p: { xs: 2, sm: 4 } }}>

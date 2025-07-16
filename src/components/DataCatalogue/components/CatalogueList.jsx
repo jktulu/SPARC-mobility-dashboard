@@ -12,13 +12,13 @@ import { Download, Description, Public, Widgets  } from '@mui/icons-material';
 const CatalogueListItem = ({ item, onClick, isMobile }) => (
   <ListItem disablePadding divider>
     <ListItemButton onClick={() => onClick(item)} sx={{ p: 2, alignItems: 'flex-start' }}>
-      <Box sx={{ display: 'flex', width: '100%', alignItems: 'flex-start', gap: 2 }}>
+      <Box sx={{ display: 'flex', width: '100%', alignItems: 'flex-start', gap: 10 }}>
         <Box sx={{ flexGrow: 1 }}>
-          <Typography variant="h7" component="div" gutterBottom>
+          <Typography variant="h6" gutterBottom>
             {item.name}
           </Typography>
           <Typography
-            variant="body2"
+            variant="body"
             color="text.secondary"
             sx={{
               mb: 1.5,
@@ -32,24 +32,24 @@ const CatalogueListItem = ({ item, onClick, isMobile }) => (
             {item.description}
           </Typography>
         </Box>
-        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1,minWidth: 180 }}>
+        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1,minWidth: 200, flexShrink: 0 }}>
           
           <Box>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 0.5}}>
               <Widgets fontSize="small" color="secondary" />
-              <Typography variant="caption" color="text.secondary">
+              <Typography variant="inherit" color="text.secondary">
                 Theme: {item.theme}
               </Typography>
             </Box>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 0.5 }}>
               <Description fontSize="small" color="secondary" />
-              <Typography variant="caption" color="text.secondary">
+              <Typography variant="inherit" color="text.secondary">
                 File Format: {item.format}
               </Typography>
             </Box>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
               <Public fontSize="small" color="secondary" />
-              <Typography variant="caption" color="text.secondary">
+              <Typography variant="inherit" color="text.secondary">
                 Coverage: {item.coverage}
               </Typography>
             </Box>
