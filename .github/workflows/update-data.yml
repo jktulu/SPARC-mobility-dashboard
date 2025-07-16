@@ -1,4 +1,4 @@
-name: Update KPI Data from CSV
+name: Convert CSV to JSON
 
 # This workflow runs ONLY when you push changes to files inside the data-source/kpi/ directory
 on:
@@ -6,7 +6,7 @@ on:
     branches:
       - main
     paths:
-      - 'data-source/kpi/**'
+      - 'data-source/'
 permissions:
   contents: write
 jobs:
