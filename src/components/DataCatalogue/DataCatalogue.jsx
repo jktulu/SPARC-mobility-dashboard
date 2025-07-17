@@ -43,7 +43,7 @@ const DataCatalogue = () => {
 
   // 2. useEffect to fetch data when the component mounts
   useEffect(() => {
-    fetch('/data/datacatalogue/datacatalogue.json')
+    fetch('data/datacatalogue.json')
       .then(response => {
         if (!response.ok) {
           throw new Error('Cannot connnect to the server');
@@ -152,14 +152,7 @@ const DataCatalogue = () => {
 
   return (
     <Box sx={{ px: 4 }}>
-      <Box component="section" sx={{ mb: 4,textAlign: 'center' }}>
-        <Typography variant="body1">
-          Explore and download geospatial datasets from the open repository
-        </Typography>
-        <Typography variant="body2">
-          Search by keywords, or filter by format, coverage, or theme
-        </Typography>
-      </Box>
+
 
       <Box sx={{ p: 2, backgroundColor: 'white', boxShadow: 1 }}>
         <SearchBar query={searchQuery} onQueryChange={setSearchQuery} />

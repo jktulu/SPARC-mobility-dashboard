@@ -22,7 +22,7 @@ const KpiDetailBox = ({ kpi }) => {
     // 1. Add state for loading, data, and errors
     const [chartData, setChartData] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
-    const [viewMode, setViewMode] = useState('chart');
+    const [viewMode, setViewMode] = useState('map');
     const [error, setError] = useState(null);
 
     const handleViewChange = (event, newView) => {
@@ -38,7 +38,7 @@ const KpiDetailBox = ({ kpi }) => {
             setChartData(null);
 
             // Fetch the JSON file
-            fetch(`/data/kpiviz/${kpi.code}.json`)
+            fetch(`data/kpiviz/${kpi.code}.json`)
                 .then(response => {
                     if (!response.ok) {
                         throw new Error('Cannot connect to the server');

@@ -34,7 +34,7 @@ function Home() {
                 activeButtonId={activeLayer}
             />
 
-            <Box sx={{ display: 'flex', flexDirection: 'column', mx: 10, mb:5 }}>
+            <Box sx={{ display: 'flex', flexDirection: 'column', mx: 8, my:4 }}>
 
                 <Box >
                     {activeLayer === 'goals' && <MobilityKPIs />}

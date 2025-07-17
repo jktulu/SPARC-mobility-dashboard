@@ -26,8 +26,8 @@ const MobilityKPIs = () => {
   useEffect(() => {
     // Use Promise.all to fetch both files concurrently for better performance
     Promise.all([
-      fetch('/data/kpiDomains.json'),
-      fetch('/data/kpiDetails.json')
+      fetch('data/kpiDomains.json'),
+      fetch('data/kpiDetails.json')
     ])
       .then(async ([domainsResponse, detailsResponse]) => {
         if (!domainsResponse.ok || !detailsResponse.ok) {
@@ -72,7 +72,6 @@ const MobilityKPIs = () => {
 
 
 
-  // --- Conditional Rendering for Loading/Error States ---
   if (isLoading) {
     return (
       <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '80vh' }}>
@@ -90,14 +89,7 @@ const MobilityKPIs = () => {
   }
   return (
     <Box sx={{ px: 4 }}>
-      <Box component="section" sx={{ mb: 4, textAlign: 'center' }}>
-        <Typography variant="body1">
-          Explore smart mobility metrics and progress
-        </Typography>
-        <Typography variant="body2">
-          Select a domain on the left-hand panel
-        </Typography>
-      </Box>
+
 
       <Grid container spacing={2} >
 

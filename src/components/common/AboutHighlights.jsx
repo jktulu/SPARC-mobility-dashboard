@@ -32,7 +32,7 @@ const About = () => {
 
   // useEffect to fetch the highlight cards data when the component mounts
   useEffect(() => {
-    fetch('/data/highlightsData.json')
+    fetch('data/highlightsData.json')
       .then(response => {
         if (!response.ok) {
           throw new Error('Network response was not ok');
