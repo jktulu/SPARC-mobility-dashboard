@@ -38,7 +38,7 @@ const KpiDetailBox = ({ kpi }) => {
             setChartData(null);
 
             // Fetch the JSON file
-            fetch(`data/kpiviz/${kpi.code}.json`)
+            fetch(`data/kpicharts/${kpi.code}.json`)
                 .then(response => {
                     if (!response.ok) {
                         throw new Error('Cannot connect to the server');

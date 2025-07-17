@@ -1,5 +1,5 @@
 import { Box, Typography } from '@mui/material';
-import { useTheme } from '@mui/material/styles'; // Import the useTheme hook
+import { useTheme } from '@mui/material/styles'; 
 import { Bar, BarChart, CartesianGrid, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 
 const KpiChart = ({ data }) => {
