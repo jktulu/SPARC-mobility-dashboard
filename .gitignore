@@ -32,4 +32,3 @@ yarn-debug.log*
 # OS-generated files
 .DS_Store
 Thumbs.db
-/dist
