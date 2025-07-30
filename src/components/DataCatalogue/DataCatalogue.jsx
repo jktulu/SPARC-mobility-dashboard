@@ -13,7 +13,6 @@ import {
 } from '@mui/material';
 import { useEffect, useMemo, useState } from 'react';
 
-// These components would be in their own files in a real project
 import DetailsDrawer from './components/DetailsDrawer';
 import CatalogueList from './components/CatalogueList';
 import FilterBar from './components/FilterBar';
@@ -22,18 +21,17 @@ import SearchBar from './components/SearchBar';
 import ToggleFilterButton from './components/ToggleFilterButton';
 
 const DataCatalogue = () => {
-  // 1. State for the fetched data, loading, and errors
+  // useState for the fetched data, loading, and errors
   const [datasets, setDatasets] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
-  // State for UI controls remains the same
   const [searchQuery, setSearchQuery] = useState('');
   const [filters, setFilters] = useState({
-    format: '',
-    resolution: '',
-    theme: '',
+    format: [],
+    resolution: [],
+    theme: [],
   });
-  const [showFilters, setShowFilters] = useState(false);
+  const [showFilters, setShowFilters] = useState(true);
   const [selectedDataset, setSelectedDataset] = useState(null);
   const [isDrawerOpen, setDrawerOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
@@ -41,7 +39,7 @@ const DataCatalogue = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
-  // 2. useEffect to fetch data when the component mounts
+  // useEffect to fetch data when the component mounts
   useEffect(() => {
     fetch('data/datacatalogue/datacatalogue.json')
       .then(response => {
@@ -61,6 +59,7 @@ const DataCatalogue = () => {
       });
   }, []); // The empty array means this effect runs only once
 
+  // useMemo to compute filter options based on the fetched datasets
   const filterOptions = useMemo(() => {
     if (!datasets || datasets.length === 0) {
       return { fileFormats: [], resolutions: [], themes: [] };
@@ -81,8 +80,9 @@ const DataCatalogue = () => {
       resolutions: [...resolutions].sort(),
       themes: [...themes].sort(),
     };
-  }, [datasets]); 
+  }, [datasets]);
 
+  // Handlers for interactions
   const handleItemClick = (item) => {
     setSelectedDataset(item);
     setDrawerOpen(true);
@@ -100,7 +100,7 @@ const DataCatalogue = () => {
 
   const handleItemsPerPageChange = (event) => {
     setItemsPerPage(event.target.value);
-    setCurrentPage(1); // Reset to first page
+    setCurrentPage(1);
   };
 
 
@@ -109,14 +109,15 @@ const DataCatalogue = () => {
 
     return datasets.filter((item) => {
       // Dropdown filter logic
-      const formatMatch = filters.format ? item.format === filters.format : true;
-      const resolutionMatch = filters.resolution ? item.resolution === filters.resolution : true;
-      const themeMatch = filters.theme ? item.theme === filters.theme : true;
+      const formatMatch = filters.format.length === 0 || filters.format.includes(item.format);
+      const resolutionMatch = filters.resolution.length === 0 || filters.resolution.includes(item.resolution);
+      const themeMatch = filters.theme.length === 0 || filters.theme.includes(item.theme);
 
-      // Search query logic (searches name and description)
+      // Search query logic (searches name and description and theme)
       const searchMatch = query ?
         item.name.toLowerCase().includes(query) ||
-        item.description.toLowerCase().includes(query)
+        item.description.toLowerCase().includes(query) ||
+        item.theme.toLowerCase().includes(query)
         : true;
 
       return formatMatch && resolutionMatch && themeMatch && searchMatch;
@@ -127,12 +128,13 @@ const DataCatalogue = () => {
     setCurrentPage(1);
   }, [searchQuery, filters]);
 
+  // Pagination logic
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = filteredDatasets.slice(indexOfFirstItem, indexOfLastItem);
   const pageCount = Math.ceil(filteredDatasets.length / itemsPerPage);
 
-  // 3. Conditional rendering for loading and error states
+  // Conditional rendering for loading and error states
   if (isLoading) {
     return (
       <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '80vh' }}>
@@ -151,16 +153,18 @@ const DataCatalogue = () => {
 
   return (
     <Box sx={{ px: 4 }}>
-      <Box sx={{ p: 2, backgroundColor: 'white', boxShadow: 1 , borderRadius: '8px' }}>
+      <Box sx={{ p: 2, backgroundColor: 'white', boxShadow: 1, borderRadius: '8px' }}>
         <SearchBar query={searchQuery} onQueryChange={setSearchQuery} />
 
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between'}}>
+          <ToggleFilterButton showFilters={showFilters} onClick={handleToggleFilters} />
+          <Divider orientation="vertical" flexItem sx={{ mx: 2 }} />
+
           <Box sx={{ flexGrow: 1 }}>
             {showFilters && (
               <FilterBar filters={filters} onFilterChange={setFilters} filterOptions={filterOptions} />
             )}
           </Box>
-          <ToggleFilterButton showFilters={showFilters} onClick={handleToggleFilters} />
         </Box>
 
         <Divider sx={{ mb: 2 }} />

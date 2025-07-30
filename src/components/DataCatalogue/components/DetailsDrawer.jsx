@@ -54,7 +54,7 @@ const DetailsDrawer = ({ item, open, onClose }) => {
             </Box>
             <Box sx={{ display: 'flex', gap: 1 }}>
               <Chip icon={<Description />} label={item.format} variant="filled" />
-              <Chip icon={<Public />} label={item.geography} variant="filled" />
+              <Chip icon={<Public />} label={item.resolution} variant="filled" />
             </Box>
           </Box>
           <Box>
