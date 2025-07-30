@@ -6,33 +6,33 @@ const KpiRow = ({ kpis = [], onKpiSelect, selectedKpiCode }) => {
   if (!kpis || kpis.length === 0) {
     return (
       <Paper sx={{ p: 3, height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        <Typography color="text.secondary">No KPIs to display for this domain.</Typography>
+        <Typography color="text.secondary">No KPIs to display for this topic</Typography>
       </Paper>
     );
   }
 
   return (
-    <Box sx={{
-      display: 'flex',
-      flexDirection: 'row',
-    }}>
-
-      <Box sx={{ 
-        display: 'flex', 
+    <Box>
+      <Box sx={{
+        display: 'flex',
         flexWrap: 'wrap',
-        gap: 1 }}>
+        justifyContent: 'center',
+        gap: 1,
+      }}>
         {kpis.map((kpi, index) => (
           <Paper
             key={index}
             onClick={() => onKpiSelect(kpi)}
             sx={{
-              p: 2,
-              width: 175,
-              height: 75,
+              p: 1,
+              width: 325,
+              height: 70,
               flexShrink: 0,
               display: 'flex',
               flexDirection: 'column',
-              justifyContent: 'space-between',
+              justifyContent: 'center',
+              alignItems: 'center',
+              textAlign: 'center',
               cursor: 'pointer',
               border: '1px solid',
               borderColor: kpi.code === selectedKpiCode ? 'primary.main' : 'transparent',
@@ -44,19 +44,36 @@ const KpiRow = ({ kpis = [], onKpiSelect, selectedKpiCode }) => {
               }
             }}
           >
-            <Box sx={{ display: 'flex', flexDirection: 'row', gap: 1 }}>
-              {/* <Typography variant="caption" color="text.secondary">
-                {kpi.code}
-              </Typography> */}
-              <Typography variant="h4" sx={{ fontWeight: 'bold', fontSize: '1rem' }}>
-                {kpi.title}
-              </Typography>
-
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: 'row',
+                gap: 2,
+                alignItems: 'center',
+                justifyContent: 'flex-start',
+                width: '100%',
+              }}
+            >
+              <Box sx={{ width: '55%', textAlign: 'right', pr: 1 }}>
+                <Typography variant="h4" sx={{ fontWeight: 'bold', fontSize: '1rem' }}>
+                  {kpi.title}
+                </Typography>
+              </Box>
+              <Box sx={{ width: '25%', textAlign: 'right' }}>
+                <Typography variant="h2" color="text.secondary">
+                  {kpi.stat}
+                </Typography>
+              </Box>
+              <Box sx={{ width: '20%', textAlign: 'left' }}>
+                <Typography variant="caption" color="text.secondary">
+                  {kpi.unit}
+                </Typography>
+              </Box>
             </Box>
           </Paper>
         ))}
       </Box>
-    </Box>
+    </Box >
   );
 };
 

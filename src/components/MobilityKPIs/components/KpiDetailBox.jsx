@@ -1,3 +1,5 @@
+import BarChartIcon from '@mui/icons-material/BarChart';
+import MapIcon from '@mui/icons-material/Map';
 import {
     Box,
     CircularProgress,
@@ -5,18 +7,11 @@ import {
     Paper,
     ToggleButton,
     ToggleButtonGroup,
-    Typography,
-    Container,
-    Tab,
-    Tabs,
-    Button,
-    IconButton
+    Typography
 } from '@mui/material';
-import BarChartIcon from '@mui/icons-material/BarChart';
-import MapIcon from '@mui/icons-material/Map'
 import { useEffect, useState } from 'react';
-import WebMap from '../../WebMap/WebMap';
-import KpiChart from './KpiChart';
+import WebMap from '../../KPIViz/WebMap';
+import KpiChart from '../../KPIViz/KpiChart';
 
 const KpiDetailBox = ({ kpi }) => {
     // 1. Add state for loading, data, and errors
@@ -66,7 +61,7 @@ const KpiDetailBox = ({ kpi }) => {
     if (!kpi) {
         return (
             <Paper sx={{ p: 3, mt: 1, textAlign: 'center' }}>
-                <Typography color="text.secondary">Select a KPI card above to see more details.</Typography>
+                <Typography color="text.secondary">Select a card above to learn more</Typography>
             </Paper>
         );
     }
@@ -93,6 +88,9 @@ const KpiDetailBox = ({ kpi }) => {
                     </Box>
                 </Grid>
                 <Grid item size={10}>
+                    <Typography variant="h5" sx={{ fontWeight: 'bold', mb: 1 }}>
+                        {kpi.title}
+                    </Typography>
                     <Typography variant="body1" color="text.secondary" sx={{ mb: 1 }}>
                         <Box component="span" sx={{ fontWeight: 'bold', color: 'text.primary' }}>
                             {'Description: '}
@@ -104,8 +102,14 @@ const KpiDetailBox = ({ kpi }) => {
                             {'Target: '}
                         </Box>
                         {kpi.target ? `${kpi.target.metric} ${kpi.target.timeline}` : 'No target set.'}
-
                     </Typography>
+                    <Typography variant="body1" color="text.secondary">
+                        <Box component="span" sx={{ fontWeight: 'bold', color: 'text.primary' }}>
+                            {'Progress (a/o \'25): '}
+                        </Box>
+                         {kpi.stat ? `${kpi.stat} ${kpi.unit}` : 'No target set.'}
+                    </Typography>
+
                 </Grid>
             </Grid>
 

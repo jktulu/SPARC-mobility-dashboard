@@ -13,7 +13,7 @@ const CatalogueListItem = ({ item, onClick, isMobile }) => (
   <ListItem disablePadding divider>
     <ListItemButton onClick={() => onClick(item)} sx={{ p: 2, alignItems: 'flex-start' }}>
       <Box sx={{ display: 'flex', height: 150, width: '100%', alignItems: 'flex-start', gap: 10 }}>
-        <Box sx={{ height: '100%', flexGrow: 1, justifyContent: 'space-between', display: 'flex', flexDirection: 'column' }}>
+        <Box sx={{ width:'80%', height: '100%', flexGrow: 1, justifyContent: 'space-between', display: 'flex', flexDirection: 'column' }}>
           <Box>
             <Typography variant="h5" gutterBottom>
               {item.name}
@@ -43,9 +43,17 @@ const CatalogueListItem = ({ item, onClick, isMobile }) => (
             </Typography>
           </Box>
         </Box>
-        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1, minWidth: 200, flexShrink: 0 }}>
+        <Box sx={{ 
+          display: 'flex', 
+          flexDirection: 'column', 
+          gap: 1, 
+          minWidth: 200, 
+          flexShrink: 0,
+          width: '20%'
+          }}
+          >
 
-          <Box>
+          <Box >
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 0.5 }}>
               <Widgets fontSize="small" color="secondary" />
               <Typography variant="inherit" color="text.secondary">

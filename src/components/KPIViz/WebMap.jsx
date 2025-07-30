@@ -59,7 +59,9 @@ const WebMap = ({ kpi }) => {
 				ref={mapRef}
 				{...viewport}
 				onMove={evt => setViewport(evt.viewState)}
-				style={{ width: '100%', height: '100%' }}
+				style={{ 
+					width: '100%', 
+				}}
 				mapStyle={mapStyle}
 				mapboxAccessToken={MAPBOX_TOKEN}
 			>

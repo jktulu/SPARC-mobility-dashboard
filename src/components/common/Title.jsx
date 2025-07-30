@@ -1,4 +1,4 @@
-import { Box, Typography, Grid } from '@mui/material';
+import { Box, Grid, Typography } from '@mui/material';
 import backgroundImage from '../../assets/jaipur.jpg';
 import logo from '../../assets/logo.png';
 
@@ -52,16 +52,17 @@ const Title = () => {
                 textShadow: '1px 1px 3px rgba(0, 0, 0, 0.6)'
               }}
             >
-              Smart Mobility Data Hub
+              Jaipur Smart Mobility Hub
             </Typography>
+
+
+            <Box component="section">
+              <Typography variant="body1" sx={{ fontSize: '1.2rem', maxWidth: '75ch' }}>
+                A smarter transport future for all
+              </Typography>
+            </Box>
           </Grid>
         </Grid>
-
-        <Box component="section">
-          <Typography variant="body1" sx={{ fontSize: '1.2rem', maxWidth: '75ch' }}>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-          </Typography>
-        </Box>
       </Box>
     </Box>
   );

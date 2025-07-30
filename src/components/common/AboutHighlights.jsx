@@ -59,7 +59,7 @@ const About = () => {
               <Typography color="error" sx={{ my: 2 }}>{error}</Typography>
             )}
             
-            <Grid container spacing={2} sx={{ height: 250 }}>
+            <Grid container spacing={2} sx={{ height: 275 }}>
               {!isLoading && !error && highlightCards.map((card) => (
                 <Grid item size={3} key={card.title} sx={{ height: '100%' }}>
                   <Card sx={{

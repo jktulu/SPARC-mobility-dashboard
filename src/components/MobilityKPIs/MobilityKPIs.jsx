@@ -1,10 +1,11 @@
 import {
   Box,
   CircularProgress,
+  Divider,
   Grid,
   Typography
 } from '@mui/material';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 import KpiDetailBox from './components/KpiDetailBox';
 import InfoAreaRow from './components/KpiRow';
@@ -19,7 +20,7 @@ const MobilityKPIs = () => {
   const [error, setError] = useState(null);
 
   // State to manage the UI
-  const [activeTabIndex, setActiveTabIndex] = useState(0);
+  const [activeTabIndex, setActiveTabIndex] = useState(null);
   const [selectedKpi, setSelectedKpi] = useState(null);
 
   // --- Data Fetching ---
@@ -49,17 +50,17 @@ const MobilityKPIs = () => {
       });
   }, []); // The empty array [] ensures this effect runs only once when the component mounts
 
-  // --- Derived State & Side Effects ---
-  const selectedTab = kpiDomains[activeTabIndex];
-  const selectedKpis = selectedTab?.kpis.map(code => kpiDetails[code]).filter(Boolean) || [];
+  // Conditionally Calculate selectedKpis. 
+  // If no tab is selected, return all KPIs from the details object. Otherwise, get the KPIs for the currently selected tab
 
-  useEffect(() => {
-    if (selectedKpis.length > 0) {
-      setSelectedKpi(selectedKpis[0]);
-    } else {
-      setSelectedKpi(null);
+  const selectedKpis = useMemo(() => {
+    if (activeTabIndex === null) {
+      return Object.values(kpiDetails);
     }
-  }, [activeTabIndex, kpiDomains, kpiDetails]); // Rerun when the data or tab index changes
+    const selectedTab = kpiDomains[activeTabIndex];
+    return selectedTab?.kpis.map(code => kpiDetails[code]).filter(Boolean) || [];
+  }, [activeTabIndex, kpiDomains, kpiDetails]); // Dependencies for the hook
+
 
   // --- Event Handlers ---
   const handleTabChange = (event, newIndex) => {
@@ -67,9 +68,12 @@ const MobilityKPIs = () => {
   };
 
   const handleKpiSelect = (kpi) => {
-    setSelectedKpi(kpi);
+    if (selectedKpi && selectedKpi.code === kpi.code) {
+      setSelectedKpi(null);       // The same KPI was clicked again, so deselect it.
+    } else {
+      setSelectedKpi(kpi);       // A new or different KPI was clicked, so select it.
+    }
   };
-
 
 
   if (isLoading) {
@@ -89,32 +93,30 @@ const MobilityKPIs = () => {
   }
   return (
     <Box sx={{ px: 4 }}>
-
-
       <Grid container spacing={2} >
 
         {/* Left Column for Tabs */}
         <Grid item size={2} sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
           <VerticalTabs
             tabs={kpiDomains}
+            activeTab={activeTabIndex}
             onTabChange={handleTabChange}
           />
-
         </Grid>
 
         {/* Right Column */}
-        <Grid item size={10}>
+        <Grid item size={10} sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
           <Box sx={{ height: '100%', display: 'flex', flexDirection: 'column', gap: 1 }}>
             <InfoAreaRow
               kpis={selectedKpis}
               onKpiSelect={handleKpiSelect}
               selectedKpiCode={selectedKpi?.code}
             />
-
-
-            <KpiDetailBox kpi={selectedKpi} />
           </Box>
+         <Divider sx={{ my: 1 }} />
+          <KpiDetailBox kpi={selectedKpi} />
         </Grid>
+
       </Grid>
     </Box>
   );
