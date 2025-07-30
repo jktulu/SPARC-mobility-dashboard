@@ -52,7 +52,7 @@ const DetailsDrawer = ({ item, open, onClose }) => {
             Source: {item.provider}
           </Typography>
           <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5 }}>
-            Reference: {item.reference || 'N/A'}, {item.reference_ref || 'N/A'}
+            Reference: {item.reference || 'N/A'}, {item.reference_detail || 'N/A'}
           </Typography>
           <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5 }}>
             Update Frequency: {item.update_frequency || 'N/A'}
