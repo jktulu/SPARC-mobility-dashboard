@@ -102,7 +102,7 @@
     "code": "A10",
     "title": "Parking management",
     "description": "Evaluates the effectiveness of parking regulations and enforcement. Proper management prevents traffic obstruction and ensures that road space is used efficiently and fairly.",
-    "stat": "2",
+    "stat": "17",
     "unit": "zones",
     "target": {
       "metric": "Implementation of dynamic pricing in 5 key commercial zones",
