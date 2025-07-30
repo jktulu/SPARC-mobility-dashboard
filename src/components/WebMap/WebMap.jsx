@@ -40,7 +40,7 @@ const WebMap = ({ kpi }) => {
 
 	if (!MAPBOX_TOKEN) {
 		return (
-			<Box sx={{ height: 700, display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: 'grey.200' }}>
+			<Box sx={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: 'grey.200' }}>
 				<Typography color="error">Mapbox token is missing.</Typography>
 			</Box>
 		);

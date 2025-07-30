@@ -103,7 +103,7 @@ const MobilityKPIs = () => {
         </Grid>
 
         {/* Right Column */}
-        <Grid item size={9.75}>
+        <Grid item size={10}>
           <Box sx={{ height: '100%', display: 'flex', flexDirection: 'column', gap: 1 }}>
             <InfoAreaRow
               kpis={selectedKpis}

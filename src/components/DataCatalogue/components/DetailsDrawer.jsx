@@ -51,13 +51,19 @@ const DetailsDrawer = ({ item, open, onClose }) => {
           <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5 }}>
             Source: {item.provider}
           </Typography>
+          <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5 }}>
+            Reference: {item.reference || 'N/A'}, {item.reference_ref || 'N/A'}
+          </Typography>
+          <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5 }}>
+            Update Frequency: {item.update_frequency || 'N/A'}
+          </Typography>
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1, my: 2 }}>
             <Box>
               <Chip icon={<Widgets />} label={item.theme} variant="filled" />
             </Box>
             <Box sx={{ display: 'flex', gap: 1 }}>
               <Chip icon={<Description />} label={item.format} variant="filled" />
-              <Chip icon={<Public />} label={item.coverage} variant="filled" />
+              <Chip icon={<Public />} label={item.geography} variant="filled" />
             </Box>
           </Box>
         </Box>
@@ -70,8 +76,8 @@ const DetailsDrawer = ({ item, open, onClose }) => {
             onClick={(e) => {
               e.stopPropagation();
               const link = document.createElement('a');
-              link.href = item.fileUrl;
-              const fileName = item.fileUrl.split('/').pop(); // file name
+              link.href = item.url;
+              const fileName = item.url.split('/').pop(); // file name
               link.setAttribute('download', fileName || 'download');
               document.body.appendChild(link);    // Append the link to the body, necessary for Firefox
               link.click();

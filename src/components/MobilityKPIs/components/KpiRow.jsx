@@ -17,14 +17,17 @@ const KpiRow = ({ kpis = [], onKpiSelect, selectedKpiCode }) => {
       flexDirection: 'row',
     }}>
 
-      <Box sx={{ display: 'flex', gap: 1 }}>
+      <Box sx={{ 
+        display: 'flex', 
+        flexWrap: 'wrap',
+        gap: 1 }}>
         {kpis.map((kpi, index) => (
           <Paper
             key={index}
             onClick={() => onKpiSelect(kpi)}
             sx={{
               p: 2,
-              width: 200,
+              width: 175,
               height: 75,
               flexShrink: 0,
               display: 'flex',
@@ -42,9 +45,9 @@ const KpiRow = ({ kpis = [], onKpiSelect, selectedKpiCode }) => {
             }}
           >
             <Box sx={{ display: 'flex', flexDirection: 'row', gap: 1 }}>
-              <Typography variant="caption" color="text.secondary">
+              {/* <Typography variant="caption" color="text.secondary">
                 {kpi.code}
-              </Typography>
+              </Typography> */}
               <Typography variant="h4" sx={{ fontWeight: 'bold', fontSize: '1rem' }}>
                 {kpi.title}
               </Typography>

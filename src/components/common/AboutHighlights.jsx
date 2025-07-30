@@ -11,18 +11,6 @@ import {
   CircularProgress // Added for loading state
 } from '@mui/material';
 
-const keyMembers = [
-  {
-    name: 'Dr. John Doe',
-    role: 'Project Lead',
-    avatar: 'https://placehold.co/100x100/A4B494/31343C?text=JD',
-  },
-  {
-    name: 'Ben Franklin',
-    role: 'Deputy Project Lead',
-    avatar: 'https://placehold.co/100x100/8E9AAF/31343C?text=BF',
-  },
-];
 
 const About = () => {
   // State for the fetched highlight cards
@@ -52,7 +40,7 @@ const About = () => {
 
   return (
     <Box>
-      <Grid container spacing={4}>
+      <Grid container spacing={5}>
 
         {/* --- The Highlights Section --- */}
         <Grid item size={9}>
@@ -71,7 +59,7 @@ const About = () => {
               <Typography color="error" sx={{ my: 2 }}>{error}</Typography>
             )}
             
-            <Grid container spacing={2} sx={{ height: 300 }}>
+            <Grid container spacing={2} sx={{ height: 250 }}>
               {!isLoading && !error && highlightCards.map((card) => (
                 <Grid item size={3} key={card.title} sx={{ height: '100%' }}>
                   <Card sx={{
@@ -94,7 +82,7 @@ const About = () => {
                         <Typography gutterBottom variant="h6" component="div" sx={{ fontWeight: 'bold' }}>
                           {card.title}
                         </Typography>
-                        <Typography variant="body2" color="text.secondary">
+                        <Typography variant="body2" color="text.secondary" component="p" sx={{  textOverflow: 'ellipsis', mb: 1, overflow: 'hidden', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical' }}>
                           {card.description}
                         </Typography>
                       </CardContent>
@@ -112,25 +100,9 @@ const About = () => {
             About the Initiative
           </Typography>
           <Typography variant="body1" color="text.secondary" component="p"  sx={{ mb: 2 }}>
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Molestiae, ex! Et cum ab eius veritatis sint, odio eaque sunt natus.
+            The Smart Mobility Data Hub initiative is led by NMIT (Bangalore, India) to advance smart mobility in Jaipur by promoting open data, informing stakeholders, and ensuring accountable progress towards a sustainable urban future.
           </Typography>
 
-
-          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-            {keyMembers.map((member) => (
-              <Box key={member.name} sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                <Avatar src={member.avatar} alt={member.name} sx={{ width: 56, height: 56 }} />
-                <Box>
-                  <Typography variant="h6" component="p" sx={{ fontWeight: 'bold' }}>
-                    {member.name}
-                  </Typography>
-                  <Typography variant="body2" color="text.secondary">
-                    {member.role}
-                  </Typography>
-                </Box>
-              </Box>
-            ))}
-          </Box>
         </Grid>
 
       </Grid>

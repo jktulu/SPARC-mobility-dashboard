@@ -34,10 +34,6 @@ const CatalogueListItem = ({ item, onClick, isMobile }) => (
             </Typography>
           </Box>
           <Box>
-            <Typography variant="body2" color="text.secondary">
-              Last Updated: {new Date(item.latest_year).getFullYear()}
-
-            </Typography>
             <Typography
               variant="body2"
               color="text.secondary"
@@ -59,13 +55,13 @@ const CatalogueListItem = ({ item, onClick, isMobile }) => (
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 0.5 }}>
               <Description fontSize="small" color="secondary" />
               <Typography variant="inherit" color="text.secondary">
-                File Format: {item.format}
+                Format: {item.format}
               </Typography>
             </Box>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
               <Public fontSize="small" color="secondary" />
               <Typography variant="inherit" color="text.secondary">
-                Coverage: {item.coverage}
+                Level: {item.geography}
               </Typography>
             </Box>
           </Box>
@@ -77,14 +73,13 @@ const CatalogueListItem = ({ item, onClick, isMobile }) => (
             onClick={(e) => {
               e.stopPropagation();
               const link = document.createElement('a');
-              link.href = item.fileUrl;
-              const fileName = item.fileUrl.split('/').pop(); // file name
+              link.href = item.url;
+              const fileName = item.url.split('/').pop(); // file name
               link.setAttribute('download', fileName || 'download');
               document.body.appendChild(link);               // Append the link to the body, necessary for Firefox
               link.click();
               document.body.removeChild(link);
             }}
-            // href={item.fileUrl}
             sx={{ flexShrink: 0, mt: 0.5 }}
           >
             Download

@@ -52,7 +52,7 @@ const Title = () => {
                 textShadow: '1px 1px 3px rgba(0, 0, 0, 0.6)'
               }}
             >
-              Jaipur Smart Mobility Data Hub
+              Smart Mobility Data Hub
             </Typography>
           </Grid>
         </Grid>
