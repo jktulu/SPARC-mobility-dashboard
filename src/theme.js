@@ -1,7 +1,7 @@
 import { createTheme } from "@mui/material/styles";
 
 const roseShades = {
-  lightest: "#FAD4D4", // For card backgrounds or subtle highlights
+  lightest: "#fdeaeaff", // For card backgrounds or subtle highlights
   lighter: "#F8B2B2", // A light coral, good for hover states
   light: "#E26D5C", // The main, vibrant coral
   main: "#B9473D", // A stronger, deeper red tone

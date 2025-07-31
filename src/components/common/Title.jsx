@@ -61,7 +61,7 @@ const Title = () => {
                 variant="body1"
                 sx={{ fontSize: "1.2rem", maxWidth: "75ch" }}
               >
-                Empowering a more sustainable transport future for all residents
+                Empowering a more sustainable transport future for all 
                 with data
               </Typography>
             </Box>

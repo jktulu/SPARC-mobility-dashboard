@@ -12,7 +12,7 @@ import MobilityKPIs from '../components/MobilityKPIs/MobilityKPIs';
 function Home() {
     const [activeLayer, setActiveLayer] = useState('goals');
     const mapNavigationButtons = [
-        { id: 'goals', text: 'Mobility Goals' },
+        { id: 'goals', text: 'Mobility Progress' },
         { id: 'catalogue', text: 'Data Catalogue' },
 
     ];

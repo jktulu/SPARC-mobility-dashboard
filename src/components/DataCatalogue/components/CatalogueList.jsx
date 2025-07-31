@@ -69,7 +69,7 @@ const CatalogueListItem = ({ item, onClick, isMobile }) => (
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
               <Public fontSize="small" color="secondary" />
               <Typography variant="inherit" color="text.secondary">
-                Level: {item.resolution}
+                Resolution: {item.resolution}
               </Typography>
             </Box>
           </Box>
