@@ -51,11 +51,9 @@ const KpiRow = ({ kpis = [], onKpiSelect, selectedKpiCode }) => {
                 alignItems: "center",
                 cursor: "pointer",
                 userSelect: "none",
-                border: "1px solid",
-                borderColor: isSelected ? color : "transparent",
-                backgroundColor: isSelected
-                  ? "background.selected"
-                  : "background.paper",
+                border: "3px solid",
+                borderColor: isSelected ? "primary.dark" : "transparent",
+                backgroundColor: color,
                 transition: "transform 0.2s",
                 "&:hover": {
                   transform: "translateY(-4px)",
@@ -72,7 +70,7 @@ const KpiRow = ({ kpis = [], onKpiSelect, selectedKpiCode }) => {
                       mb: -1,
                       fontSize: "1rem",
                       fontWeight: "bold",
-                      color: color,
+                      color: "primary.contrastText", 
                     }}
                   >
                     {kpi.title}

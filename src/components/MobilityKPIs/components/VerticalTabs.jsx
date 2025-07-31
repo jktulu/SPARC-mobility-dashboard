@@ -43,7 +43,7 @@ const VerticalTabs = ({ tabs, onTabChange, activeTab }) => {
               key={index}
               label={tab.label}
               sx={{
-                alignItems: "flex-end", // Add this line to align text to the left
+                alignItems: "flex-start", // Add this line to align text to the left
                 flexShrink: 0,
                 "&.Mui-selected": {
                   fontWeight: "bold",
