@@ -99,7 +99,7 @@ const KpiRow = ({ kpis = [], onKpiSelect, selectedKpiCode }) => {
 
                   <Typography
                     variant="caption"
-                    color="text.secondary"
+                    color="text.primary"
                     sx={{ lineHeight: 1 }}
                   >
                     {kpi.unit ? kpi.unit : "\u00A0"}

@@ -1,6 +1,15 @@
-import { Box, Button, FormControl, InputLabel, MenuItem, Select, Chip, Checkbox, ListItemText } from '@mui/material';
-import ClearAllIcon from '@mui/icons-material/ClearAll';
-
+import {
+  Box,
+  Button,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  Chip,
+  Checkbox,
+  ListItemText,
+} from "@mui/material";
+import ClearAllIcon from "@mui/icons-material/ClearAll";
 
 const FilterBar = ({ filters, onFilterChange, filterOptions }) => {
   const { format, resolution, theme } = filters;
@@ -11,14 +20,16 @@ const FilterBar = ({ filters, onFilterChange, filterOptions }) => {
     onFilterChange({
       ...filters,
       // Create a new array for the specified filter, excluding the deleted value.
-      [filterName]: filters[filterName].filter((value) => value !== valueToDelete),
+      [filterName]: filters[filterName].filter(
+        (value) => value !== valueToDelete
+      ),
     });
   };
   const handleChange = (event) => {
     const { name, value } = event.target;
     onFilterChange({
       ...filters,
-      [name]: typeof value === 'string' ? value.split(',') : value,
+      [name]: typeof value === "string" ? value.split(",") : value,
     });
   };
 
@@ -32,7 +43,7 @@ const FilterBar = ({ filters, onFilterChange, filterOptions }) => {
 
   return (
     <Box>
-      <Box sx={{ display: 'flex', gap: 1, mt: 2, flexWrap: 'nowrap' }}>
+      <Box sx={{ display: "flex", gap: 1, mt: 2, flexWrap: "nowrap" }}>
         <FormControl fullWidth size="small">
           <InputLabel id="format-select-label">Format</InputLabel>
           <Select
@@ -44,13 +55,13 @@ const FilterBar = ({ filters, onFilterChange, filterOptions }) => {
             multiple
             onChange={handleChange}
             renderValue={(selected) => (
-              <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+              <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
                 {selected.map((value) => (
                   <Chip
                     key={value}
                     label={value}
                     size="small"
-                    onDelete={handleDelete('format', value)}
+                    onDelete={handleDelete("format", value)}
                     onMouseDown={(event) => event.stopPropagation()}
                   />
                 ))}
@@ -77,13 +88,13 @@ const FilterBar = ({ filters, onFilterChange, filterOptions }) => {
             multiple
             onChange={handleChange}
             renderValue={(selected) => (
-              <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+              <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
                 {selected.map((value) => (
                   <Chip
                     key={value}
                     label={value}
                     size="small"
-                    onDelete={handleDelete('resolution', value)}
+                    onDelete={handleDelete("resolution", value)}
                     onMouseDown={(event) => event.stopPropagation()}
                   />
                 ))}
@@ -110,13 +121,13 @@ const FilterBar = ({ filters, onFilterChange, filterOptions }) => {
             multiple
             onChange={handleChange}
             renderValue={(selected) => (
-              <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.2 }}>
+              <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.2 }}>
                 {selected.map((value) => (
                   <Chip
                     key={value}
                     label={value}
                     size="small"
-                    onDelete={handleDelete('theme', value)}
+                    onDelete={handleDelete("theme", value)}
                     onMouseDown={(event) => event.stopPropagation()}
                   />
                 ))}
@@ -137,12 +148,16 @@ const FilterBar = ({ filters, onFilterChange, filterOptions }) => {
           variant="text"
           onClick={handleClearAll}
           startIcon={<ClearAllIcon />}
-          sx={{ visibility: filters.format.length > 0 || filters.resolution.length > 0 || filters.theme.length > 0 ? 'visible' : 'hidden' }}
+          disabled={
+            filters.format.length === 0 &&
+            filters.resolution.length === 0 &&
+            filters.theme.length === 0
+          }
         >
           Clear All
         </Button>
       </Box>
-    </Box >
+    </Box>
   );
 };
 
