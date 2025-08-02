@@ -8,7 +8,7 @@ import {
 } from "@mui/material";
 import "mapbox-gl/dist/mapbox-gl.css";
 import { useEffect, useRef, useState } from "react";
-import Map, { Layer, Source } from "react-map-gl/mapbox";
+import Map, { Layer, Popup, Source } from "react-map-gl/mapbox";
 
 const MAPBOX_TOKEN = import.meta.env.VITE_MAPBOX_TOKEN;
 
@@ -27,9 +27,10 @@ const BigMap = ({ visibleLayers }) => {
     zoom: 8,
   });
 
-  // This state is now local to the WebMap component.
+  // Local state of the WebMap component.
   const [geoJsonData, setGeoJsonData] = useState({});
   const [isFetching, setIsFetching] = useState(false);
+  const [popupInfo, setPopupInfo] = useState(null);
 
   // This effect runs whenever the list of visible layers changes.
   useEffect(() => {
@@ -73,10 +74,10 @@ const BigMap = ({ visibleLayers }) => {
   };
 
   const getLayerPaintStyle = (layer) => {
-    // Use the layer's color property or default to grey if not specified
     const colorProperty = layer.color
       ? layer.color
-      : ["coalesce", ["get", "color"], "#808080"];
+      : ["coalesce", ["get", "color"], "#808080"]; // Use the layer's color property or default to grey if not specified
+
     switch (layer.type) {
       case "fill":
         return {
@@ -92,12 +93,44 @@ const BigMap = ({ visibleLayers }) => {
       default:
         return {
           "line-color": colorProperty,
-          "line-width": 2,
-          "line-opacity": 0.7,
+          "line-width": 5,
+          "line-opacity": 0.8,
         };
     }
   };
 
+  // 3. Create a click handler for the map
+  const handleMapClick = (event) => {
+    const feature = event.features && event.features[0];
+    if (!feature) {
+      return;
+    }
+    // Get the ID of the layer that was clicked (e.g., "us-states-layer")
+    const clickedLayerId = feature.layer.id;
+    // Find the original configuration object for that layer
+    const layerConfig = visibleLayers.find(
+      (l) => `${l.id}-layer` === clickedLayerId
+    );
+
+    // If the layer or its tooltipProperty isn't configured, do nothing
+    if (!layerConfig || !layerConfig.tooltipProperty) {
+      return;
+    }
+    const tooltipValue = feature.properties[layerConfig.tooltipProperty];
+    const tooltipPrefix = layerConfig.tooltipPrefix;
+
+    if (tooltipValue !== undefined && tooltipValue !== null) {
+      setPopupInfo({
+        longitude: event.lngLat.lng,
+        latitude: event.lngLat.lat,
+        // Use the prefix from the config, defaulting to an empty string if it's not set
+        content: `${tooltipPrefix || ""}${tooltipValue}`,
+      });
+    }
+  };
+
+  // Generate a list of layer IDs that should be interactive
+  const interactiveLayerIds = visibleLayers.map((layer) => `${layer.id}-layer`);
   if (!MAPBOX_TOKEN) {
     return (
       <Box
@@ -128,12 +161,15 @@ const BigMap = ({ visibleLayers }) => {
         {...viewport}
         onMove={(evt) => setViewport(evt.viewState)}
         onLoad={() => mapRef.current.resize()}
+        onClick={handleMapClick}
         style={{
           width: "100%",
           height: "100%",
         }}
         mapStyle={mapStyle}
         mapboxAccessToken={MAPBOX_TOKEN}
+        interactiveLayerIds={interactiveLayerIds}
+        cursor="pointer"
       >
         {visibleLayers.map((layer) => {
           const data = geoJsonData[layer.file];
@@ -149,6 +185,19 @@ const BigMap = ({ visibleLayers }) => {
             </Source>
           );
         })}
+
+        {popupInfo && (
+          <Popup
+            longitude={popupInfo.longitude}
+            latitude={popupInfo.latitude}
+            onClose={() => setPopupInfo(null)}
+            closeOnClick={false}
+          >
+            <Typography variant="body1" sx={{ p: 0.5 }}>
+              {popupInfo.content}
+            </Typography>
+          </Popup>
+        )}
       </Map>
 
       {isFetching && (
