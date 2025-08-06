@@ -6,10 +6,9 @@ const Title = () => {
   return (
     <Box
       sx={{
-        position: "relative", 
+        position: "relative",
         color: "white",
-        p: 4,
-
+        p: 2,
         "&::before": {
           content: '""',
           position: "absolute",
@@ -35,16 +34,16 @@ const Title = () => {
         },
       }}
     >
-      <Box sx={{ position: "relative", zIndex: 2 }}>
+      <Box sx={{ position: "relative", zIndex: 2  }}>
         <Grid
           container
           spacing={3}
-          sx={{ display: "flex", alignItems: "center", mb: 2 }}
+          sx={{ display: "flex", alignItems: "center",flexWrap: "nowrap"}}
         >
-          <Grid item component="a" href="/">
-            <img src={logo} alt="Logo" style={{ width: 50, height: 50 }} />
+          <Grid item component="a" href="/" sx={{ flexShrink : 0}}>
+            <img src={logo} alt="Logo" style={{ width: 80, height: 80 }} />
           </Grid>
-          <Grid item>
+          <Grid item >
             <Typography
               variant="h1"
               sx={{
@@ -60,7 +59,7 @@ const Title = () => {
                 variant="body1"
                 sx={{ fontSize: "1.2rem", maxWidth: "75ch" }}
               >
-                Toward a sustainable transport future for all with data
+                Toward a sustainable transport future for all
               </Typography>
             </Box>
           </Grid>

@@ -22,8 +22,8 @@ const BigMap = ({ visibleLayers }) => {
   const [mapStyle, setMapStyle] = useState(baseLayers[0].value);
   const mapRef = useRef(null);
   const [viewport, setViewport] = useState({
-    longitude: 75.7873,
-    latitude: 26.9124,
+    longitude: 75.787,
+    latitude: 26.912,
     zoom: 8,
   });
 
@@ -64,7 +64,7 @@ const BigMap = ({ visibleLayers }) => {
     };
 
     fetchDataForVisibleLayers();
-  }, [visibleLayers]); // Dependency array ensures this runs when visibleLayers changes.
+  }, [visibleLayers]); 
 
   const handleStyleChange = (event, newStyle) => {
     if (newStyle !== null) {
@@ -75,7 +75,7 @@ const BigMap = ({ visibleLayers }) => {
   const getLayerPaintStyle = (layer) => {
     const colorProperty = layer.color
       ? layer.color
-      : ["coalesce", ["get", "color"], "#808080"]; // default to grey if not specified in geojson
+      : ["coalesce", ["get", "color"], "#808080"]; 
 
     switch (layer.type) {
       case "fill":

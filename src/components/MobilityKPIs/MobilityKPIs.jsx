@@ -123,7 +123,7 @@ const MobilityKPIs = () => {
 
   if (error) {
     return (
-      <Box sx={{ p: 4, textAlign: "center" }}>
+      <Box sx={{ px: 4, textAlign: "center" }}>
         <Typography color="error">{error}</Typography>
       </Box>
     );
@@ -132,7 +132,7 @@ const MobilityKPIs = () => {
     <Box sx={{ px: 4 }}>
       <Grid container spacing={2}>
         {/* Left Column for Tabs */}
-        <Grid item size={2} sx={{ display: "flex", flexDirection: "column" }}>
+        <Grid item size={2} sx={{ display: "flex", flexDirection: "column",flexShrink: 0 }}>
           <VerticalTabs
             tabs={tabsWithColor}
             activeTab={activeTabIndex}

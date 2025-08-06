@@ -1,11 +1,11 @@
-import { Box, Container, Grid, Typography } from "@mui/material";
+import { Box, Container, Divider, Grid, Typography, Link} from "@mui/material";
 import { useState } from "react";
 
 import NavigationButtons from "../components/common/NavigationButtons";
 import Title from "../components/common/Title";
 
 import DataCatalogue from "../components/DataCatalogue/DataCatalogue";
-import AboutHighlights from "../components/Highlights/AboutHighlights";
+import Highlights from "../components/Highlights/Highlights";
 import MobilityKPIs from "../components/MobilityKPIs/MobilityKPIs";
 import MobilityMap from "../components/MobilityMap/MobilityMap";
 
@@ -15,7 +15,7 @@ function Home() {
     { id: "map", text: "Mobility Map" },
     { id: "goals", text: "Goals & Progress" },
     { id: "catalogue", text: "Data Catalogue" },
-    { id: "about", text: "News & Highlights" },
+    { id: "highlights", text: "News & Highlights" },
   ];
   const handleLayerChange = (layerId) => {
     console.log("Button clicked, changing active layer to:", layerId);
@@ -24,11 +24,11 @@ function Home() {
 
   return (
     <Box>
-      <Box sx={{ mb: 4 }}>
+      <Box sx={{ mb: 2 }}>
         <Title />
       </Box>
 
-      <Box sx={{ mx: 10 }}>
+      <Box sx={{ mx: 2 }}>
         <Grid
           container
           spacing={4}
@@ -102,17 +102,51 @@ function Home() {
                   </Typography>
                 </Box>
               )}
+              {activeLayer === "highlights" && (
+                <Box>
+                  <Typography
+                    variant="h5"
+                    gutterBottom
+                    sx={{ color: "primary.dark" }}
+                  >
+                    About the Initiative
+                  </Typography>
+                  <Typography variant="body1" color="text.primary">
+            The Smart Mobility Hub is a collaboration between the{" "}
+            <Link
+              href="https://www.ucl.ac.uk/bartlett/casa"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Centre for Advanced Spatial Analysis
+            </Link>{" "}
+            (CASA) at the University College London (UCL) and the{" "}
+            <Link
+              href="https://mnit.ac.in/dept_arch/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Department of Architecture and Planning
+            </Link>{" "}
+            at MNIT, Jaipur. Our project aims to facilitate data sharing to
+            shape accountable progress towards smart and inclusive mobility in
+            Jaipur.
+          </Typography>
+                </Box>
+              )}
             </Container>
           </Grid>
         </Grid>
       </Box>
 
-      <Box sx={{ mx: 8, my: 4 }}>
+      <Divider sx={{ my: 4 , mx : 4 }} />
+
+      <Box sx={{ mx: 2 }}>
         <Box>
           {activeLayer === "map" && <MobilityMap />}
           {activeLayer === "goals" && <MobilityKPIs />}
           {activeLayer === "catalogue" && <DataCatalogue />}
-          {activeLayer === "about" && <AboutHighlights />}
+          {activeLayer === "highlights" && <Highlights />}
         </Box>
       </Box>
     </Box>

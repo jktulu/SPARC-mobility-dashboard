@@ -24,18 +24,7 @@ const VerticalTabs = ({ tabs, onTabChange, activeTab }) => {
         <Typography variant="subtitle2" color="text.secondary">
           Filter by topic
         </Typography>
-        <Button
-          onClick={handleShowAll}
-          variant="text"
-          sx={{
-            padding: "4px",
-            color: "primary.main",
-            opacity: activeTab !== null ? 1 : 0.5,
-            fontWeight: activeTab !== null ? "bold" : "normal",
-          }}
-        >
-          Show All
-        </Button>
+
       </Box>
       <Paper
         sx={{
@@ -55,8 +44,8 @@ const VerticalTabs = ({ tabs, onTabChange, activeTab }) => {
               key={index}
               label={tab.label}
               sx={{
-                alignItems: "flex-start", // Add this line to align text to the left
-                flexShrink: 0,
+                // alignItems: "flex-start", // Add this line to align text to the left
+                // flexShrink: 0,
                 "&.Mui-selected": {
                   fontWeight: "bold",
                   opacity: 1,
@@ -67,6 +56,18 @@ const VerticalTabs = ({ tabs, onTabChange, activeTab }) => {
           ))}
         </Tabs>
       </Paper>
+              <Button
+          onClick={handleShowAll}
+          variant="text"
+          sx={{
+            padding: "4px",
+            color: "primary.main",
+            opacity: activeTab !== null ? 1 : 0.5,
+            fontWeight: activeTab !== null ? "bold" : "normal",
+          }}
+        >
+          Show All
+        </Button>
     </Box>
   );
 };

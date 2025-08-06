@@ -11,14 +11,17 @@ const LayerControl = ({ onLayerToggle }) => {
   return (
     <Box>
       <Typography
-        variant="h5"
-        gutterBottom
-        sx={{ fontWeight: "bold", color: "primary.main" }}
+        variant="h6"
+        sx={{ fontWeight: "bold", color: "primary.main", mb: -1 }}
       >
-        THEME
+        Theme
       </Typography>
+      <Typography variant="caption" sx={{ color: "text.secondary", mb: 10 }}>
+        Choose a layer
+      </Typography>
+
       {layerConfig.map((themeGroup) => (
-        <Box key={themeGroup.theme} mb={2}>
+        <Box key={themeGroup.theme} my={2}>
           <Typography
             variant="subtitle1"
             sx={{ fontWeight: "bold", color: "secondary.main" }}

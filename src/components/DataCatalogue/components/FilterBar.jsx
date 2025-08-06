@@ -45,32 +45,32 @@ const FilterBar = ({ filters, onFilterChange, filterOptions }) => {
     <Box>
       <Box sx={{ display: "flex", gap: 1, mt: 2, flexWrap: "nowrap" }}>
         <FormControl fullWidth size="small">
-          <InputLabel id="format-select-label">Format</InputLabel>
+          <InputLabel id="theme-select-label">Theme</InputLabel>
           <Select
-            labelId="format-select-label"
-            id="format-select"
-            name="format"
-            value={format}
-            label="Format"
+            labelId="theme-select-label"
+            id="theme-select"
+            name="theme"
+            value={theme}
+            label="Theme"
             multiple
             onChange={handleChange}
             renderValue={(selected) => (
-              <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
+              <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.2 }}>
                 {selected.map((value) => (
                   <Chip
                     key={value}
                     label={value}
                     size="small"
-                    onDelete={handleDelete("format", value)}
+                    onDelete={handleDelete("theme", value)}
                     onMouseDown={(event) => event.stopPropagation()}
                   />
                 ))}
               </Box>
             )}
           >
-            {fileFormats.map((option) => (
+            {themes.map((option) => (
               <MenuItem key={option} value={option}>
-                <Checkbox checked={format.includes(option)} />
+                <Checkbox checked={theme.includes(option)} />
                 <ListItemText primary={option} />
               </MenuItem>
             ))}
@@ -111,39 +111,6 @@ const FilterBar = ({ filters, onFilterChange, filterOptions }) => {
         </FormControl>
 
         <FormControl fullWidth size="small">
-          <InputLabel id="theme-select-label">Theme</InputLabel>
-          <Select
-            labelId="theme-select-label"
-            id="theme-select"
-            name="theme"
-            value={theme}
-            label="Theme"
-            multiple
-            onChange={handleChange}
-            renderValue={(selected) => (
-              <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.2 }}>
-                {selected.map((value) => (
-                  <Chip
-                    key={value}
-                    label={value}
-                    size="small"
-                    onDelete={handleDelete("theme", value)}
-                    onMouseDown={(event) => event.stopPropagation()}
-                  />
-                ))}
-              </Box>
-            )}
-          >
-            {themes.map((option) => (
-              <MenuItem key={option} value={option}>
-                <Checkbox checked={theme.includes(option)} />
-                <ListItemText primary={option} />
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-
-        <FormControl fullWidth size="small">
           <InputLabel id="latestYear-select-label">Last Updated</InputLabel>
           <Select
             labelId="latestYear-select-label"
@@ -170,6 +137,38 @@ const FilterBar = ({ filters, onFilterChange, filterOptions }) => {
             {latestYears.map((option) => (
               <MenuItem key={option} value={option}>
                 <Checkbox checked={latestYear.includes(option)} />
+                <ListItemText primary={option} />
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+        <FormControl fullWidth size="small">
+          <InputLabel id="format-select-label">Format</InputLabel>
+          <Select
+            labelId="format-select-label"
+            id="format-select"
+            name="format"
+            value={format}
+            label="Format"
+            multiple
+            onChange={handleChange}
+            renderValue={(selected) => (
+              <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
+                {selected.map((value) => (
+                  <Chip
+                    key={value}
+                    label={value}
+                    size="small"
+                    onDelete={handleDelete("format", value)}
+                    onMouseDown={(event) => event.stopPropagation()}
+                  />
+                ))}
+              </Box>
+            )}
+          >
+            {fileFormats.map((option) => (
+              <MenuItem key={option} value={option}>
+                <Checkbox checked={format.includes(option)} />
                 <ListItemText primary={option} />
               </MenuItem>
             ))}

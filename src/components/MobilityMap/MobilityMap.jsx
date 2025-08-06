@@ -1,12 +1,14 @@
-import { Box, Grid, Paper } from "@mui/material";
+import { Box, Paper, IconButton } from "@mui/material";
 import "mapbox-gl/dist/mapbox-gl.css";
 import { useState } from "react";
+import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 
 import BigMap from "./components/BigMap";
 import LayerControl from "./components/LayerControl";
 
 const InteractiveMapMain = () => {
   const [visibleLayers, setVisibleLayers] = useState([]);
+  const [isPanelOpen, setIsPanelOpen] = useState(true);
 
   const handleLayerToggle = (layer, isChecked) => {
     setVisibleLayers((prev) =>
@@ -14,23 +16,61 @@ const InteractiveMapMain = () => {
     );
   };
 
+  const panelWidth = 300;
+
   return (
     <Box>
-      <Paper elevation={2} sx={{ p: 2, height: 800 }}>
-        <Grid
-          container
-          spacing={2}
+      <Paper
+        elevation={2}
+        sx={{ height: 1000, position: "relative", overflow: "hidden" }}
+      >
+        <Box sx={{ height: "100%", width: "100%" }}>
+          <BigMap visibleLayers={visibleLayers} />
+        </Box>
+
+        <Box
           sx={{
+            position: "absolute",
+            top: 0,
+            left: 0,
             height: "100%",
+            display: "flex",
+            alignItems: "center",
+            transform: isPanelOpen
+              ? "translateX(0)"
+              : `translateX(-${panelWidth}px)`,
+            transition: "transform 300ms ease-in-out",
           }}
         >
-          <Grid item size={1.5}>
+          <Paper
+            elevation={3}
+            sx={{
+              width: panelWidth,
+              height: "100%",
+              p: 2,
+              mr: 1,
+              overflowY: "auto",
+              borderRadius: 0,
+            }}
+          >
             <LayerControl onLayerToggle={handleLayerToggle} />
-          </Grid>
-          <Grid item size={10.5} sx={{ height: "100%" }}>
-            <BigMap visibleLayers={visibleLayers} />
-          </Grid>
-        </Grid>
+          </Paper>
+
+          <IconButton
+            onClick={() => setIsPanelOpen(!isPanelOpen)}
+            sx={{
+              backgroundColor: "white",
+              border: "1px solid #ddd",
+              "&:hover": {
+                backgroundColor: "#f0f0f0",
+              },
+              transform: isPanelOpen ? "rotate(0deg)" : "rotate(180deg)",
+              transition: "transform 300ms ease-in-out",
+            }}
+          >
+            <ChevronLeftIcon />
+          </IconButton>
+        </Box>
       </Paper>
     </Box>
   );

@@ -12,6 +12,7 @@ const NavigationButtons = ({ buttons = [], onButtonClick, activeButtonId }) => {
               flexGrow: 1,
               height: "50px",
               fontSize: "1.2rem",
+              lineHeight: "1.1",
             }}
             onClick={() => onButtonClick(button.id)}
           >

@@ -57,7 +57,6 @@ const KpiDetailBox = ({ kpi }) => {
     }
   }, [kpi]); // re-runs every time the selected KPI changes
 
-  // Placeholder message.
   if (!kpi) {
     return (
       <Paper sx={{ p: 2, mt: 4, textAlign: "center", userSelect: "none" }}>
@@ -85,10 +84,11 @@ const KpiDetailBox = ({ kpi }) => {
           display: "flex",
           flexDirection: "row",
           alignItems: "flex-end",
+          flexWrap: "nowrap",
         }}
       >
         <Grid item>
-          {/* ToToggle */}
+          {/* Toggle */}
           <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
             <ToggleButtonGroup
               value={viewMode}
@@ -138,8 +138,6 @@ const KpiDetailBox = ({ kpi }) => {
           </Typography>
         </Grid>
       </Grid>
-
-      {/* Conditional rendering based on view mode */}
 
       <Box
         sx={{
