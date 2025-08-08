@@ -1,4 +1,4 @@
-import { Close, Description, ExitToApp, Public, Widgets } from '@mui/icons-material';
+import { Close, Description, ExitToApp, Public, Widgets , Download } from '@mui/icons-material';
 import {
   Box,
   Button,
@@ -72,7 +72,17 @@ const DetailsDrawer = ({ item, open, onClose }) => {
             </Typography>
           </Box>
         </Box>
-        <Box sx={{ mt: 'auto' }}>
+        <Box sx={{ mt: 'auto', display: 'flex', flexDirection: 'column', gap: 2 }}>
+          <Button
+            variant="contained"
+            size="large"
+            endIcon={<Download />}
+            fullWidth
+            disabled
+            >
+            Download Sample
+            </Button>
+            
           <Button
             variant="contained"
             size="large"

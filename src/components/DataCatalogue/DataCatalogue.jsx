@@ -41,7 +41,6 @@ const DataCatalogue = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   // useEffect to fetch data when the component mounts
   useEffect(() => {
@@ -256,7 +255,6 @@ const DataCatalogue = () => {
         <CatalogueList
           items={currentItems}
           onItemClick={handleItemClick}
-          isMobile={isMobile}
         />
         <DetailsDrawer
           item={selectedDataset}

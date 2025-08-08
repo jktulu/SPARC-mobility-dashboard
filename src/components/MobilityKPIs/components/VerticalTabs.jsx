@@ -20,11 +20,18 @@ const VerticalTabs = ({ tabs, onTabChange, activeTab }) => {
 
   return (
     <Box>
-      <Box sx={{ p: 1, display: "flex", flexDirection: "row",justifyContent: "space-between", alignItems: "center" }}>
+      <Box
+        sx={{
+          p: 1,
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
         <Typography variant="subtitle2" color="text.secondary">
           Filter by topic
         </Typography>
-
       </Box>
       <Paper
         sx={{
@@ -56,7 +63,8 @@ const VerticalTabs = ({ tabs, onTabChange, activeTab }) => {
           ))}
         </Tabs>
       </Paper>
-              <Button
+      <Box sx={{ p: 1, display: "flex", justifyContent: "center" }}>
+        <Button
           onClick={handleShowAll}
           variant="text"
           sx={{
@@ -68,6 +76,7 @@ const VerticalTabs = ({ tabs, onTabChange, activeTab }) => {
         >
           Show All
         </Button>
+      </Box>
     </Box>
   );
 };
