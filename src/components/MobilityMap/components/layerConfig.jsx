@@ -3,11 +3,20 @@ export const layerConfig = [
     theme: "Administrative",
     layers: [
       {
-        id: "jaipur-district",
-        name: "Jaipur",
-        file: "data/mapMain/jaipur_district_adm2.geojson",
-        color: "#292263",
+        id: "jaipur-municipality",
+        name: "Municipal Boundary",
+        file: "data/mapMain/jaipur_muni_bounds.geojson",
+        color: "#d12525",
         type: "line",
+        defaultChecked: true,
+      },
+      {
+        id: "jaipur_wards",
+        name: "Municipal Wards",
+        file: "data/mapMain/jaipur_wards.geojson",
+        type: "fill",
+        color: "#00ff26",
+        defaultChecked: true,
       },
       {
         id: "jaipur_tehsils",
@@ -27,14 +36,6 @@ export const layerConfig = [
         tooltipPrefix: "Town: ",
         tooltipProperty: "adm5_name",
       },
-      {
-        id: "jaipur_wards",
-        name: "Municipal Wards",
-        file: "data/mapMain/jaipur_wards.geojson",
-        type: "fill",
-        color: "#00ff26",
-        defaultChecked: true,
-      }
     ],
   },
   {
