@@ -100,6 +100,7 @@ export const layerConfig = [
             name: "Routes",
             file: "data/mapMain/metro_routes.geojson",
             defaultChecked: false,
+            tooltipProperty: "name",
             type: "line",
             paint: {
               "line-color": ["coalesce", ["get", "color"], "#dd6666"],
@@ -137,6 +138,7 @@ export const layerConfig = [
             name: "Routes",
             file: "data/mapMain/metro_routes_uc.geojson",
             defaultChecked: false,
+            tooltipProperty: "name",
             type: "line",
             paint: {
               "line-color": ["coalesce", ["get", "color"], "#dd6666"],
