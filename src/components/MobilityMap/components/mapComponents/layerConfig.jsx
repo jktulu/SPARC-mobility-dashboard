@@ -33,7 +33,7 @@ export const layerConfig = [
           { label: "Area#", property: "area_no" },
           { label: "Name", property: "name" },
           { label: "Population", property: "population", prefix: "" },
-          { label: "Density", property: "density", suffix: " /sq.km" },
+          { label: "Density", property: "density_km2", suffix: " /km2" },
         ],
         type: "fill",
         paint: {
