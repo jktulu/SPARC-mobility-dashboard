@@ -139,8 +139,6 @@ function Home() {
         </Grid>
       </Box>
 
-      <Divider sx={{ my: 4, mx: 4 }} />
-
       <Box sx={{ mx: 2 }}>
         <Box>
           {activeLayer === "map" && <MobilityMap />}

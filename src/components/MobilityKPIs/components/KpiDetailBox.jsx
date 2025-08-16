@@ -14,7 +14,6 @@ import KpiChart from "./KpiChart";
 import WebMap from "./KpiMap";
 
 const KpiDetailBox = ({ kpi }) => {
-  // 1. Add state for loading, data, and errors
   const [chartData, setChartData] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [viewMode, setViewMode] = useState("chart");
@@ -25,7 +24,6 @@ const KpiDetailBox = ({ kpi }) => {
       setViewMode(newView);
     }
   };
-  // 2. Use useEffect to fetch data when the kpi prop changes
   useEffect(() => {
     if (kpi) {
       setIsLoading(true);
@@ -50,7 +48,6 @@ const KpiDetailBox = ({ kpi }) => {
           setIsLoading(false);
         });
     } else {
-      // Reset state if the new KPI has no chart
       setChartData(null);
       setError(null);
       setIsLoading(false);

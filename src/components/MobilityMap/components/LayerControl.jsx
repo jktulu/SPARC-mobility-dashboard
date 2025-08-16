@@ -1,21 +1,26 @@
+import ExpandLess from "@mui/icons-material/ExpandLess";
+import ExpandMore from "@mui/icons-material/ExpandMore";
 import {
   Box,
   Checkbox,
+  Collapse,
   FormControlLabel,
   FormGroup,
   Typography,
 } from "@mui/material";
-import { useState, useEffect, useMemo } from "react";
+import { Fragment, useEffect, useMemo, useState } from "react";
 import { layerConfig } from "./mapComponents/layerConfig";
 
 const LayerControl = ({ onLayerToggle }) => {
-  // Default layers to be checked initially
   const defaultLayers = useMemo(() => {
     const defaults = [];
     layerConfig.forEach((themeGroup) => {
       themeGroup.layers.forEach((layer) => {
         if (layer.children) {
-          layer.children.forEach((child) => {
+          const children = layer.isGroup
+            ? layer.children.flatMap((c) => c.children || [])
+            : layer.children;
+          children.forEach((child) => {
             if (child.defaultChecked) {
               defaults.push(child);
             }
@@ -35,8 +40,18 @@ const LayerControl = ({ onLayerToggle }) => {
     }, {})
   );
 
+  const [openGroups, setOpenGroups] = useState(() =>
+    layerConfig.reduce((acc, themeGroup) => {
+      themeGroup.layers.forEach((layer) => {
+        if (layer.isGroup) {
+          acc[layer.id] = true;
+        }
+      });
+      return acc;
+    }, {})
+  );
+
   useEffect(() => {
-    // On initial load, toggle the default layers to be visible.
     defaultLayers.forEach((layer) => {
       onLayerToggle(layer, true);
     });
@@ -52,10 +67,49 @@ const LayerControl = ({ onLayerToggle }) => {
     const childUpdates = {};
     parentLayer.children.forEach((child) => {
       childUpdates[child.id] = isChecked;
-      // Toggle all child layers on the map
       onLayerToggle(child, isChecked);
     });
     setCheckedState((prev) => ({ ...prev, ...childUpdates }));
+  };
+
+  const handleGroupChange = (groupLayer, isChecked) => {
+    const childUpdates = {};
+    groupLayer.children.forEach((subParent) => {
+      subParent.children.forEach((child) => {
+        childUpdates[child.id] = isChecked;
+        onLayerToggle(child, isChecked);
+      });
+    });
+    setCheckedState((prev) => ({ ...prev, ...childUpdates }));
+  };
+
+  const handleGroupToggle = (groupId) => {
+    setOpenGroups((prev) => ({ ...prev, [groupId]: !prev[groupId] }));
+  };
+
+  const ParentLayerControl = ({ layer }) => {
+    const childIds = layer.children.map((c) => c.id);
+    const checkedChildrenCount = childIds.filter(
+      (id) => checkedState[id]
+    ).length;
+    const isIndeterminate =
+      checkedChildrenCount > 0 && checkedChildrenCount < childIds.length;
+    const areAllChecked = checkedChildrenCount === childIds.length;
+
+    return (
+      <FormControlLabel
+        key={layer.id}
+        label={layer.name}
+        sx={{ my: -0.25 }}
+        control={
+          <Checkbox
+            checked={areAllChecked}
+            indeterminate={isIndeterminate}
+            onChange={(e) => handleParentChange(layer, e.target.checked)}
+          />
+        }
+      />
+    );
   };
 
   return (
@@ -73,52 +127,92 @@ const LayerControl = ({ onLayerToggle }) => {
             {themeGroup.theme}
           </Typography>
           <FormGroup>
-            {themeGroup.layers.map((layer) => {
-              // This is a parent layer with children. It gets one checkbox.
-              if (layer.children) {
-                const childIds = layer.children.map((c) => c.id);
-                const checkedChildrenCount = childIds.filter(
-                  (id) => checkedState[id]
-                ).length;
-                const isIndeterminate =
-                  checkedChildrenCount > 0 &&
-                  checkedChildrenCount < childIds.length;
-                const areAllChecked = checkedChildrenCount === childIds.length;
+            {themeGroup.layers
+              .filter((layer) => layer.showInControl !== false)
+              .map((layer) => {
+                if (layer.isGroup) {
+                  const allChildIds = layer.children.flatMap(
+                    (c) => c.children.map((sc) => sc.id)
+                  );
+                  const checkedCount = allChildIds.filter(
+                    (id) => checkedState[id]
+                  ).length;
+                  const isGroupIndeterminate =
+                    checkedCount > 0 && checkedCount < allChildIds.length;
+                  const isGroupAllChecked =
+                    checkedCount > 0 && checkedCount === allChildIds.length;
 
-                return (
-                  <FormControlLabel
-                    key={layer.id}
-                    label={layer.name}
-                    sx={{ my: -0.25 }}
-                    control={
-                      <Checkbox
-                        checked={areAllChecked}
-                        indeterminate={isIndeterminate}
-                        onChange={(e) =>
-                          handleParentChange(layer, e.target.checked)
+                  return (
+                    <Fragment key={layer.id}>
+                      <FormControlLabel
+                        control={
+                          <Checkbox
+                            checked={isGroupAllChecked}
+                            indeterminate={isGroupIndeterminate}
+                            onChange={(e) =>
+                              handleGroupChange(layer, e.target.checked)
+                            }
+                          />
                         }
+                        label={
+                          <Box
+                            sx={{
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "space-between",
+                              width: "100%",
+                            }}
+                          >
+                            <Typography>{layer.name}</Typography>
+                            <Box
+                              component="span"
+                              onClick={(e) => {
+                                e.preventDefault(); // Stop label click from toggling checkbox
+                                e.stopPropagation(); // Stop click from bubbling up
+                                handleGroupToggle(layer.id);
+                              }}
+                              sx={{
+                                display: "inline-flex",
+                                alignItems: "center",
+                                p: 0.5,
+                                borderRadius: "50%",
+                              }}
+                            >
+                              {openGroups[layer.id] ? (
+                                <ExpandLess />
+                              ) : (
+                                <ExpandMore />
+                              )}
+                            </Box>
+                          </Box>
+                        }
+                        sx={{
+                          width: "100%",
+                          my: -0.25,
+                          mr: 0,
+                          "& .MuiFormControlLabel-label": { width: "100%" },
+                        }}
                       />
-                    }
-                  />
-                );
-              }
-              // This is a standalone layer with no children.
-              return (
-                <FormControlLabel
-                  key={layer.id}
-                  label={layer.name}
-                  sx={{ my: -0.25 }}
-                  control={
-                    <Checkbox
-                      checked={!!checkedState[layer.id]}
-                      onChange={(e) =>
-                        handleChildChange(layer, e.target.checked)
-                      }
-                    />
-                  }
-                />
-              );
-            })}
+                      <Collapse
+                        in={openGroups[layer.id]}
+                        timeout="auto"
+                        unmountOnExit
+                      >
+                        <Box sx={{ pl: 4 }}>
+                          {layer.children.map((subLayer) => (
+                            <ParentLayerControl
+                              key={subLayer.id}
+                              layer={subLayer}
+                            />
+                          ))}
+                        </Box>
+                      </Collapse>
+                    </Fragment>
+                  );
+                }
+
+                return <ParentLayerControl key={layer.id} layer={layer} />;
+              })}
           </FormGroup>
         </Box>
       ))}

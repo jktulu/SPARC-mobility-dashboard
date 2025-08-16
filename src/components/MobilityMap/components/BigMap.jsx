@@ -1,19 +1,20 @@
 import {
   Box,
   CircularProgress,
+  IconButton,
   Paper,
   ToggleButton,
   ToggleButtonGroup,
   Typography,
 } from "@mui/material";
 import "mapbox-gl/dist/mapbox-gl.css";
-import { useEffect, useRef, useState, useCallback } from "react";
-import { default as MapGL, Layer, Popup, Source } from "react-map-gl/mapbox";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { Layer, default as MapGL, Popup, Source } from "react-map-gl/mapbox";
 import {
-  layerConfig,
   flattenLayers,
   getLayerLayoutStyle,
   getLayerPaintStyle,
+  layerConfig,
 } from "./mapComponents/layerConfig";
 
 const MAPBOX_TOKEN = import.meta.env.VITE_MAPBOX_TOKEN;
@@ -23,6 +24,18 @@ const baseLayers = [
   { label: "Dark", value: "mapbox://styles/mapbox/dark-v11" },
 ];
 
+const NorthArrow = () => (
+  <svg
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path d="M12 2L4.5 20.29l.71.71L12 18l6.79 3 .71-.71L12 2z" fill="#333" />
+  </svg>
+);
+
 const BigMap = ({ visibleLayers }) => {
   const [mapStyle, setMapStyle] = useState(baseLayers[0].value);
   const mapRef = useRef(null);
@@ -30,12 +43,14 @@ const BigMap = ({ visibleLayers }) => {
     longitude: 75.787,
     latitude: 26.912,
     zoom: 10,
+    bearing: 0,
+    pitch: 0,
   });
 
+  const [bearing, setBearing] = useState(0);
   const [geoJsonData, setGeoJsonData] = useState({});
   const [isFetching, setIsFetching] = useState(false);
   const [popupInfo, setPopupInfo] = useState(null);
-  // This state is still useful for tracking, even if not used for rendering
   const [loadedIconIds, setLoadedIconIds] = useState(new Set());
   const [selectedRouteId, setSelectedRouteId] = useState(null);
 
@@ -113,14 +128,19 @@ const BigMap = ({ visibleLayers }) => {
     fetchDataForVisibleLayers();
   }, [visibleLayers, geoJsonData]);
 
+  const handleMapLoad = useCallback(
+    (event) => {
+      const map = event.target;
+      if (!map) return;
+      map.resize();
+      loadMapIcons(map);
+    },
+    [loadMapIcons]
+  );
+
   useEffect(() => {
     const map = mapRef.current?.getMap();
     if (!map) return;
-
-    const handleLoad = () => {
-      map.resize();
-      loadMapIcons(map);
-    };
 
     const handleStyleData = () => {
       if (map.isStyleLoaded()) {
@@ -128,11 +148,9 @@ const BigMap = ({ visibleLayers }) => {
       }
     };
 
-    map.on("style.load", handleLoad);
     map.on("styledata", handleStyleData);
 
     return () => {
-      map.off("style.load", handleLoad);
       map.off("styledata", handleStyleData);
     };
   }, [loadMapIcons]);
@@ -215,6 +233,10 @@ const BigMap = ({ visibleLayers }) => {
     [selectedRouteId]
   );
 
+  const handleResetNorth = useCallback(() => {
+    mapRef.current?.easeTo({ bearing: 0, pitch: 0 });
+  }, []);
+
   if (!MAPBOX_TOKEN) {
     return (
       <Box
@@ -235,19 +257,25 @@ const BigMap = ({ visibleLayers }) => {
       <MapGL
         ref={mapRef}
         {...viewport}
-        onMove={(evt) => setViewport(evt.viewState)}
+        // --- STEP 3: Update bearing state on move ---
+        onMove={(evt) => {
+          setViewport(evt.viewState);
+          setBearing(evt.viewState.bearing);
+        }}
         onClick={handleMapClick}
+        onLoad={handleMapLoad}
         style={{ width: "100%", height: "100%" }}
         mapStyle={mapStyle}
         mapboxAccessToken={MAPBOX_TOKEN}
-        interactiveLayerIds={flattenLayers(layerConfig).map((l) => `${l.id}-layer`)}
+        interactiveLayerIds={flattenLayers(layerConfig).map(
+          (l) => `${l.id}-layer`
+        )}
         cursor="pointer"
       >
         {visibleLayers.map((layer) => {
           const data = geoJsonData[layer.file];
           if (!data) return null;
 
-          
           return (
             <Source
               key={layer.id}
@@ -279,6 +307,7 @@ const BigMap = ({ visibleLayers }) => {
         )}
       </MapGL>
 
+      {/* UI Overlays */}
       {isFetching && (
         <Box
           sx={{
@@ -320,6 +349,27 @@ const BigMap = ({ visibleLayers }) => {
             </ToggleButton>
           ))}
         </ToggleButtonGroup>
+      </Paper>
+
+      <Paper
+        elevation={3}
+        sx={{
+          position: "absolute",
+          top: 60,
+          right: 10,
+          borderRadius: "50%",
+        }}
+      >
+        <IconButton
+          onClick={handleResetNorth}
+          aria-label="reset north"
+          sx={{
+            transform: `rotate(${bearing}deg)`,
+            transition: "transform 0.2s ease-in-out",
+          }}
+        >
+          <NorthArrow />
+        </IconButton>
       </Paper>
     </Box>
   );

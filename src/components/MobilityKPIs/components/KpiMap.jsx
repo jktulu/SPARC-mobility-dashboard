@@ -1,12 +1,13 @@
 import {
   Box,
+  IconButton, // Import IconButton
   Paper,
   ToggleButton,
   ToggleButtonGroup,
   Typography,
 } from "@mui/material";
 import "mapbox-gl/dist/mapbox-gl.css";
-import { useRef, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import Map from "react-map-gl/mapbox";
 
 const MAPBOX_TOKEN = import.meta.env.VITE_MAPBOX_TOKEN;
@@ -16,6 +17,19 @@ const baseLayers = [
   { label: "Dark", value: "mapbox://styles/mapbox/dark-v11" },
 ];
 
+// SVG for the compass needle
+const NorthArrow = () => (
+  <svg
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path d="M12 2L4.5 20.29l.71.71L12 18l6.79 3 .71-.71L12 2z" fill="#333" />
+  </svg>
+);
+
 const WebMap = ({ kpi }) => {
   const [mapStyle, setMapStyle] = useState(baseLayers[0].value);
   const mapRef = useRef(null);
@@ -23,13 +37,23 @@ const WebMap = ({ kpi }) => {
     longitude: 75.7873,
     latitude: 26.9124,
     zoom: 11,
+    bearing: 0, // Initialize bearing
+    pitch: 0, // Initialize pitch
   });
+
+  // --- STEP 1: Add state to track the map's bearing ---
+  const [bearing, setBearing] = useState(0);
 
   const handleStyleChange = (event, newStyle) => {
     if (newStyle !== null) {
       setMapStyle(newStyle);
     }
   };
+
+  // --- STEP 2: Create a function to reset the map's bearing ---
+  const handleResetNorth = useCallback(() => {
+    mapRef.current?.easeTo({ bearing: 0, pitch: 0 });
+  }, []);
 
   if (!MAPBOX_TOKEN) {
     return (
@@ -60,14 +84,18 @@ const WebMap = ({ kpi }) => {
       <Map
         ref={mapRef}
         {...viewport}
-        onMove={(evt) => setViewport(evt.viewState)}
+        onMove={(evt) => {
+          setViewport(evt.viewState);
+          setBearing(evt.viewState.bearing);
+        }}
         style={{
           width: "100%",
+          height: "100%", 
         }}
         mapStyle={mapStyle}
         mapboxAccessToken={MAPBOX_TOKEN}
       ></Map>
-      
+
       {/* Base Layer Switcher */}
       <Paper
         elevation={3}
@@ -96,6 +124,27 @@ const WebMap = ({ kpi }) => {
             </ToggleButton>
           ))}
         </ToggleButtonGroup>
+      </Paper>
+
+      <Paper
+        elevation={3}
+        sx={{
+          position: "absolute",
+          top: 60, 
+          right: 10,
+          borderRadius: "50%",
+        }}
+      >
+        <IconButton
+          onClick={handleResetNorth}
+          aria-label="reset north"
+          sx={{
+            transform: `rotate(${bearing}deg)`,
+            transition: "transform 0.2s ease-in-out",
+          }}
+        >
+          <NorthArrow />
+        </IconButton>
       </Paper>
 
       {kpi && (

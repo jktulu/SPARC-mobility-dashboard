@@ -7,62 +7,55 @@ export const layerConfig = [
         name: "Jaipur District",
         file: "data/mapMain/jaipur_district_bound.geojson",
         defaultChecked: true,
+        showInControl: false,
         type: "line",
-        paint: { "line-color": "#000000", "line-width": 2 },
+        paint: {
+          "line-color": "#000000",
+          "line-width": 2,
+          "line-opacity": 0.5,
+        },
+      },
+      {
+        id: "jaipur-district-casing",
+        name: "Jaipur District Casing",
+        file: "data/mapMain/jaipur_district_bound.geojson",
+        defaultChecked: true,
+        showInControl: false,
+        type: "line",
+        paint: {
+          "line-color": "#ffffff",
+          "line-width": 2,
+          "line-opacity": 0.5,
+        },
       },
       {
         id: "jaipur-municipality",
         name: "Jaipur Mun. Corp.",
         file: "data/mapMain/jaipur_muni_bound.geojson",
         defaultChecked: true,
+        showInControl: false,
         type: "line",
-        paint: { "line-color": "#833434", "line-dasharray": [1, 1] },
-      },
-    ],
-  },
-  {
-    theme: "Subdivisions",
-    layers: [
-      {
-        id: "jaipur_wards",
-        name: "Municipal",
-        file: "data/mapMain/jaipur_wards.geojson",
-        defaultChecked: false,
-        tooltipProperties: [
-          { label: "Ward#", property: "ward_no" },
-          { label: "Area#", property: "area_no" },
-          { label: "Name", property: "name" },
-          { label: "Population", property: "population", prefix: "" },
-          { label: "Density", property: "density_km2", suffix: " /km2" },
-        ],
-        type: "fill",
         paint: {
-          "fill-color": [
-            "interpolate",
-            ["linear"],
-            ["get", "population"],
-            10000,
-            "#ffffcc",
-            12500,
-            "#b54b00",
-            15000,
-            "#ad0104",
-          ],
-          "fill-opacity": 0.2,
+          "line-color": "#900000",
+          "line-dasharray": [1, 1],
+          "line-opacity": 0.5,
         },
       },
       {
-        id: "jaipur_rural_towns",
-        name: "Rural",
-        file: "data/mapMain/jaipur_town_adm5.geojson",
-        defaultChecked: false,
-        tooltipProperties: [{ label: "Town", property: "adm5_name" }],
-        type: "fill",
-        paint: { "fill-color": "#ff0000" },
+        id: "jaipur-municipality-casing",
+        name: "Jaipur Mun. Corp. Casing",
+        file: "data/mapMain/jaipur_muni_bound.geojson",
+        defaultChecked: true,
+        showInControl: false,
+        type: "line",
+        paint: {
+          "line-color": "#f6ff00",
+          "line-dasharray": [1, 1],
+          "line-opacity": 0.5,
+        },
       },
     ],
   },
-
   {
     theme: "Public Transport",
     layers: [
@@ -75,7 +68,7 @@ export const layerConfig = [
             name: "Routes",
             file: "data/mapMain/bus_routes.geojson",
             defaultChecked: false,
-            tooltipProperties: [{ label: "Route", property: "route" }],
+            tooltipProperties: [{ label: "Route: ", property: "route" }],
             type: "line",
             paint: {
               "line-color": ["coalesce", ["get", "color"], "#0000ff"],
@@ -98,7 +91,7 @@ export const layerConfig = [
             name: "Stops",
             file: "data/mapMain/bus_stops.geojson",
             defaultChecked: false,
-            tooltipProperties: [{ label: "Stop", property: "name" }],
+            tooltipProperties: [{ label: "Stop: ", property: "name" }],
             type: "circle",
             paint: {
               "circle-color": "#000000",
@@ -106,81 +99,6 @@ export const layerConfig = [
               "circle-radius": 3,
             },
           },
-        ],
-      },
-      {
-        id: "parent-metro",
-        name: "Metro",
-        children: [
-          {
-            id: "metro-routes",
-            name: "Routes",
-            file: "data/mapMain/metro_routes.geojson",
-            defaultChecked: false,
-            tooltipProperties: [{ label: "Line", property: "name" }],
-            type: "line",
-            paint: {
-              "line-color": ["coalesce", ["get", "color"], "#dd6666"],
-              "line-width": 2,
-              "line-gap-width": 2,
-            },
-          },
-          {
-            id: "metro-stations",
-            name: "Stations",
-            file: "data/mapMain/metro_stations.geojson",
-            defaultChecked: false,
-            tooltipProperties: [{ label: "Station", property: "name" }],
-            type: "symbol",
-            icon: {
-              id: "metro-icon",
-              url: "assets/metro-icon.png",
-            },
-            layout: {
-              "icon-image": "metro-icon",
-              "icon-size": 0.05,
-              "icon-allow-overlap": true,
-            },
-            paint: {},
-          },
-        ],
-      },
-      {
-        id: "parent-metro-uc",
-        name: "Metro (proposed)",
-        children: [
-          {
-            id: "metro-routes-uc",
-            name: "Routes",
-            file: "data/mapMain/metro_routes_uc.geojson",
-            defaultChecked: false,
-            tooltipProperties: [{ label: "Line (proposed)", property: "name" }],
-            type: "line",
-            paint: {
-              "line-color": ["coalesce", ["get", "color"], "#dd6666"],
-              "line-width": 2,
-              "line-gap-width": 2,
-              "line-dasharray": [2, 2],
-            },
-          },
-          // {
-          //   id: "metro-stations",
-          //   name: "Stations",
-          //   file: "data/mapMain/metro_stations.geojson",
-          //   defaultChecked: false,
-          //   tooltipProperty: "name",
-          //   type: "symbol",
-          //   icon: {
-          //     id: "metro-icon",
-          //     url: "assets/metro-icon.png",
-          //   },
-          //   layout: {
-          //     "icon-image": "metro-icon",
-          //     "icon-size": 0.05,
-          //     "icon-allow-overlap": true,
-          //   },
-          //   paint: {},
-          // },
         ],
       },
       {
@@ -203,7 +121,7 @@ export const layerConfig = [
             name: "Stations",
             file: "data/mapMain/train_stations.geojson",
             defaultChecked: false,
-            tooltipProperties: [{ label: "Station", property: "name" }],
+            tooltipProperties: [{ label: "Station: ", property: "name" }],
             type: "symbol",
             icon: {
               id: "railway-icon",
@@ -218,6 +136,184 @@ export const layerConfig = [
           },
         ],
       },
+      {
+        id: "group-metro",
+        name: "Metro",
+        isGroup: true,
+        children: [
+          {
+            id: "parent-metro",
+            name: "Current",
+            children: [
+              {
+                id: "metro-routes",
+                name: "Routes",
+                file: "data/mapMain/metro_routes.geojson",
+                defaultChecked: false,
+                tooltipProperties: [{ label: "Line: ", property: "name" }],
+                type: "line",
+                paint: {
+                  "line-color": ["coalesce", ["get", "color"], "#dd6666"],
+                  "line-width": 2,
+                  "line-gap-width": 2,
+                },
+              },
+              {
+                id: "metro-stations",
+                name: "Stations",
+                file: "data/mapMain/metro_stations.geojson",
+                defaultChecked: false,
+                tooltipProperties: [{ label: "Station: ", property: "name" }],
+                type: "symbol",
+                icon: {
+                  id: "metro-icon",
+                  url: "assets/metro-icon.png",
+                },
+                layout: {
+                  "icon-image": "metro-icon",
+                  "icon-size": 0.05,
+                  "icon-allow-overlap": true,
+                },
+                paint: {},
+              },
+            ],
+          },
+          {
+            id: "parent-metro-uc",
+            name: "Proposed",
+            children: [
+              {
+                id: "metro-routes-uc",
+                name: "Routes",
+                file: "data/mapMain/metro_routes_uc.geojson",
+                defaultChecked: false,
+                tooltipProperties: [
+                  { label: "Line (proposed): ", property: "name" },
+                ],
+                type: "line",
+                paint: {
+                  "line-color": ["coalesce", ["get", "color"], "#dd6666"],
+                  "line-width": 2,
+                  "line-gap-width": 2,
+                  "line-dasharray": [2, 2],
+                },
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+  {
+    theme: "Administrative",
+    layers: [
+      {
+        id: "group-wards",
+        name: "Wards (JMC)",
+        isGroup: true,
+        children: [
+          {
+            id: "parent-heritage-wards",
+            name: "Heritage",
+            children: [
+              {
+                id: "jaipur_wards_heritage",
+                file: "data/mapMain/jaipur_wards_heritage.geojson",
+                defaultChecked: false,
+                tooltipProperties: [
+                  { label: "Ward: ", property: "ward_id" },
+                  { label: "Assembly: ", property: "assembly" },
+                  { label: "Population: ", property: "pop", prefix: "" },
+                  { label: "Density: ", property: "dens_pph", suffix: " /ha" },
+                ],
+                type: "fill",
+                paint: {
+                  "fill-color": [
+                    "interpolate",
+                    ["linear"],
+                    ["get", "pop"],
+                    11000,
+                    "#ffffcc",
+                    12500,
+                    "#b54b00",
+                    14000,
+                    "#ad0104",
+                  ],
+                  "fill-opacity": 0.5,
+                },
+              },
+            ],
+          },
+          {
+            id: "parent-greater-wards",
+            name: "Greater",
+            children: [
+              {
+                id: "jaipur_wards_greater",
+                file: "data/mapMain/jaipur_wards_greater.geojson",
+                defaultChecked: false,
+                tooltipProperties: [
+                  { label: "Ward: ", property: "ward_id" },
+                  { label: "Assembly: ", property: "assembly" },
+                  { label: "Population: ", property: "pop", prefix: "" },
+                  { label: "Density: ", property: "dens_pph", suffix: " /ha" },
+                ],
+                type: "fill",
+                paint: {
+                  "fill-color": [
+                    "interpolate",
+                    ["linear"],
+                    ["get", "pop"],
+                    11000,
+                    "#ffffcc",
+                    12500,
+                    "#b54b00",
+                    14000,
+                    "#ad0104",
+                  ],
+                  "fill-opacity": 0.5,
+                },
+              },
+            ],
+          },
+        ],
+      },
+      {
+        id: "parent-assembly",
+        name: "Assembly (JMC)",
+        children: [
+          {
+            id: "jaipur_wards_assembly",
+            file: "data/mapMain/jaipur_wards.geojson",
+            defaultChecked: false,
+            tooltipProperties: [
+              { label: "Ward: ", property: "ward_id" },
+              { label: "Assembly: ", property: "assembly" },
+              { label: "Population: ", property: "pop", prefix: "" },
+              { label: "Density: ", property: "dens_pph", suffix: " /ha" },
+            ],
+            type: "fill",
+            paint: {
+              "fill-color": ["coalesce", ["get", "color_assembly"], "#800000"],
+              "fill-opacity": 0.5,
+            },
+          },
+        ],
+      },
+      {
+        id: "parent-rural-towns",
+        name: "Towns (ex-JMC)",
+        children: [
+          {
+            id: "jaipur_rural_towns",
+            file: "data/mapMain/jaipur_town_adm5.geojson",
+            defaultChecked: false,
+            tooltipProperties: [{ label: "Town: ", property: "adm5_name" }],
+            type: "fill",
+            paint: { "fill-color": "#ff0000" },
+          },
+        ],
+      },
     ],
   },
 ];
@@ -225,12 +321,12 @@ export const layerConfig = [
 export const getLayerLayoutStyle = (layer) => {
   return layer.layout || {};
 };
+
 export const getLayerPaintStyle = (layer) => {
   const defaultColor = ["coalesce", ["get", "color"], "#808080"];
   const defaultStrokeColor = "#000000";
   const defaultStrokeWidth = 2;
   const defaultOpacity = 1;
-
   switch (layer.type) {
     case "fill":
       return {
@@ -266,7 +362,17 @@ export const flattenLayers = (config) => {
   config.forEach((theme) => {
     theme.layers.forEach((layer) => {
       if (layer.children) {
-        allLayers = allLayers.concat(layer.children);
+        if (layer.isGroup) {
+          layer.children.forEach((childOfGroup) => {
+            if (childOfGroup.children) {
+              allLayers = allLayers.concat(childOfGroup.children);
+            } else {
+              allLayers.push(childOfGroup);
+            }
+          });
+        } else {
+          allLayers = allLayers.concat(layer.children);
+        }
       } else {
         allLayers.push(layer);
       }

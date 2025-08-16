@@ -22,7 +22,7 @@ const InteractiveMapMain = () => {
     <Box>
       <Paper
         elevation={2}
-        sx={{ height: 1000, position: "relative", overflow: "hidden" }}
+        sx={{ height: 800, position: "relative", overflow: "hidden" }}
       >
         <Box sx={{ height: "100%", width: "100%" }}>
           <BigMap visibleLayers={visibleLayers} />
