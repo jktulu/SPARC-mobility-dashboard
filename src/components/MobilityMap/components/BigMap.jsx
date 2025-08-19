@@ -39,7 +39,7 @@ const BigMap = ({ visibleLayers }) => {
   const [viewport, setViewport] = useState({
     longitude: 75.787,
     latitude: 26.912,
-    zoom: 10,
+    zoom: 11,
     bearing: 0,
     pitch: 0,
   });
