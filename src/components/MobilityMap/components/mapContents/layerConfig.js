@@ -229,7 +229,11 @@ export const layerConfig = [
                   { label: "Ward: ", property: "ward_id" },
                   { label: "Assembly: ", property: "assembly" },
                   { label: "Population: ", property: "pop", prefix: "" },
-                  { label: "Density: ", property: "dens_pph", suffix: " per ha" },
+                  {
+                    label: "Density: ",
+                    property: "dens_pph",
+                    suffix: " per ha",
+                  },
                 ],
                 type: "fill",
                 paint: {
@@ -393,43 +397,7 @@ export const layerConfig = [
   },
 ];
 
-export const getLayerLayoutStyle = (layer) => {
-  return layer.layout || {};
-};
-export const getLayerPaintStyle = (layer) => {
-  const defaultColor = ["coalesce", ["get", "color"], "#808080"];
-  const defaultStrokeColor = "#000000";
-  const defaultStrokeWidth = 2;
-  const defaultOpacity = 1;
-  switch (layer.type) {
-    case "fill":
-      return {
-        "fill-color": defaultColor,
-        "fill-opacity": 0.3,
-        "fill-outline-color": defaultStrokeColor,
-        ...layer.paint,
-      };
-    case "symbol":
-      return { ...layer.paint };
-    case "circle":
-      return {
-        "circle-color": defaultColor,
-        "circle-radius": 5,
-        "circle-opacity": defaultOpacity,
-        "circle-stroke-color": defaultStrokeColor,
-        "circle-stroke-width": 1,
-        ...layer.paint,
-      };
-    case "line":
-    default:
-      return {
-        "line-color": defaultColor,
-        "line-width": defaultStrokeWidth,
-        "line-opacity": defaultOpacity,
-        ...layer.paint,
-      };
-  }
-};
+// Helpers to flatten the layer structure
 export const flattenLayers = (config) => {
   let allLayers = [];
   config.forEach((theme) => {

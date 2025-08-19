@@ -1,13 +1,13 @@
 import { createTheme } from "@mui/material/styles";
 
 const roseShades = {
-  lightest: "#fdeaeaff", 
-  lighter: "#F8B2B2", 
-  light: "#E26D5C", 
+  lightest: "#fdeaeaff",
+  lighter: "#F8B2B2",
+  light: "#E26D5C",
   main: "#B9473D",
-  dark: "#A03B32", 
-  darker: "#7E2C27", 
-  darkest: "#6B2622", 
+  dark: "#A03B32",
+  darker: "#7E2C27",
+  darkest: "#6B2622",
 };
 
 const kpiCategoryColors = {
@@ -30,8 +30,8 @@ const theme = createTheme({
       contrastText: "#ffffff",
     },
     background: {
-      default: "#FEF6F5", 
-      selected: roseShades.lightest, 
+      default: "#FEF6F5",
+      selected: roseShades.lightest,
       paper: "#FFFFFF",
     },
     text: {
@@ -39,7 +39,7 @@ const theme = createTheme({
       secondary: "#5A5A5A",
     },
     roseShades: roseShades,
-    kpi: kpiCategoryColors, 
+    kpi: kpiCategoryColors,
   },
   typography: {
     fontFamily: `'Inter', 'Helvetica', 'Arial', sans-serif`,
@@ -53,7 +53,7 @@ const theme = createTheme({
     body2: { fontSize: "0.875rem", lineHeight: 1.3 }, // Secondary text, captions
 
     button: {
-      textTransform: "none", 
+      textTransform: "none",
       fontWeight: 600,
     },
   },

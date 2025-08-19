@@ -5,10 +5,15 @@ import { legendsContent } from "../mapContents/legendsContent";
 
 const LegendItem = ({ title, gradient, labels }) => (
   <Paper elevation={2} sx={{ p: 1, backgroundColor: "rgba(255,255,255,0.9)" }}>
-    <Typography variant="subtitle2" sx={{ textAlign: "center", fontSize: "0.8rem" }}>
+    <Typography
+      variant="subtitle2"
+      sx={{ textAlign: "center", fontSize: "0.8rem" }}
+    >
       {title}
     </Typography>
-    <Box sx={{ display: "flex", alignItems: "center", flexDirection: "column" }}>
+    <Box
+      sx={{ display: "flex", alignItems: "center", flexDirection: "column" }}
+    >
       {/* Gradient */}
       <Box
         sx={{
@@ -54,7 +59,7 @@ const MapLegendProp = ({ visibleLayers }) => {
 
     return Array.from(legendKeys);
   }, [visibleLayers]);
-  
+
   if (activeLegends.length === 0) {
     return null;
   }

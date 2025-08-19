@@ -17,7 +17,6 @@ const findLayerById = (id) => {
 };
 
 export const useLayerControl = (onLayerToggle) => {
-
   const { initialCheckedState, initialDropdownState, initialOpenGroups } =
     useMemo(() => {
       const checked = {};

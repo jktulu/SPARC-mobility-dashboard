@@ -1,4 +1,4 @@
-import { Box, Container, Divider, Grid, Typography, Link } from "@mui/material";
+import { Box, Container, Grid, Link, Typography } from "@mui/material";
 import { useState } from "react";
 
 import NavigationButtons from "../components/common/NavigationButtons";

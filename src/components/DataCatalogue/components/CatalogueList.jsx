@@ -2,11 +2,11 @@ import { Description, ExitToApp, Public, Widgets } from "@mui/icons-material";
 import {
   Box,
   Button,
+  Grid,
   List,
   ListItem,
   ListItemText,
   Typography,
-  Grid,
 } from "@mui/material";
 
 const CatalogueListItem = ({ item, onClick }) => (

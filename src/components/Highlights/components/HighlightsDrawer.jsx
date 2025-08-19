@@ -27,7 +27,9 @@ const HighlightsDrawer = ({ item, open, onClose }) => {
         },
       }}
     >
-      <Box sx={{ p: 2, display: "flex", flexDirection: "column", height: "100%" }}>
+      <Box
+        sx={{ p: 2, display: "flex", flexDirection: "column", height: "100%" }}
+      >
         <Box
           sx={{
             display: "flex",
@@ -46,7 +48,6 @@ const HighlightsDrawer = ({ item, open, onClose }) => {
         <Divider sx={{ mb: 2 }} />
 
         <Box sx={{ flexGrow: 1, overflowY: "auto" }}>
-
           {/* 1. Image on top */}
           {item.image_url && (
             <Box
@@ -73,9 +74,9 @@ const HighlightsDrawer = ({ item, open, onClose }) => {
               sx={{ mb: 2 }}
             >
               {new Date(item.date).toLocaleDateString("en-GB", {
-                day: 'numeric',
-                month: 'long',
-                year: 'numeric'
+                day: "numeric",
+                month: "long",
+                year: "numeric",
               })}
             </Typography>
           )}

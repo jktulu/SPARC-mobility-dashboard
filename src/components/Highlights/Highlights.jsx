@@ -6,10 +6,10 @@ import {
   CardMedia,
   CircularProgress,
   Grid,
-  Typography
+  Typography,
 } from "@mui/material";
 import { useEffect, useState } from "react";
-import HighlightsDrawer from "./components/HighlightsDrawer"; 
+import HighlightsDrawer from "./components/HighlightsDrawer";
 
 const Highlights = () => {
   const [highlightCards, setHighlightCards] = useState([]);

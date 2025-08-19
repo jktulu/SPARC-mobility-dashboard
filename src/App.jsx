@@ -1,5 +1,5 @@
-import ContactFormPopup from './components/common/ContactFormPopup';
-import Home from './pages/Home';
+import ContactFormPopup from "./components/common/ContactFormPopup";
+import Home from "./pages/Home";
 
 function App() {
   return (

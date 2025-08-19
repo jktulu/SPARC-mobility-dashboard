@@ -1,9 +1,8 @@
 import { Box } from "@mui/material";
 import { Layer, Popup, Source } from "react-map-gl/mapbox";
-import { getLayerLayoutStyle, getLayerPaintStyle } from "../mapContents/layerConfig";
 
+// Tooltip content for the popup
 const TooltipContent = ({ layer, feature }) => {
-  // Guard against missing data
   if (!layer?.tooltipProperties || !feature?.properties) {
     return null;
   }
@@ -24,10 +23,52 @@ const TooltipContent = ({ layer, feature }) => {
   );
 };
 
+// Default Layout styles for layers
+const getLayerLayoutStyle = (layer) => {
+  return layer.layout || {};
+};
+
+// Default paint styles for layers
+const getLayerPaintStyle = (layer) => {
+  const defaultColor = ["coalesce", ["get", "color"], "#808080"];
+  const defaultStrokeColor = "#000000";
+  const defaultStrokeWidth = 2;
+  const defaultOpacity = 1;
+
+  switch (layer.type) {
+    case "fill":
+      return {
+        "fill-color": defaultColor,
+        "fill-opacity": 0.3,
+        "fill-outline-color": defaultStrokeColor,
+        ...layer.paint,
+      };
+    case "symbol":
+      return { ...layer.paint };
+    case "circle":
+      return {
+        "circle-color": defaultColor,
+        "circle-radius": 5,
+        "circle-opacity": defaultOpacity,
+        "circle-stroke-color": defaultStrokeColor,
+        "circle-stroke-width": 1,
+        ...layer.paint,
+      };
+    case "line":
+    default:
+      return {
+        "line-color": defaultColor,
+        "line-width": defaultStrokeWidth,
+        "line-opacity": defaultOpacity,
+        ...layer.paint,
+      };
+  }
+};
+
+// Main component
 const MapLayers = ({ visibleLayers, geoJsonData, popupInfo, onClosePopup }) => {
   return (
     <>
-      {/* Render visible layers */}
       {visibleLayers.map((layer) => {
         const data = geoJsonData[layer.file];
         if (!data) return null;
@@ -50,7 +91,6 @@ const MapLayers = ({ visibleLayers, geoJsonData, popupInfo, onClosePopup }) => {
         );
       })}
 
-      {/* Popup rendering children */}
       {popupInfo && (
         <Popup
           longitude={popupInfo.longitude}

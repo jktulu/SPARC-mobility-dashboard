@@ -3,18 +3,16 @@ import { Button } from "@mui/material";
 import { CSVLink } from "react-csv";
 import { useMemo } from "react";
 
-
 const DownloadButton = ({ data = [], filename = "results.csv" }) => {
-
   const headers = useMemo(() => {
     if (data.length === 0) {
       return [];
     }
-    const keys = Object.keys(data[0]);     
+    const keys = Object.keys(data[0]);
     return keys.map((key) => ({
       label: key,
       key: key,
-    })); 
+    }));
   }, [data]);
 
   return (

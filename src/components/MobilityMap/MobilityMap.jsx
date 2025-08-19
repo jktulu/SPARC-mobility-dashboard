@@ -16,7 +16,7 @@ const InteractiveMapMain = () => {
     );
   };
 
-  const panelWidth = 250;
+  const panelWidth = 200;
 
   return (
     <Box>

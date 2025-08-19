@@ -1,4 +1,4 @@
-import EmailIcon from '@mui/icons-material/Email';
+import EmailIcon from "@mui/icons-material/Email";
 import {
   Button,
   Dialog,
@@ -7,9 +7,9 @@ import {
   DialogTitle,
   Fab,
   TextField,
-  Typography
-} from '@mui/material';
-import { useState } from 'react';
+  Typography,
+} from "@mui/material";
+import { useState } from "react";
 
 const web3formsAccessKey = import.meta.env.VITE_WEB3FORMS_ACCESS_KEY;
 
@@ -25,7 +25,7 @@ const ContactFormPopup = () => {
   const handleClose = () => {
     setOpen(false);
     setTimeout(() => {
-        setIsSubmitted(false);
+      setIsSubmitted(false);
     }, 300);
   };
 
@@ -34,26 +34,26 @@ const ContactFormPopup = () => {
     setSubmitting(true); // Disable submit button
 
     const formData = new FormData(event.currentTarget);
-    
+
     formData.append("access_key", web3formsAccessKey);
 
     try {
-        const response = await fetch("https://api.web3forms.com/submit", {
-            method: "POST",
-            body: formData,
-        });
+      const response = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        body: formData,
+      });
 
-        const data = await response.json();
+      const data = await response.json();
 
-        if (data.success) {
-            setIsSubmitted(true); // Show the success message
-        } else {
-            console.error("Submission Error:", data);
-        }
+      if (data.success) {
+        setIsSubmitted(true); // Show the success message
+      } else {
+        console.error("Submission Error:", data);
+      }
     } catch (error) {
-        console.error("Fetch Error:", error);
+      console.error("Fetch Error:", error);
     } finally {
-        setSubmitting(false); // Re-enable submit button
+      setSubmitting(false); // Re-enable submit button
     }
   };
 
@@ -64,7 +64,7 @@ const ContactFormPopup = () => {
         aria-label="contact"
         onClick={handleClickOpen}
         sx={{
-          position: 'fixed',
+          position: "fixed",
           bottom: 16,
           right: 16,
         }}
@@ -72,10 +72,7 @@ const ContactFormPopup = () => {
         <EmailIcon />
       </Fab>
 
-      <Dialog
-        open={open}
-        onClose={handleClose}
-      >
+      <Dialog open={open} onClose={handleClose}>
         {isSubmitted ? (
           /* CONFIRMATION */
           <div>
@@ -128,7 +125,7 @@ const ContactFormPopup = () => {
             <DialogActions>
               <Button onClick={handleClose}>Cancel</Button>
               <Button type="submit" disabled={submitting}>
-                {submitting ? 'Submitting...' : 'Submit'}
+                {submitting ? "Submitting..." : "Submit"}
               </Button>
             </DialogActions>
           </form>

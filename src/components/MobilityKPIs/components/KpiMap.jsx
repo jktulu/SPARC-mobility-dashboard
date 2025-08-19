@@ -90,7 +90,7 @@ const WebMap = ({ kpi }) => {
         }}
         style={{
           width: "100%",
-          height: "100%", 
+          height: "100%",
         }}
         mapStyle={mapStyle}
         mapboxAccessToken={MAPBOX_TOKEN}
@@ -130,7 +130,7 @@ const WebMap = ({ kpi }) => {
         elevation={3}
         sx={{
           position: "absolute",
-          top: 60, 
+          top: 60,
           right: 10,
           borderRadius: "50%",
         }}

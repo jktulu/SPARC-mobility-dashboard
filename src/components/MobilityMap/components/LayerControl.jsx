@@ -8,7 +8,6 @@ import {
   FormControl,
   FormControlLabel,
   FormGroup,
-  InputLabel,
   MenuItem,
   Select,
   Tooltip,
@@ -26,7 +25,13 @@ const ParentLayerControl = ({ layer, checkedState, onParentChange }) => {
   return (
     <FormControlLabel
       label={
-        <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            flexDirection: "column",
+          }}
+        >
           <Typography variant="body2">{layer.name}</Typography>
           {layer.infobox && (
             <Tooltip title={layer.infobox} arrow>
@@ -37,7 +42,7 @@ const ParentLayerControl = ({ layer, checkedState, onParentChange }) => {
           )}
         </Box>
       }
-      sx={{ my: -0.5 }}
+      sx={{ my: -0.75 }} // Reduce vertical spacing near the checkbox
       control={
         <Checkbox
           checked={isChecked}
@@ -79,8 +84,6 @@ const GroupLayerControl = ({
             sx={{
               display: "flex",
               alignItems: "center",
-              justifyContent: "space-between",
-              width: "100%",
             }}
           >
             <Typography variant="body2">{layer.name}</Typography>
@@ -91,13 +94,13 @@ const GroupLayerControl = ({
                 e.stopPropagation();
                 onGroupToggle(layer.id);
               }}
-              sx={{ display: "inline-flex", p: 0.5 }}
+              sx={{ display: "flex", alignItems: "center", pl: 1 }}
             >
               {openGroups[layer.id] ? <ExpandLess /> : <ExpandMore />}
             </Box>
           </Box>
         }
-        sx={{ width: "100%", my: -0.5, mr: 0 }}
+        sx={{ width: "100%", my: -0.75 }} // Reduce vertical spacing near the checkbox
       />
       <Collapse in={openGroups[layer.id]} timeout="auto" unmountOnExit>
         <Box sx={{ pl: 4 }}>
@@ -119,19 +122,24 @@ const DropdownGroup = ({ theme, selection, onChange }) => {
   const selectedLayer = theme.layers.find((l) => l.id === selection);
   return (
     <>
-      <FormControl fullWidth size="small" sx={{ mt: 1 }}>
-        <InputLabel>Select layer</InputLabel>
+      <FormControl fullWidth size="small" sx={{ mt: 2 }}>
         <Select
           value={selection}
-          label="Select layer"
           onChange={(e) => onChange(e, theme)}
+          sx={{
+            "& .MuiSelect-select": {
+              py: 0.75,
+            },
+          }}
         >
-          <MenuItem value="none">
-            <em>None</em>
+          <MenuItem value="none" dense>
+            <Typography variant="caption" sx={{ fontStyle: "italic" }}>
+              None
+            </Typography>
           </MenuItem>
           {theme.layers.map((layer) => (
-            <MenuItem key={layer.id} value={layer.id}>
-              {layer.name}
+            <MenuItem key={layer.id} value={layer.id} dense>
+              <Typography variant="caption">{layer.name}</Typography>
             </MenuItem>
           ))}
         </Select>
@@ -140,7 +148,7 @@ const DropdownGroup = ({ theme, selection, onChange }) => {
         <Typography
           variant="caption"
           color="text.secondary"
-          sx={{ mt: 1, display: "block", px: "12px" }}
+          sx={{ mt: 1.5, display: "block", px: "8px", lineHeight: 1.2 }}
         >
           {selectedLayer.infobox}
         </Typography>
@@ -163,14 +171,11 @@ const LayerControl = ({ onLayerToggle }) => {
 
   return (
     <Box>
-      <Typography variant="caption" sx={{ color: "text.secondary", px: 1 }}>
-        Map Layers
-      </Typography>
       {layerConfig.map((theme) => (
-        <Box key={theme.theme} sx={{ mb: 2, mt: 1 }}>
+        <Box key={theme.theme} sx={{ mb: 2 }}>
           <Typography
             variant="subtitle1"
-            sx={{ fontWeight: "bold", color: "secondary.main", px: 1 }}
+            sx={{ fontWeight: "bold", color: "secondary.main" }}
           >
             {theme.theme}
           </Typography>

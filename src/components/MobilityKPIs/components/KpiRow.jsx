@@ -72,7 +72,7 @@ const KpiRow = ({ kpis = [], onKpiSelect, selectedKpiCode }) => {
                       mb: -1,
                       fontSize: "1rem",
                       fontWeight: "bold",
-                      color: "primary.contrastText", 
+                      color: "primary.contrastText",
                     }}
                   >
                     {kpi.title}

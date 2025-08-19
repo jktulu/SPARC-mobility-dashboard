@@ -14,7 +14,7 @@ const NavigationButtons = ({ buttons = [], onButtonClick, activeButtonId }) => {
         {buttons.map((button) => (
           <Grid
             size={{ sm: 6, md: 3 }}
-            sx={{ height: "40px",width: "100%" }}
+            sx={{ height: "40px", width: "100%" }}
             key={button.id}
           >
             <Button

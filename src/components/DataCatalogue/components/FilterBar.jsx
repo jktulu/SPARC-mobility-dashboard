@@ -1,16 +1,16 @@
+import ClearAllIcon from "@mui/icons-material/ClearAll";
 import {
   Box,
   Button,
+  Checkbox,
+  Chip,
   FormControl,
+  Grid,
   InputLabel,
+  ListItemText,
   MenuItem,
   Select,
-  Chip,
-  Checkbox,
-  ListItemText,
-  Grid,
 } from "@mui/material";
-import ClearAllIcon from "@mui/icons-material/ClearAll";
 
 const FilterBar = ({ filters, onFilterChange, filterOptions }) => {
   const { format, resolution, theme, latestYear } = filters;

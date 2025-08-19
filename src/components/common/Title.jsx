@@ -34,16 +34,16 @@ const Title = () => {
         },
       }}
     >
-      <Box sx={{ position: "relative", zIndex: 2  }}>
+      <Box sx={{ position: "relative", zIndex: 2 }}>
         <Grid
           container
           spacing={3}
-          sx={{ display: "flex", alignItems: "center",flexWrap: "nowrap"}}
+          sx={{ display: "flex", alignItems: "center", flexWrap: "nowrap" }}
         >
-          <Grid  href="/" sx={{ flexShrink : 0}}>
+          <Grid href="/" sx={{ flexShrink: 0 }}>
             <img src={logo} alt="Logo" style={{ width: 80, height: 80 }} />
           </Grid>
-          <Grid  >
+          <Grid>
             <Typography
               variant="h1"
               sx={{
@@ -55,10 +55,7 @@ const Title = () => {
             </Typography>
 
             <Box component="section">
-              <Typography
-                variant="body1"
-                sx={{ fontSize: "1.2rem"}}
-              >
+              <Typography variant="body1" sx={{ fontSize: "1.2rem" }}>
                 Toward a sustainable transport future for all
               </Typography>
             </Box>

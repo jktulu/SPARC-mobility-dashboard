@@ -1,5 +1,5 @@
-import { TextField, InputAdornment } from '@mui/material';
-import { Search } from '@mui/icons-material';
+import { Search } from "@mui/icons-material";
+import { InputAdornment, TextField } from "@mui/material";
 
 const SearchBar = ({ query, onQueryChange }) => (
   <TextField
@@ -15,7 +15,6 @@ const SearchBar = ({ query, onQueryChange }) => (
         </InputAdornment>
       ),
     }}
-
   />
 );
 
