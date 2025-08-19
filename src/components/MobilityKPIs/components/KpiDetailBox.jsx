@@ -12,6 +12,7 @@ import {
 import { useEffect, useState } from "react";
 import KpiChart from "./KpiChart";
 import WebMap from "./KpiMap";
+import pathConfig from "../../../assets/pathConfig";
 
 const KpiDetailBox = ({ kpi }) => {
   const [chartData, setChartData] = useState(null);
@@ -31,7 +32,7 @@ const KpiDetailBox = ({ kpi }) => {
       setChartData(null);
 
       // Fetch the JSON file
-      fetch(`data/kpiCharts/${kpi.code}.json`)
+      fetch(`${pathConfig.KPI_CHARTS_FOLDER_PATH}${kpi.code}.json`)
         .then((response) => {
           if (!response.ok) {
             throw new Error("Cannot connect to the server");

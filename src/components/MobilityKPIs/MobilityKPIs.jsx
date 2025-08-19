@@ -10,6 +10,7 @@ import { useEffect, useMemo, useState } from "react";
 import KpiDetailBox from "./components/KpiDetailBox";
 import InfoAreaRow from "./components/KpiRow";
 import VerticalTabs from "./components/VerticalTabs";
+import pathConfig from "../../assets/pathConfig";
 
 const MobilityKPIs = () => {
   const theme = useTheme();
@@ -25,8 +26,8 @@ const MobilityKPIs = () => {
   // --- Data Fetching ---
   useEffect(() => {
     Promise.all([
-      fetch("data/kpiDef/kpiDomains.json"),
-      fetch("data/kpiDef/kpiDetails.json"),
+      fetch(pathConfig.KPI_DOMAINS_PATH),
+      fetch(pathConfig.KPI_DETAILS_PATH),
     ])
       .then(async ([domainsResponse, detailsResponse]) => {
         if (!domainsResponse.ok || !detailsResponse.ok) {

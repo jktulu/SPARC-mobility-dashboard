@@ -9,6 +9,7 @@ import {
   Typography,
 } from "@mui/material";
 import { useEffect, useState } from "react";
+import pathConfig from "../../assets/pathConfig";
 import HighlightsDrawer from "./components/HighlightsDrawer";
 
 const Highlights = () => {
@@ -19,9 +20,7 @@ const Highlights = () => {
   const [selectedCard, setSelectedCard] = useState(null);
 
   useEffect(() => {
-    fetch(
-      "https://orca.casa.ucl.ac.uk/~jens/sparc-dash/data/highlightsData.json"
-    )
+    fetch(pathConfig.HIGHLIGHTS_PATH)
       .then((response) => {
         if (!response.ok) {
           throw new Error("Network response was not ok");

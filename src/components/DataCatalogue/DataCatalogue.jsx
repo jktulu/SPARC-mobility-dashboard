@@ -15,6 +15,7 @@ import DownloadButton from "./components/DownloadButton";
 import FilterBar from "./components/FilterBar";
 import SearchBar from "./components/SearchBar";
 import ToggleFilterButton from "./components/ToggleFilterButton";
+import pathConfig from "../../assets/pathConfig";
 
 const DataCatalogue = () => {
   const [datasets, setDatasets] = useState([]);
@@ -35,7 +36,7 @@ const DataCatalogue = () => {
   const theme = useTheme();
 
   useEffect(() => {
-    fetch("data/datacatalogue/datacatalogue.json")
+    fetch(pathConfig.DATA_CATALOGUE_PATH)
       .then((response) => {
         if (!response.ok) {
           throw new Error("Cannot connnect to the server");
