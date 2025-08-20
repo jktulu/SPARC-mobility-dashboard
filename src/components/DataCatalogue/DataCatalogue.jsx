@@ -4,18 +4,17 @@ import {
   Divider,
   Grid,
   TablePagination,
-  Typography,
-  useTheme,
+  Typography
 } from "@mui/material";
 import { useEffect, useMemo, useState } from "react";
 
+import pathConfig from "../../assets/pathConfig";
 import CatalogueList from "./components/CatalogueList";
 import DetailsDrawer from "./components/DetailsDrawer";
 import DownloadButton from "./components/DownloadButton";
 import FilterBar from "./components/FilterBar";
 import SearchBar from "./components/SearchBar";
 import ToggleFilterButton from "./components/ToggleFilterButton";
-import pathConfig from "../../assets/pathConfig";
 
 const DataCatalogue = () => {
   const [datasets, setDatasets] = useState([]);
@@ -26,14 +25,13 @@ const DataCatalogue = () => {
     format: [],
     resolution: [],
     theme: [],
-    latestYear: [],
+    lastupdate: [],
   });
   const [showFilters, setShowFilters] = useState(true);
   const [selectedDataset, setSelectedDataset] = useState(null);
   const [isDrawerOpen, setDrawerOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
-  const theme = useTheme();
 
   useEffect(() => {
     fetch(pathConfig.DATA_CATALOGUE_PATH)
@@ -57,26 +55,35 @@ const DataCatalogue = () => {
   // useMemo to compute filter options based on the fetched datasets
   const filterOptions = useMemo(() => {
     if (!datasets || datasets.length === 0) {
-      return { fileFormats: [], resolutions: [], themes: [], latestYears: [] };
+      return { formats: [], resolutions: [], themes: [], lastupdates: [] };
     }
 
     const formats = new Set();
     const resolutions = new Set();
     const themes = new Set();
-    const latestYears = new Set();
+    const lastupdates = new Set();
 
     datasets.forEach((item) => {
       if (item.format) formats.add(item.format);
       if (item.resolution) resolutions.add(item.resolution);
       if (item.theme) themes.add(item.theme);
-      if (item.latest_year) latestYears.add(item.latest_year);
+      if (item.lastupdate) lastupdates.add(item.lastupdate);
     });
 
     return {
-      fileFormats: [...formats].sort(),
+      formats: [...formats].sort(),
       resolutions: [...resolutions].sort(),
       themes: [...themes].sort(),
-      latestYears: [...latestYears].sort(),
+      lastupdates: [...lastupdates].sort((a, b) => {
+        // Always place "N/A" at the end of the list
+        if (a === "N/A") return 1;
+        if (b === "N/A") return -1;
+
+        // Extract number to sort
+        const numA = parseInt(a.match(/\d+/)[0], 10);
+        const numB = parseInt(b.match(/\d+/)[0], 10);
+        return numA - numB;
+      }),
     };
   }, [datasets]);
 
@@ -112,9 +119,9 @@ const DataCatalogue = () => {
         filters.resolution.includes(item.resolution);
       const themeMatch =
         filters.theme.length === 0 || filters.theme.includes(item.theme);
-      const latestYearMatch =
-        filters.latestYear.length === 0 ||
-        filters.latestYear.includes(item.latest_year);
+      const lastupdateMatch =
+        filters.lastupdate.length === 0 ||
+        filters.lastupdate.includes(item.lastupdate);
 
       // Search query logic (searches name and description and theme)
       const searchMatch = query
@@ -127,7 +134,7 @@ const DataCatalogue = () => {
         formatMatch &&
         resolutionMatch &&
         themeMatch &&
-        latestYearMatch &&
+        lastupdateMatch &&
         searchMatch
       );
     });

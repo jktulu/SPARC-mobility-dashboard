@@ -25,8 +25,18 @@ const TooltipContent = ({ layer, feature }) => {
 
 // Default Layout styles for layers
 const getLayerLayoutStyle = (layer) => {
-  return layer.layout || {};
+  switch (layer.type) {
+    case 'line':
+      return {
+        'line-join': 'round',
+        'line-cap': 'round',
+        ...(layer.layout || {}) 
+      };
+    default:
+      return layer.layout || {};
+  }
 };
+
 
 // Default paint styles for layers
 const getLayerPaintStyle = (layer) => {

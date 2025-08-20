@@ -1,5 +1,5 @@
-const GEOJSON_BASE_URL = "https://orca.casa.ucl.ac.uk/~jens/sparc-dash/data/mapMain/";
-// const GEOJSON_BASE_URL = "data/mapMain/";
+const BASE_URL = import.meta.env.VITE_BASE_URL;
+const GEOJSON_BASE_URL = `${BASE_URL}mapMain/`;
 
 const GEOJSON_FILES = {
   JAIPUR_DISTRICT_BOUND: "jaipur_district_bound.geojson",

@@ -13,8 +13,8 @@ import {
 } from "@mui/material";
 
 const FilterBar = ({ filters, onFilterChange, filterOptions }) => {
-  const { format, resolution, theme, latestYear } = filters;
-  const { fileFormats, resolutions, themes, latestYears } = filterOptions;
+  const { format, resolution, theme, lastupdate } = filters;
+  const { formats, resolutions, themes, lastupdates } = filterOptions;
 
   // Handler for filter changes
   const handleDelete = (filterName, valueToDelete) => () => {
@@ -38,7 +38,7 @@ const FilterBar = ({ filters, onFilterChange, filterOptions }) => {
       format: [],
       resolution: [],
       theme: [],
-      latestYear: [],
+      lastupdate: [],
     });
   };
 
@@ -79,6 +79,7 @@ const FilterBar = ({ filters, onFilterChange, filterOptions }) => {
             </Select>
           </FormControl>
         </Grid>
+
         <Grid size={{ xs: 12, sm: 6, md: 3 }}>
           <FormControl fullWidth size="small">
             <InputLabel id="resolution-select-label">Resolution</InputLabel>
@@ -113,14 +114,15 @@ const FilterBar = ({ filters, onFilterChange, filterOptions }) => {
             </Select>
           </FormControl>
         </Grid>
+
         <Grid size={{ xs: 12, sm: 6, md: 3 }}>
           <FormControl fullWidth size="small">
-            <InputLabel id="latestYear-select-label">Last Updated</InputLabel>
+            <InputLabel id="lastupdate-select-label">Last Updated</InputLabel>
             <Select
-              labelId="latestYear-select-label"
-              id="latestYear-select"
-              name="latestYear"
-              value={latestYear}
+              labelId="lastupdate-select-label"
+              id="lastupdate-select"
+              name="lastupdate"
+              value={lastupdate}
               label="Last Updated"
               multiple
               onChange={handleChange}
@@ -131,22 +133,23 @@ const FilterBar = ({ filters, onFilterChange, filterOptions }) => {
                       key={value}
                       label={value}
                       size="small"
-                      onDelete={handleDelete("latestYear", value)}
+                      onDelete={handleDelete("lastupdate", value)}
                       onMouseDown={(event) => event.stopPropagation()}
                     />
                   ))}
                 </Box>
               )}
             >
-              {latestYears.map((option) => (
+              {lastupdates.map((option) => (
                 <MenuItem key={option} value={option}>
-                  <Checkbox checked={latestYear.includes(option)} />
+                  <Checkbox checked={lastupdate.includes(option)} />
                   <ListItemText primary={option} />
                 </MenuItem>
               ))}
             </Select>
           </FormControl>
         </Grid>
+
         <Grid size={{ xs: 12, sm: 6, md: 3 }}>
           <FormControl fullWidth size="small">
             <InputLabel id="format-select-label">Format</InputLabel>
@@ -172,7 +175,7 @@ const FilterBar = ({ filters, onFilterChange, filterOptions }) => {
                 </Box>
               )}
             >
-              {fileFormats.map((option) => (
+              {formats.map((option) => (
                 <MenuItem key={option} value={option}>
                   <Checkbox checked={format.includes(option)} />
                   <ListItemText primary={option} />
@@ -181,6 +184,7 @@ const FilterBar = ({ filters, onFilterChange, filterOptions }) => {
             </Select>
           </FormControl>
         </Grid>
+
       </Grid>
       <Box>
         <Button
@@ -191,7 +195,7 @@ const FilterBar = ({ filters, onFilterChange, filterOptions }) => {
             filters.format.length === 0 &&
             filters.resolution.length === 0 &&
             filters.theme.length === 0 &&
-            filters.latestYear.length === 0
+            filters.lastupdate.length === 0
           }
         >
           Clear All

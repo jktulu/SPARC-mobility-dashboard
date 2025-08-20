@@ -90,7 +90,7 @@ const DetailsDrawer = ({ item, open, onClose }) => {
               {item.reference_detail || "N/A"}
             </Typography>
             <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
-              Last Updated: {item.latest_year}
+              Last Updated: {item.lastupdated}
             </Typography>
             <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5 }}>
               Update Frequency: {item.update_frequency || "N/A"}

@@ -1,6 +1,4 @@
-// Define the base URL prefix in one single place.
-const BASE_URL = "https://orca.casa.ucl.ac.uk/~jens/sparc-dash/data/";
-// const BASE_URL = "data/"; 
+const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 const pathConfig = {
   // Scorecard
@@ -9,7 +7,7 @@ const pathConfig = {
   KPI_CHARTS_FOLDER_PATH: `${BASE_URL}kpiCharts/`,
   KPI_MAPS_FOLDER_PATH: `${BASE_URL}kpiMaps/`,
   // Data Catalogue
-  DATA_CATALOGUE_PATH: `${BASE_URL}datacatalogue/datacatalogue.json`,
+  DATA_CATALOGUE_PATH: `${BASE_URL}datacatalogue.json`,
   // Highlights
   HIGHLIGHTS_PATH: `${BASE_URL}highlightsData.json`,
 };
