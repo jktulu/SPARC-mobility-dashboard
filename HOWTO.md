@@ -111,37 +111,15 @@ Note: This is the current data infrastructure sued mainly for development of the
 There are two mirroring data sources:
 - [UCL ORCA Server](https://orca.casa.ucl.ac.uk/~jens/sparc-dash/data/): The live data source.
 - Local `public/data` folder: Secondary, lives in the repo and is used for local development and testing.
+[Update] Due to issues with UCL ORCA server, please use the `public/data` folder as the interim solution until a database solution in the backend has been put in place.
 
-This is configured via these two `.env` files
+Configure these two `.env` files as followed
 ```json
 //.env.production
-VITE_BASE_URL="https://orca.casa.ucl.ac.uk/~jens/sparc-dash/data/"
+VITE_BASE_URL="data/"
 ```
 ```json
 //.env.development
-VITE_BASE_URL="data/"
-```
-
-Since the data handling is critical to avoid breaking functionality, here is the recommended workflow for data updates:
-
-1. Create a new test `git` branch
-2. Validate and test locally
-   - Replace/add file in `public/data`.
-   - Ensure schema is unchanged.
-   - Run `npm run dev` and test thoroughly.
-
-3. Submit Pull Request
-   - Push branch, and merge PR.
-   - This syncs repo data `public/data` as fallback and any other code changes.
-
-4. Go Live
-   - Update live UCL server data filed to mirror `public/data` folder (This is a separate process)
-   - Run `npm run deploy` as above. 
-
-Reminder:  `npm run deploy` will fetch data from the UCL server to build the website with GitHub Pages, not `public/data`. If encountering issues working with the UCL server, edit `.env.production` to temporarily use the fallback data to build the website.
-
-```json
-//.env.production
 VITE_BASE_URL="data/"
 ```
 
