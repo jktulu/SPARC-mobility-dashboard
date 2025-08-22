@@ -109,8 +109,8 @@ npm run deploy
 Note: This is the current data infrastructure sued mainly for development of the site. Further experimentations welcome to ensure a more robust and secure solution.
 
 There are two mirroring data sources:
-- UCL Server ORCA: The live primary data source.
-- Local `public/data` folder: Secondary, used for local development and testing.
+- [UCL ORCA Server](https://orca.casa.ucl.ac.uk/~jens/sparc-dash/data/): The live data source.
+- Local `public/data` folder: Secondary, lives in the repo and is used for local development and testing.
 
 This is configured via these two `.env` files
 ```json
