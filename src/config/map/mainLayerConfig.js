@@ -1,4 +1,6 @@
 import { getGeoJsonPath } from "../path/mapLayerPathConfig";
+import metroIconUrl from '../../assets/metro-icon.png';
+import railwayIconUrl from '../../assets/railway-icon.png'; 
 
 export const layerConfig = [
   {
@@ -127,7 +129,7 @@ export const layerConfig = [
             defaultChecked: false,
             tooltipProperties: [{ label: "Station: ", property: "name" }],
             type: "symbol",
-            icon: { id: "railway-icon", url: "assets/railway-icon.png" },
+            icon: { id: "railway-icon", url: railwayIconUrl },
             layout: {
               "icon-image": "railway-icon",
               "icon-size": 0.05,
@@ -166,7 +168,7 @@ export const layerConfig = [
                 defaultChecked: false,
                 tooltipProperties: [{ label: "Station: ", property: "name" }],
                 type: "symbol",
-                icon: { id: "metro-icon", url: "assets/metro-icon.png" },
+                icon: { id: "metro-icon", url: metroIconUrl },
                 layout: {
                   "icon-image": "metro-icon",
                   "icon-size": 0.05,
