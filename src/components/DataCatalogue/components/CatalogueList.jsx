@@ -31,7 +31,7 @@ const CatalogueListItem = ({ item, onClick }) => (
         >
           <Box>
             <Typography variant="h5" gutterBottom>
-              {item.name}
+              {item.title}
             </Typography>
             <Typography
               variant="body1"
@@ -62,17 +62,19 @@ const CatalogueListItem = ({ item, onClick }) => (
         >
           <Box>
             <Box
-              sx={{
-                display: "flex",
-                alignItems: "center",
-                gap: 1,
-                mb: 0.5,
-                flexShrink: 0,
-              }}
+              sx={{ display: "flex", alignItems: "center", gap: 1, mb: 0.5 }}
             >
               <Widgets fontSize="small" color="secondary" />
               <Typography variant="inherit" color="text.secondary">
-                Theme: {item.theme}
+                Sector: {item.sector}
+              </Typography>
+            </Box>
+            <Box
+              sx={{ display: "flex", alignItems: "center", gap: 1, mb: 0.5 }}
+            >
+              <Public fontSize="small" color="secondary" />
+              <Typography variant="inherit" color="text.secondary">
+                Granularity: {item.granularity_spatial}
               </Typography>
             </Box>
             <Box
@@ -81,12 +83,6 @@ const CatalogueListItem = ({ item, onClick }) => (
               <Description fontSize="small" color="secondary" />
               <Typography variant="inherit" color="text.secondary">
                 Format: {item.format}
-              </Typography>
-            </Box>
-            <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-              <Public fontSize="small" color="secondary" />
-              <Typography variant="inherit" color="text.secondary">
-                Resolution: {item.resolution}
               </Typography>
             </Box>
           </Box>

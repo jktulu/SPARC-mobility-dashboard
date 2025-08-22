@@ -16,7 +16,7 @@ const web3formsAccessKey = import.meta.env.VITE_WEB3FORMS_ACCESS_KEY;
 const ContactFormPopup = () => {
   const [open, setOpen] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const [submitting, setSubmitting] = useState(false); // To disable button during sending
+  const [submitting, setSubmitting] = useState(false); 
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -31,10 +31,9 @@ const ContactFormPopup = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    setSubmitting(true); // Disable submit button
+    setSubmitting(true); 
 
     const formData = new FormData(event.currentTarget);
-
     formData.append("access_key", web3formsAccessKey);
 
     try {
@@ -46,14 +45,14 @@ const ContactFormPopup = () => {
       const data = await response.json();
 
       if (data.success) {
-        setIsSubmitted(true); // Show the success message
+        setIsSubmitted(true); 
       } else {
         console.error("Submission Error:", data);
       }
     } catch (error) {
       console.error("Fetch Error:", error);
     } finally {
-      setSubmitting(false); // Re-enable submit button
+      setSubmitting(false); 
     }
   };
 

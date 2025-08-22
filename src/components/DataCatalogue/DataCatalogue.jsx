@@ -24,8 +24,8 @@ const DataCatalogue = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [filters, setFilters] = useState({
     format: [],
-    resolution: [],
-    theme: [],
+    granularity: [],
+    sector: [],
     lastupdate: [],
   });
   const [showFilters, setShowFilters] = useState(true);
@@ -56,31 +56,26 @@ const DataCatalogue = () => {
   // useMemo to compute filter options based on the fetched datasets
   const filterOptions = useMemo(() => {
     if (!datasets || datasets.length === 0) {
-      return { formats: [], resolutions: [], themes: [], lastupdates: [] };
+      return { formats: [], granularities: [], sectors: [], lastupdates: [] };
     }
 
     const formats = new Set();
-    const resolutions = new Set();
-    const themes = new Set();
+    const granularities = new Set();
+    const sectors = new Set();
     const lastupdates = new Set();
 
     datasets.forEach((item) => {
       if (item.format) formats.add(item.format);
-      if (item.resolution) resolutions.add(item.resolution);
-      if (item.theme) themes.add(item.theme);
+      if (item.granularity_spatial) granularities.add(item.granularity_spatial);
+      if (item.sector) sectors.add(item.sector);
       if (item.lastupdate) lastupdates.add(item.lastupdate);
     });
 
     return {
       formats: [...formats].sort(),
-      resolutions: [...resolutions].sort(),
-      themes: [...themes].sort(),
+      granularities: [...granularities].sort(),
+      sectors: [...sectors].sort(),
       lastupdates: [...lastupdates].sort((a, b) => {
-        // Always place "N/A" at the end of the list
-        if (a === "N/A") return 1;
-        if (b === "N/A") return -1;
-
-        // Extract number to sort
         const numA = parseInt(a.match(/\d+/)[0], 10);
         const numB = parseInt(b.match(/\d+/)[0], 10);
         return numA - numB;
@@ -101,7 +96,7 @@ const DataCatalogue = () => {
     setShowFilters((prev) => !prev);
   };
   const handlePageChange = (event, newPage) => {
-    setCurrentPage(newPage + 1); // newPage is 0-based, so add 1
+    setCurrentPage(newPage + 1);
   };
 
   const handleItemsPerPageChange = (event) => {
@@ -115,26 +110,27 @@ const DataCatalogue = () => {
     return datasets.filter((item) => {
       const formatMatch =
         filters.format.length === 0 || filters.format.includes(item.format);
-      const resolutionMatch =
-        filters.resolution.length === 0 ||
-        filters.resolution.includes(item.resolution);
-      const themeMatch =
-        filters.theme.length === 0 || filters.theme.includes(item.theme);
+      const granularityMatch =
+        filters.granularity.length === 0 ||
+        filters.granularity.includes(item.granularity_spatial);
+      const sectorMatch =
+        filters.sector.length === 0 || filters.sector.includes(item.sector);
       const lastupdateMatch =
         filters.lastupdate.length === 0 ||
         filters.lastupdate.includes(item.lastupdate);
 
-      // Search query logic (searches name and description and theme)
+      // Search query logic (searches title and description and sector and keywords)
       const searchMatch = query
-        ? item.name.toLowerCase().includes(query) ||
+        ? item.title.toLowerCase().includes(query) ||
           item.description.toLowerCase().includes(query) ||
-          item.theme.toLowerCase().includes(query)
+          item.sector.toLowerCase().includes(query) ||
+          item.keywords.toLowerCase().includes(query)
         : true;
 
       return (
         formatMatch &&
-        resolutionMatch &&
-        themeMatch &&
+        granularityMatch &&
+        sectorMatch &&
         lastupdateMatch &&
         searchMatch
       );

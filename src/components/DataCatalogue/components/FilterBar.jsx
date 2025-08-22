@@ -13,8 +13,8 @@ import {
 } from "@mui/material";
 
 const FilterBar = ({ filters, onFilterChange, filterOptions }) => {
-  const { format, resolution, theme, lastupdate } = filters;
-  const { formats, resolutions, themes, lastupdates } = filterOptions;
+  const { format, granularity, sector, lastupdate } = filters;
+  const { formats, granularities, sectors, lastupdates } = filterOptions;
 
   // Handler for filter changes
   const handleDelete = (filterName, valueToDelete) => () => {
@@ -36,8 +36,8 @@ const FilterBar = ({ filters, onFilterChange, filterOptions }) => {
   const handleClearAll = () => {
     onFilterChange({
       format: [],
-      resolution: [],
-      theme: [],
+      granularity: [],
+      sector: [],
       lastupdate: [],
     });
   };
@@ -47,13 +47,13 @@ const FilterBar = ({ filters, onFilterChange, filterOptions }) => {
       <Grid container sx={{ display: "flex", mt: 2 }} spacing={2}>
         <Grid size={{ xs: 12, sm: 6, md: 3 }}>
           <FormControl fullWidth size="small">
-            <InputLabel id="theme-select-label">Theme</InputLabel>
+            <InputLabel id="sector-select-label">Sector</InputLabel>
             <Select
-              labelId="theme-select-label"
-              id="theme-select"
-              name="theme"
-              value={theme}
-              label="Theme"
+              labelId="sector-select-label"
+              id="sector-select"
+              name="sector"
+              value={sector}
+              label="Sector"
               multiple
               onChange={handleChange}
               renderValue={(selected) => (
@@ -63,16 +63,16 @@ const FilterBar = ({ filters, onFilterChange, filterOptions }) => {
                       key={value}
                       label={value}
                       size="small"
-                      onDelete={handleDelete("theme", value)}
+                      onDelete={handleDelete("sector", value)}
                       onMouseDown={(event) => event.stopPropagation()}
                     />
                   ))}
                 </Box>
               )}
             >
-              {themes.map((option) => (
+              {sectors.map((option) => (
                 <MenuItem key={option} value={option}>
-                  <Checkbox checked={theme.includes(option)} />
+                  <Checkbox checked={sector.includes(option)} />
                   <ListItemText primary={option} />
                 </MenuItem>
               ))}
@@ -82,13 +82,13 @@ const FilterBar = ({ filters, onFilterChange, filterOptions }) => {
 
         <Grid size={{ xs: 12, sm: 6, md: 3 }}>
           <FormControl fullWidth size="small">
-            <InputLabel id="resolution-select-label">Resolution</InputLabel>
+            <InputLabel id="granularity-select-label">Granularity</InputLabel>
             <Select
-              labelId="resolution-select-label"
-              id="resolution-select"
-              name="resolution"
-              value={resolution}
-              label="resolution"
+              labelId="granularity-select-label"
+              id="granularity-select"
+              name="granularity"
+              value={granularity}
+              label="Granularity"
               multiple
               onChange={handleChange}
               renderValue={(selected) => (
@@ -98,16 +98,16 @@ const FilterBar = ({ filters, onFilterChange, filterOptions }) => {
                       key={value}
                       label={value}
                       size="small"
-                      onDelete={handleDelete("resolution", value)}
+                      onDelete={handleDelete("granularity", value)}
                       onMouseDown={(event) => event.stopPropagation()}
                     />
                   ))}
                 </Box>
               )}
             >
-              {resolutions.map((option) => (
+              {granularities.map((option) => (
                 <MenuItem key={option} value={option}>
-                  <Checkbox checked={resolution.includes(option)} />
+                  <Checkbox checked={granularity.includes(option)} />
                   <ListItemText primary={option} />
                 </MenuItem>
               ))}
@@ -193,8 +193,8 @@ const FilterBar = ({ filters, onFilterChange, filterOptions }) => {
           startIcon={<ClearAllIcon />}
           disabled={
             filters.format.length === 0 &&
-            filters.resolution.length === 0 &&
-            filters.theme.length === 0 &&
+            filters.granularity.length === 0 &&
+            filters.sector.length === 0 &&
             filters.lastupdate.length === 0
           }
         >

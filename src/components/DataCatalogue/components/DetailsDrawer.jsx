@@ -17,6 +17,7 @@ import {
   useMediaQuery,
   useTheme,
 } from "@mui/material";
+import MetadataTable from "./MetadataTable"; // Import the new component
 
 const DetailsDrawer = ({ item, open, onClose }) => {
   const theme = useTheme();
@@ -47,9 +48,9 @@ const DetailsDrawer = ({ item, open, onClose }) => {
               mb: 2,
             }}
           >
-            <Typography variant="h5" component="h2">
+            {/* <Typography variant="h5" component="h2">
               Metadata
-            </Typography>
+            </Typography> */}
             <IconButton onClick={onClose}>
               <Close />
             </IconButton>
@@ -58,15 +59,16 @@ const DetailsDrawer = ({ item, open, onClose }) => {
 
           <Box sx={{ flexGrow: 1, overflowY: "auto", mb: 2 }}>
             <Typography variant="h6" gutterBottom>
-              {item.name}
+              {item.title}
             </Typography>
             <Typography variant="body1" color="text.secondary">
               {item.description}
             </Typography>
           </Box>
-          <Box sx={{ display: "flex", flexDirection: "column", gap: 1, mb: 2 }}>
+
+          {/* <Box sx={{ display: "flex", flexDirection: "column", gap: 1, mb: 2 }}>
             <Box>
-              <Chip icon={<Widgets />} label={item.theme} variant="filled" />
+              <Chip icon={<Widgets />} label={item.sector} variant="filled" />
             </Box>
             <Box sx={{ display: "flex", gap: 1 }}>
               <Chip
@@ -76,25 +78,30 @@ const DetailsDrawer = ({ item, open, onClose }) => {
               />
               <Chip
                 icon={<Public />}
-                label={item.resolution}
+                label={item.granularity_spatial}
                 variant="filled"
               />
             </Box>
           </Box>
           <Box>
             <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5 }}>
-              Source: {item.provider}
+              Source: {item.provider || "N/A"}
             </Typography>
             <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5 }}>
-              Reference: {item.reference || "N/A"},{" "}
-              {item.reference_detail || "N/A"}
+              Reference: {item.reference || "N/A"}
             </Typography>
             <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
-              Last Updated: {item.lastupdated}
+              Last Updated: {item.year_latest || "N/A"}
             </Typography>
             <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5 }}>
-              Update Frequency: {item.update_frequency || "N/A"}
+              Update Frequency: {item.frequency || "N/A"}
             </Typography>
+          </Box> */}
+          <Box>
+            <Typography variant="h6" gutterBottom sx={{ mt: 2 }}>
+              Metadata
+            </Typography>
+            <MetadataTable item={item} />
           </Box>
         </Box>
         <Box
@@ -105,12 +112,12 @@ const DetailsDrawer = ({ item, open, onClose }) => {
             size="large"
             endIcon={<Download />}
             fullWidth
-            disabled={!item.url_sample}
+            disabled={!item.url_download}
             onClick={(e) => {
               e.stopPropagation();
               const link = document.createElement("a");
-              link.href = item.url_sample;
-              const fileName = item.url_sample.split("/").pop(); // file name
+              link.href = item.url_download;
+              const fileName = item.url_download.split("/").pop(); // file name
               link.setAttribute("download", fileName || "download");
               document.body.appendChild(link);
               link.click();
@@ -125,6 +132,7 @@ const DetailsDrawer = ({ item, open, onClose }) => {
             size="large"
             endIcon={<ExitToApp />}
             fullWidth
+            disabled={!item.url}
             onClick={(e) => {
               e.stopPropagation();
               window.open(item.url, "_blank");
