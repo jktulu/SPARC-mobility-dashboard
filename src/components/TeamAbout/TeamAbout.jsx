@@ -8,14 +8,14 @@ import {
   CircularProgress,
   Grid,
   Typography,
+  Divider,
 } from "@mui/material";
 import { useEffect, useState } from "react";
 
 import HighlightsDrawer from "./components/HighlightsDrawer";
-
 import pathConfig from "../../config/path/pathConfig";
 
-const Highlights = () => {
+const TeamAbout = () => {
   const [highlightCards, setHighlightCards] = useState([]);
   const [aboutData, setAboutData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -30,7 +30,7 @@ const Highlights = () => {
     ])
       .then(async ([highlightsResponse, aboutResponse]) => {
         if (!highlightsResponse.ok || !aboutResponse.ok) {
-          throw new Error("Network response was not ok for one or more files.");
+          throw new Error("No network response for one or more files.");
         }
         const highlightsData = await highlightsResponse.json();
         const aboutData = await aboutResponse.json();
@@ -64,9 +64,58 @@ const Highlights = () => {
 
   return (
     <Box>
-      <Grid container spacing={4} sx={{ my: 4, px: 4 }}>
-        {/* Highlights */}
-        <Grid size={{ xs: 12, sm: 9 }} sx={{ pr: 4 }}>
+
+      {/* Team */}
+      <Box sx={{ mb: 4 }}>
+        <Typography
+          variant="h4"
+          gutterBottom
+          sx={{ color: "primary.dark", mb: 2 }}
+        >
+          Contributors
+        </Typography>
+        <Grid container spacing={2}>
+          {aboutData.map((member, index) => (
+            <Grid
+              key={index}
+              sx={{
+                display: "flex",
+                flexDirection: "row",
+                my: 2,
+              }}
+              size={{ xs: 12, sm: 6, md: 4 , lg: 3}}
+            >
+              <Avatar
+                alt={member.name}
+                src={member.avatarUrl}
+                sx={{ width: 80, height: 80, mr: 2 }}
+              />
+              <Box>
+                <Typography
+                  variant="body1"
+                  color="primary."
+                  sx={{ fontWeight: "bold" }}
+                >
+                  {member.name}
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  {member.role}
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  {member.affiliation}
+                </Typography>
+              </Box>
+            </Grid>
+          ))}
+        </Grid>
+      </Box>
+
+      {/* Highlights */}
+      <Box>
+        <Typography variant="h4" sx={{ color: "primary.dark", mb: 2 }}>
+          News & Highlights
+        </Typography>
+        <Grid>
           {isLoading && (
             <Box sx={{ display: "flex", justifyContent: "center", my: 4 }}>
               <CircularProgress />
@@ -82,7 +131,7 @@ const Highlights = () => {
             {!isLoading &&
               !error &&
               highlightCards.map((card) => (
-                <Grid size={{ sm: 12, md: 4 }} key={card.name}>
+                <Grid size={{ sm: 12, md: 3 }} key={card.name}>
                   <Card
                     sx={{
                       height: "100%",
@@ -140,41 +189,8 @@ const Highlights = () => {
               ))}
           </Grid>
         </Grid>
+      </Box>
 
-        {/* Team */}
-        <Grid size={{ xs: 12, sm: 3 }}>
-          <Typography variant="h5" gutterBottom sx={{ color: "primary.dark" }}>
-            Project Team
-          </Typography>
-          {aboutData.map((member, index) => (
-            <Box
-              key={index}
-              sx={{ display: "flex", alignItems: "center", my: 2 }}
-            >
-              <Avatar
-                alt={member.name}
-                src={member.avatarUrl}
-                sx={{ width: 80, height: 80, mr: 2 }}
-              />
-              <Box>
-                <Typography
-                  variant="body1"
-                  color="primary."
-                  sx={{ fontWeight: "bold" }}
-                >
-                  {member.name}
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  {member.role}
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  {member.affiliation}
-                </Typography>
-              </Box>
-            </Box>
-          ))}
-        </Grid>
-      </Grid>
       {/* --- Render the Drawer Component --- */}
       <HighlightsDrawer
         item={selectedCard}
@@ -185,4 +201,4 @@ const Highlights = () => {
   );
 };
 
-export default Highlights;
+export default TeamAbout;

@@ -13,7 +13,8 @@ import {
 } from "@mui/material";
 
 const FilterBar = ({ filters, onFilterChange, filterOptions }) => {
-  // Handler for individual chip deletion
+  // --- Event handlers ---
+  // Delete Chip
   const handleDelete = (filterName, valueToDelete) => () => {
     onFilterChange({
       ...filters,
@@ -22,18 +23,14 @@ const FilterBar = ({ filters, onFilterChange, filterOptions }) => {
       ),
     });
   };
-
-  // Handler for the main select input change
+  // Filter Change and Clear
   const handleChange = (event) => {
     const { name, value } = event.target;
     onFilterChange({
       ...filters,
-      // The value from MUI's multiple select is an array
       [name]: typeof value === "string" ? value.split(",") : value,
     });
   };
-
-  // Handler for clearing all filters
   const handleClearAll = () => {
     const clearedFilters = Object.keys(filters).reduce((acc, key) => {
       acc[key] = [];
@@ -41,28 +38,41 @@ const FilterBar = ({ filters, onFilterChange, filterOptions }) => {
     }, {});
     onFilterChange(clearedFilters);
   };
-  
+  const isClearAllDisabled = Object.values(filters).every(
+    (arr) => arr.length === 0
+  );
+
+  // Filter configurations
   const filterConfigs = [
-    { name: 'sector', label: 'Sector', options: filterOptions.sectors },
-    { name: 'granularity', label: 'Granularity', options: filterOptions.granularities },
-    { name: 'lastupdate', label: 'Last Updated', options: filterOptions.lastupdates },
-    { name: 'format', label: 'Format', options: filterOptions.formats },
+    { name: "sector", label: "Sector", options: filterOptions.sectors },
+    {
+      name: "granularity",
+      label: "Granularity",
+      options: filterOptions.granularities,
+    },
+    {
+      name: "lastupdate",
+      label: "Last Updated",
+      options: filterOptions.lastupdates,
+    },
+    { name: "format", label: "Format", options: filterOptions.formats },
   ];
 
-  const isClearAllDisabled = Object.values(filters).every(arr => arr.length === 0);
-
+  // --- Rendering ---
   return (
     <Box>
       <Grid container sx={{ display: "flex", mt: 2 }} spacing={2}>
         {filterConfigs.map((config) => (
-          <Grid item size={{xs:12,sm:6,md:3}} key={config.name}>
+          <Grid size={{ xs: 12, sm: 6, md: 3 }} key={config.name}>
             <FormControl fullWidth size="small">
-              <InputLabel id={`${config.name}-select-label`}>{config.label}</InputLabel>
+              <InputLabel id={`${config.name}-select-label`}>
+                {config.label}
+              </InputLabel>
               <Select
                 labelId={`${config.name}-select-label`}
                 id={`${config.name}-select`}
                 name={config.name}
-                value={filters[config.name]} 
+                value={filters[config.name]}
                 label={config.label}
                 multiple
                 onChange={handleChange}
@@ -92,7 +102,7 @@ const FilterBar = ({ filters, onFilterChange, filterOptions }) => {
           </Grid>
         ))}
       </Grid>
-      <Box sx={{mt: 2}}>
+      <Box>
         <Button
           variant="text"
           onClick={handleClearAll}

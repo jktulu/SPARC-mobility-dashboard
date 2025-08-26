@@ -6,7 +6,6 @@ import {
   useTheme,
 } from "@mui/material";
 import { useEffect, useMemo, useState } from "react";
-
 import KpiDetailBox from "./components/KpiDetailBox";
 import InfoAreaRow from "./components/KpiRow";
 import VerticalTabs from "./components/VerticalTabs";
@@ -24,7 +23,7 @@ const MobilityKPIs = () => {
   const [activeTabIndex, setActiveTabIndex] = useState(null);
   const [selectedKpi, setSelectedKpi] = useState(null);
 
-  // --- Data Fetching ---
+  // Data Fetching
   useEffect(() => {
     Promise.all([
       fetch(pathConfig.KPI_DOMAINS_PATH),
@@ -48,9 +47,9 @@ const MobilityKPIs = () => {
         setError("Could not load required data. Please try again later.");
         setIsLoading(false);
       });
-  }, []); 
+  }, []);
 
-  // --- Color and Data Augmentation ---
+  // Color and Data Augmentation for tabs and KPIs
   const domainColorMap = useMemo(
     () => ({
       1: theme.palette.kpi.terracotta,
@@ -60,7 +59,6 @@ const MobilityKPIs = () => {
     }),
     [theme]
   );
-
   const tabsWithColor = useMemo(
     () =>
       kpiDomains.map((domain) => ({
@@ -69,7 +67,6 @@ const MobilityKPIs = () => {
       })),
     [kpiDomains, domainColorMap, theme]
   );
-
   const allKpisWithColor = useMemo(() => {
     const kpiColorMap = {};
     kpiDomains.forEach((domain) => {
@@ -83,7 +80,7 @@ const MobilityKPIs = () => {
     }));
   }, [kpiDomains, kpiDetails, domainColorMap, theme]);
 
-  // Conditionally Calculate selectedKpis, If no tab is selected, return all KPIs from the details object. Augment with colour.
+  // Calculate selectedKpis, If no tab is selected, return all
   const selectedKpis = useMemo(() => {
     if (activeTabIndex === null) {
       return allKpisWithColor;
@@ -95,11 +92,10 @@ const MobilityKPIs = () => {
     return allKpisWithColor.filter((kpi) => kpiCodesForDomain.has(kpi.code));
   }, [activeTabIndex, kpiDomains, allKpisWithColor]);
 
-  // --- Event Handlers ---
+  // Event Handlers
   const handleTabChange = (event, newIndex) => {
     setActiveTabIndex(newIndex);
   };
-
   const handleKpiSelect = (kpi) => {
     if (selectedKpi && selectedKpi.code === kpi.code) {
       setSelectedKpi(null); // same KPI clicked so deselect
@@ -108,6 +104,7 @@ const MobilityKPIs = () => {
     }
   };
 
+  // Main Render Logic
   if (isLoading) {
     return (
       <Box
@@ -125,17 +122,17 @@ const MobilityKPIs = () => {
 
   if (error) {
     return (
-      <Box sx={{ px: 4, textAlign: "center" }}>
+      <Box sx={{ textAlign: "center" }}>
         <Typography color="error">{error}</Typography>
       </Box>
     );
   }
   return (
-    <Box sx={{ px: 4 }}>
+    <Box>
       <Grid container spacing={2}>
         {/* Left Column for Tabs */}
         <Grid
-          size={{ xs: 12, sm: 2 }}
+          size={{ xs: 12, sm: 2.5 }}
           sx={{ display: "flex", flexDirection: "column", flexShrink: 0 }}
         >
           <VerticalTabs
@@ -145,9 +142,9 @@ const MobilityKPIs = () => {
           />
         </Grid>
 
-        {/* Right Column */}
+        {/* Right Column for Details*/}
         <Grid
-          size={{ xs: 12, sm: 10 }}
+          size={{ xs: 12, sm: 9.5 }}
           sx={{ display: "flex", flexDirection: "column" }}
         >
           <Box

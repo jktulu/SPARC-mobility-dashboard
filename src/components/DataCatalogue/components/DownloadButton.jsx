@@ -3,6 +3,7 @@ import { Button } from "@mui/material";
 import { CSVLink } from "react-csv";
 import { useMemo } from "react";
 
+// Component to download data as CSV
 const DownloadButton = ({ data = [], filename = "results.csv" }) => {
   const headers = useMemo(() => {
     if (data.length === 0) {

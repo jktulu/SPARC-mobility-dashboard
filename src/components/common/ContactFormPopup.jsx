@@ -18,17 +18,16 @@ const ContactFormPopup = () => {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false); 
 
+  // Handlers
   const handleClickOpen = () => {
     setOpen(true);
   };
-
   const handleClose = () => {
     setOpen(false);
     setTimeout(() => {
       setIsSubmitted(false);
     }, 300);
   };
-
   const handleSubmit = async (event) => {
     event.preventDefault();
     setSubmitting(true); 
@@ -56,6 +55,7 @@ const ContactFormPopup = () => {
     }
   };
 
+  // Render
   return (
     <>
       <Fab
@@ -74,7 +74,7 @@ const ContactFormPopup = () => {
       <Dialog open={open} onClose={handleClose}>
         {isSubmitted ? (
           /* CONFIRMATION */
-          <div>
+          <>
             <DialogTitle>Thank You!</DialogTitle>
             <DialogContent>
               <Typography>Your message has been sent successfully.</Typography>
@@ -82,7 +82,7 @@ const ContactFormPopup = () => {
             <DialogActions>
               <Button onClick={handleClose}>Close</Button>
             </DialogActions>
-          </div>
+          </>
         ) : (
           /* CONTACT FORM */
           <form onSubmit={handleSubmit}>

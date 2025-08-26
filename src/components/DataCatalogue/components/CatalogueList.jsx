@@ -9,18 +9,19 @@ import {
   Typography,
 } from "@mui/material";
 
+// Single item in the catalogue list
 const CatalogueListItem = ({ item, onClick }) => (
   <ListItem disablePadding divider>
     <Grid
       container
-      spacing={2}
       sx={{
         width: "100%",
         alignItems: "flex-start",
         p: 2,
       }}
     >
-      <Grid size={{ sm: 12, md: 9 }}>
+      {/* Left: Content panel */}
+      <Grid size={{ sm: 12, md: 9 }} sx={{ pr: { md: 2 }, mb: { sm: 2, md: 0 } }}>
         <Box
           sx={{
             display: "flex",
@@ -51,6 +52,7 @@ const CatalogueListItem = ({ item, onClick }) => (
         </Box>
       </Grid>
 
+      {/* Right: Content panel */}
       <Grid size={{ sm: 12, md: 3 }}>
         <Box
           sx={{
@@ -74,7 +76,7 @@ const CatalogueListItem = ({ item, onClick }) => (
             >
               <Public fontSize="small" color="secondary" />
               <Typography variant="inherit" color="text.secondary">
-                Granularity: {item.granularity_spatial}
+                Granularity: {item.granularity__spatial}
               </Typography>
             </Box>
             <Box
@@ -102,13 +104,14 @@ const CatalogueListItem = ({ item, onClick }) => (
   </ListItem>
 );
 
+// List of catalogue items - Main component
 const CatalogueList = ({ items, onItemClick }) => (
   <Box
     sx={{
       border: "1px solid",
       borderColor: "divider",
       overflow: "hidden",
-      minHeight: 400,
+      minHeight: 200,
     }}
   >
     <List disablePadding>

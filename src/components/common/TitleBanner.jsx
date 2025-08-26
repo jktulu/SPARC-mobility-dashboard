@@ -2,9 +2,10 @@ import { Box, Grid, Typography } from "@mui/material";
 import backgroundImage from "../../assets/jaipur.jpg";
 import logo from "../../assets/logo.png";
 
-const Title = () => {
+const TitleBanner = () => {
   return (
-    <Box
+    // Banner with background img overlay overlaid with gradient 
+    <Box 
       sx={{
         position: "relative",
         color: "white",
@@ -29,7 +30,7 @@ const Title = () => {
           right: 0,
           bottom: 0,
           background:
-            "linear-gradient(to right, rgba(0, 0, 0, 0.79), rgba(98, 0, 0, 0.26))",
+            "linear-gradient(to right, rgba(0, 0, 0, 0.80), rgba(98, 0, 0, 0.2))",
           zIndex: 1,
         },
       }}
@@ -37,7 +38,7 @@ const Title = () => {
       <Box sx={{ position: "relative", zIndex: 2 }}>
         <Grid
           container
-          spacing={3}
+          spacing={2}
           sx={{ display: "flex", alignItems: "center", flexWrap: "nowrap" }}
         >
           <Grid href="/" sx={{ flexShrink: 0 }}>
@@ -46,16 +47,19 @@ const Title = () => {
           <Grid>
             <Typography
               variant="h1"
+              fontSize={{ xs: "1.8rem", sm: "2.5rem" }}
               sx={{
-                fontWeight: "bold",
                 textShadow: "1px 1px 3px rgba(0, 0, 0, 0.6)",
               }}
             >
-              Jaipur Smart Mobility Hub
+              Jaipur Mobility Observatory
             </Typography>
 
             <Box component="section">
-              <Typography variant="body1" sx={{ fontSize: "1.2rem" }}>
+              <Typography
+                variant="body1"
+                fontSize={{ xs: "1rem", sm: "1.2rem" }}
+              >
                 Toward a sustainable transport future for all
               </Typography>
             </Box>
@@ -66,4 +70,4 @@ const Title = () => {
   );
 };
 
-export default Title;
+export default TitleBanner;

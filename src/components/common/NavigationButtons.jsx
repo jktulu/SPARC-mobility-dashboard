@@ -1,38 +1,108 @@
-import { Box, Button, Grid } from "@mui/material";
+import {
+  Box,
+  Fab,
+  Tab,
+  Tabs,
+  useMediaQuery,
+  useTheme,
+  Typography,
+} from "@mui/material";
 
 const NavigationButtons = ({ buttons = [], onButtonClick, activeButtonId }) => {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const handleTabChange = (event, newActiveButtonId) => {
+    onButtonClick(newActiveButtonId);
+  };
+
+  if (isMobile) {
+    return (
+      <>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "space-around",
+            alignItems: "flex-start",
+            pt: 2,
+          }}
+        >
+          {buttons.map((button) => (
+            <Box
+              key={button.id}
+              onClick={() => onButtonClick(button.id)}
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "flex-start",
+                cursor: "pointer",
+                flex: 1,
+                textAlign: "center",
+              }}
+            >
+              <Fab
+                color={button.id === activeButtonId ? "primary" : "default"}
+                aria-label={button.text}
+                size="medium"
+                sx={{ boxShadow: button.id === activeButtonId ? 5 : 2 }}
+              >
+                {button.icon}
+              </Fab>
+              <Typography
+                variant="caption"
+                sx={{
+                  fontWeight: 300,
+                  mt: 0.5,
+                  p: 1,
+                  lineHeight: 1,
+                  textAlign: "center",
+                  color:
+                    button.id === activeButtonId
+                      ? "primary.main"
+                      : "text.secondary",
+                }}
+              >
+                {button.text}
+              </Typography>
+            </Box>
+          ))}
+        </Box>
+      </>
+    );
+  }
+
+  // --- Desktop: Tabs ---
   return (
-    <Box>
-      <Grid
-        sx={{
-          display: "flex",
-          justifyContent: "center",
-          gap: 1,
-          flexWrap: "wrap",
-        }}
+    <Box
+      sx={{
+        display: "flex",
+        justifyContent: "center",
+        borderBottom: 1,
+        borderColor: "divider",
+      }}
+    >
+      <Tabs
+        value={activeButtonId}
+        onChange={handleTabChange}
+        variant="scrollable"
+        scrollButtons="auto"
+        allowScrollButtonsMobile
+        aria-label="navigation tabs"
       >
         {buttons.map((button) => (
-          <Grid
-            size={{ sm: 6, md: 3 }}
-            sx={{ height: "40px", width: "100%" }}
+          <Tab
             key={button.id}
-          >
-            <Button
-              key={button.id}
-              variant={button.id === activeButtonId ? "contained" : "outlined"}
-              sx={{
-                height: "100%",
-                width: "100%",
-                fontSize: "1.1rem",
-                lineHeight: "1",
-              }}
-              onClick={() => onButtonClick(button.id)}
-            >
-              {button.text}
-            </Button>
-          </Grid>
+            value={button.id}
+            label={button.text}
+            icon={button.icon}
+            sx={{
+              fontWeight: 500,
+              fontSize: "1.2rem",
+              textTransform: "none",
+            }}
+          />
         ))}
-      </Grid>
+      </Tabs>
     </Box>
   );
 };

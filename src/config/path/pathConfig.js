@@ -2,8 +2,8 @@ const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 const pathConfig = {
   // Scorecard
-  KPI_DOMAINS_PATH: `${BASE_URL}kpiDef/kpiDomains.json`,
-  KPI_DETAILS_PATH: `${BASE_URL}kpiDef/kpiDetails.json`,
+  KPI_DOMAINS_PATH: `${BASE_URL}kpiDomains.json`,
+  KPI_DETAILS_PATH: `${BASE_URL}kpiDetails.json`,
   KPI_CHARTS_FOLDER_PATH: `${BASE_URL}kpiCharts/`,
   KPI_MAPS_FOLDER_PATH: `${BASE_URL}kpiMaps/`,
   // Data Catalogue

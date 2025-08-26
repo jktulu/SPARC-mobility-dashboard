@@ -16,12 +16,12 @@ const KpiChart = ({ data }) => {
   return (
     <Box sx={{ p: 2, mt: 2 }}>
       <Typography variant="subtitle1" sx={{ fontWeight: "bold", mb: 2 }}>
-        KPI Trend
+        Trend
       </Typography>
       <ResponsiveContainer width="100%" height={400}>
         <BarChart
           data={data}
-          margin={{ top: 5, right: 20, left: -10, bottom: 5 }}
+          margin={{ top: 2, right: 2, left: -30, bottom: 2 }}
         >
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="year" />
@@ -37,12 +37,7 @@ const KpiChart = ({ data }) => {
           <Bar
             dataKey="value"
             fill={theme.palette.roseShades.main}
-            name="Actual Value"
-          />
-          <Bar
-            dataKey="target"
-            fill={theme.palette.roseShades.lighter}
-            name="Target Value"
+            name="Value"
           />
         </BarChart>
       </ResponsiveContainer>

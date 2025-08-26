@@ -20,19 +20,7 @@ const VerticalTabs = ({ tabs, onTabChange, activeTab }) => {
 
   return (
     <Box>
-      <Box
-        sx={{
-          p: 1,
-          display: "flex",
-          flexDirection: "row",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <Typography variant="subtitle2" color="text.secondary">
-          Filter by topic
-        </Typography>
-      </Box>
+      {/* Main Tab component */}
       <Paper
         sx={{
           width: "100%",
@@ -44,7 +32,7 @@ const VerticalTabs = ({ tabs, onTabChange, activeTab }) => {
         <Tabs
           orientation="vertical"
           variant="scrollable"
-          value={activeTab === null ? false : activeTab}
+          value={activeTab !== null ? activeTab : false}
           onChange={handleChange}
         >
           {tabs.map((tab, index) => (
@@ -52,11 +40,7 @@ const VerticalTabs = ({ tabs, onTabChange, activeTab }) => {
               key={index}
               label={tab.label}
               sx={{
-                // alignItems: "flex-start", // Add this line to align text to the left
-                // flexShrink: 0,
                 "&.Mui-selected": {
-                  fontWeight: "bold",
-                  opacity: 1,
                   color: tab.color,
                 },
               }}
@@ -64,30 +48,29 @@ const VerticalTabs = ({ tabs, onTabChange, activeTab }) => {
           ))}
         </Tabs>
       </Paper>
-      <Box sx={{ p: 1, display: "flex", justifyContent: "center" }}>
+      {/* Button */}
+      <Box sx={{ display: "flex", justifyContent: "center" }}>
         <Button
           onClick={handleShowAll}
-          variant="text"
           sx={{
-            padding: "4px",
-            color: "primary.main",
-            opacity: activeTab !== null ? 1 : 0.5,
+            color: activeTab !== null ? "primary.main" : "text.secondary",
             fontWeight: activeTab !== null ? "bold" : "normal",
           }}
         >
-          Show All
+          {activeTab !== null ? "Show All" : "Filter by theme"}
         </Button>
       </Box>
     </Box>
   );
 };
 
+// Prop types validation for VerticalTabs
 VerticalTabs.propTypes = {
   tabs: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.string.isRequired,
       label: PropTypes.string.isRequired,
-      color: PropTypes.string, // Color is now an expected prop
+      color: PropTypes.string,
     })
   ).isRequired,
   onTabChange: PropTypes.func.isRequired,

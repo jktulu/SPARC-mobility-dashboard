@@ -1,4 +1,4 @@
-import { Box, Paper, Typography } from "@mui/material";
+import { Box, Paper, Typography, Grid } from "@mui/material";
 
 const KpiRow = ({ kpis = [], onKpiSelect, selectedKpiCode }) => {
   if (!kpis || kpis.length === 0) {
@@ -21,79 +21,73 @@ const KpiRow = ({ kpis = [], onKpiSelect, selectedKpiCode }) => {
 
   return (
     <Box>
-      <Box sx={{ p: 1, textAlign: "center" }}>
-        <Typography variant="subtitle2" color="text.secondary">
-          Select a card to learn more
-        </Typography>
-      </Box>
-      <Box
-        sx={{
-          display: "flex",
-          flexWrap: "wrap",
-          justifyContent: "center",
-          gap: 1,
-        }}
-      >
+      <Grid container spacing={1}>
+        {/* Map colour to kpi */}
         {kpis.map((kpi) => {
           const isSelected = kpi.code === selectedKpiCode;
           const color = kpi.domainColor;
 
           return (
-            <Paper
+            <Grid
+              size={{ xs: 12, sm: 6, md: 4, lg: 3 }}
               key={kpi.code}
-              onClick={() => onKpiSelect(kpi)}
-              sx={{
-                pt: 1,
-                pl: 1,
-                maxWidth: 270,
-                width: "100%",
-                minWidth: 250,
-                height: 55,
-                display: "flex",
-                alignItems: "center",
-                cursor: "pointer",
-                userSelect: "none",
-                border: "3px solid",
-                borderColor: isSelected ? "primary.dark" : "transparent",
-                backgroundColor: color,
-                transition: "transform 0.2s",
-                "&:hover": {
-                  transform: "translateY(-4px)",
-                },
-              }}
             >
-              <Box
-                sx={{ display: "flex", width: "100%", alignItems: "center" }}
+              <Paper
+                onClick={() => onKpiSelect(kpi)}
+                sx={{
+                  display: "flex",
+                  flexDirection: "row",
+                  width: "100%",
+                  height: "100%",
+                  cursor: "pointer",
+                  userSelect: "none",
+                  border: "3px solid",
+                  borderColor: isSelected ? "primary.dark" : "transparent",
+                  backgroundColor: color,
+                  transition: "transform 0.2s",
+                  "&:hover": {
+                    transform: "translateY(-4px)",
+                  },
+                }}
               >
-                <Box sx={{ width: "55%", textAlign: "right", pr: 1 }}>
+                {/* Title KPI */}
+                <Box
+                  sx={{
+                    width: "60%",
+                    textAlign: "right",
+                    display: "flex",
+                    alignItems: "center",
+                    pl: 0.5,
+                    pr:0.5,
+                  }}
+                >
                   <Typography
                     sx={{
                       lineHeight: 1,
-                      mb: -1,
-                      fontSize: "1rem",
                       fontWeight: "bold",
+                      fontSize: "0.9rem",
                       color: "primary.contrastText",
                     }}
                   >
                     {kpi.title}
                   </Typography>
-                  <Typography
-                    variant="caption"
-                    color="text.secondary"
-                    sx={{ lineHeight: 1 }}
-                  >
-                    {"\u00A0"}
-                  </Typography>
                 </Box>
 
-                <Box sx={{ width: "45%", textAlign: "center" }}>
+                {/* Stats */}
+                <Box
+                  sx={{
+                    width: "40%",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    display: "flex",
+                    flexDirection: "column",
+                  }}
+                >
                   <Typography
-                    color="text.primary"
                     sx={{
                       fontWeight: "bold",
                       lineHeight: 1,
-                      mb: -1,
-                      fontSize: "2rem",
+                      fontSize: "1.8rem",
                     }}
                   >
                     {kpi.stat}
@@ -107,11 +101,11 @@ const KpiRow = ({ kpis = [], onKpiSelect, selectedKpiCode }) => {
                     {kpi.unit ? kpi.unit : "\u00A0"}
                   </Typography>
                 </Box>
-              </Box>
-            </Paper>
+              </Paper>
+            </Grid>
           );
         })}
-      </Box>
+      </Grid>
     </Box>
   );
 };

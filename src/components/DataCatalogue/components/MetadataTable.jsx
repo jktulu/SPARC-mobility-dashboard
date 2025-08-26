@@ -19,10 +19,20 @@ const MetadataTable = ({ item }) => {
     "url",
     "url_download",
     "lastupdate",
+    "keywords",
   ];
   const displayAttributes = Object.keys(item).filter(
     (key) => !excludedAttributes.includes(key)
   );
+
+  // Format labels to be more human-readable
+  const formatLabel = (key) => {
+    const spaced = key.replace(/__/g, ": ").replace(/_/g, " ");
+    return spaced
+      .split(" ")
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(" ");
+  };
 
   return (
     <TableContainer component={Paper} variant="outlined" sx={{ my: 2 }}>
@@ -34,9 +44,9 @@ const MetadataTable = ({ item }) => {
               <TableRow key={key}>
                 <TableCell
                   scope="row"
-                  sx={{ fontWeight: "bold", width: "30%" }}
+                  sx={{ fontWeight: "bold", width: "40%" }}
                 >
-                  {key}
+                  {formatLabel(key)}
                 </TableCell>
                 <TableCell sx={{ color: value ? "text.primary" : "grey.300" }}>
                   {value || "N/A"}

@@ -1,11 +1,4 @@
-import {
-  Close,
-  Description,
-  Download,
-  ExitToApp,
-  Public,
-  Widgets,
-} from "@mui/icons-material";
+import { Close, Download, ExitToApp } from "@mui/icons-material";
 import {
   Box,
   Button,
@@ -17,7 +10,7 @@ import {
   useMediaQuery,
   useTheme,
 } from "@mui/material";
-import MetadataTable from "./MetadataTable"; // Import the new component
+import MetadataTable from "./MetadataTable"; 
 
 const DetailsDrawer = ({ item, open, onClose }) => {
   const theme = useTheme();
@@ -54,17 +47,46 @@ const DetailsDrawer = ({ item, open, onClose }) => {
           </Box>
           <Divider sx={{ mb: 3 }} />
 
+          {/* Title, Description and Keyword tags */}
           <Box sx={{ flexGrow: 1, overflowY: "auto", mb: 2 }}>
-            <Typography variant="body1" color="text.secondary">
+            <Typography variant="body1" color="text.secondary" gutterBottom>
               <span style={{ fontWeight: "bold" }}>Title: </span>
               {item.title}
             </Typography>
-            <Typography variant="body1" color="text.secondary">
+            <Typography variant="body1" color="text.secondary" gutterBottom>
               <span style={{ fontWeight: "bold" }}>Description: </span>
               {item.description}
             </Typography>
+            <Typography
+              variant="body1"
+              color="text.secondary"
+              gutterBottom
+              sx={{ display: "flex", flexWrap: "wrap" }}
+            >
+              <span style={{ fontWeight: "bold" }}>Tags: </span>
+              {item.keywords &&
+                (typeof item.keywords === "string"
+                  ? item.keywords.split(";")
+                  : item.keywords
+                ).map((tag) => {
+                  const trimmedTag = tag.trim();
+                  if (trimmedTag) {
+                    return (
+                      <Chip
+                        key={trimmedTag}
+                        label={trimmedTag}
+                        size="small"
+                        color="default"
+                        sx={{ mr: 1, mb: 1 }}
+                      />
+                    );
+                  }
+                  return null;
+                })}
+            </Typography>
           </Box>
-          
+
+          {/* Metadata table */}
           <Box>
             <Typography variant="h6" gutterBottom sx={{ mt: 2 }}>
               Metadata
@@ -72,6 +94,8 @@ const DetailsDrawer = ({ item, open, onClose }) => {
             <MetadataTable item={item} />
           </Box>
         </Box>
+
+        {/* Download buttons */}
         <Box
           sx={{ mt: "auto", display: "flex", flexDirection: "column", gap: 2 }}
         >

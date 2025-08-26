@@ -1,7 +1,6 @@
 import {
   Box,
   CircularProgress,
-  Divider,
   Grid,
   TablePagination,
   Typography,
@@ -14,6 +13,7 @@ import DownloadButton from "./components/DownloadButton";
 import FilterBar from "./components/FilterBar";
 import SearchBar from "./components/SearchBar";
 import ToggleFilterButton from "./components/ToggleFilterButton";
+
 import pathConfig from "../../config/path/pathConfig";
 
 const DataCatalogue = () => {
@@ -27,12 +27,13 @@ const DataCatalogue = () => {
     sector: [],
     lastupdate: [],
   });
-  const [showFilters, setShowFilters] = useState(true);
+  const [showFilters, setShowFilters] = useState(false);
   const [selectedDataset, setSelectedDataset] = useState(null);
   const [isDrawerOpen, setDrawerOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
 
+  // Data fetching
   useEffect(() => {
     fetch(pathConfig.DATA_CATALOGUE_PATH)
       .then((response) => {
@@ -52,6 +53,7 @@ const DataCatalogue = () => {
       });
   }, []);
 
+  // Populate filter options based on fetched data
   const filterOptions = useMemo(() => {
     if (!datasets || datasets.length === 0) {
       return { formats: [], granularities: [], sectors: [], lastupdates: [] };
@@ -64,7 +66,8 @@ const DataCatalogue = () => {
 
     datasets.forEach((item) => {
       if (item.format) formats.add(item.format);
-      if (item.granularity_spatial) granularities.add(item.granularity_spatial);
+      if (item.granularity__spatial)
+        granularities.add(item.granularity__spatial);
       if (item.sector) sectors.add(item.sector);
       if (item.lastupdate) lastupdates.add(item.lastupdate);
     });
@@ -81,11 +84,11 @@ const DataCatalogue = () => {
     };
   }, [datasets]);
 
+  // Event handlers
   const handleItemClick = (item) => {
     setSelectedDataset(item);
     setDrawerOpen(true);
   };
-
   const handleDrawerClose = () => {
     setDrawerOpen(false);
   };
@@ -95,21 +98,20 @@ const DataCatalogue = () => {
   const handlePageChange = (event, newPage) => {
     setCurrentPage(newPage + 1);
   };
-
   const handleItemsPerPageChange = (event) => {
     setItemsPerPage(parseInt(event.target.value, 10));
     setCurrentPage(1);
   };
 
+  // Filtering logic and reset logic
   const filteredDatasets = useMemo(() => {
     const query = searchQuery.toLowerCase();
-
     return datasets.filter((item) => {
       const formatMatch =
         filters.format.length === 0 || filters.format.includes(item.format);
       const granularityMatch =
         filters.granularity.length === 0 ||
-        filters.granularity.includes(item.granularity_spatial);
+        filters.granularity.includes(item.granularity__spatial);
       const sectorMatch =
         filters.sector.length === 0 || filters.sector.includes(item.sector);
       const lastupdateMatch =
@@ -147,6 +149,7 @@ const DataCatalogue = () => {
   );
   const pageCount = Math.ceil(filteredDatasets.length / itemsPerPage);
 
+  // Main Rendering
   if (isLoading) {
     return (
       <Box
@@ -161,7 +164,6 @@ const DataCatalogue = () => {
       </Box>
     );
   }
-
   if (error) {
     return (
       <Box sx={{ p: 2, textAlign: "center" }}>
@@ -169,9 +171,8 @@ const DataCatalogue = () => {
       </Box>
     );
   }
-
   return (
-    <Box sx={{ px: 2 }}>
+    <Box>
       <Box
         sx={{
           p: 2,
@@ -180,9 +181,9 @@ const DataCatalogue = () => {
           borderRadius: "8px",
         }}
       >
+        {/* Search Bar and Filtering */}
         <SearchBar query={searchQuery} onQueryChange={setSearchQuery} />
-
-        <Grid
+        <Box
           container
           sx={{
             display: "flex",
@@ -190,13 +191,12 @@ const DataCatalogue = () => {
             justifyContent: "space-between",
           }}
         >
-          <Grid>
+          <Box>
             <ToggleFilterButton
               showFilters={showFilters}
               onClick={handleToggleFilters}
             />
-            <Divider orientation="vertical" flexItem sx={{ mr: 2, ml: 0 }} />
-          </Grid>
+          </Box>
           <Grid sx={{ flexGrow: 1 }}>
             {showFilters && (
               <FilterBar
@@ -206,35 +206,40 @@ const DataCatalogue = () => {
               />
             )}
           </Grid>
-        </Grid>
+        </Box>
 
-        <Divider sx={{ mb: 2 }} />
-        <Box sx={{ display: "flex", justifyContent: "space-between", mb: 2 }}>
+        {/* Count results and Pagination Controls */}
+        <Box sx={{ display: "flex", justifyContent: "space-between" }}>
           <Box sx={{ my: 2 }}>
             <Typography variant="body2" color="text.secondary">
               Found {filteredDatasets.length}{" "}
               {filteredDatasets.length === 1 ? "dataset" : "datasets"}
             </Typography>
           </Box>
+          {pageCount > 1 && (
+            <TablePagination
+              component="div"
+              count={filteredDatasets.length}
+              page={currentPage - 1} // 0-based index
+              onPageChange={handlePageChange}
+              rowsPerPage={itemsPerPage}
+              onRowsPerPageChange={handleItemsPerPageChange}
+              rowsPerPageOptions={[5, 10, 20, 50]}
+            />
+          )}
+        </Box>
+
+        {/* Main Catalogue */}
+        <CatalogueList items={currentItems} onItemClick={handleItemClick} />
+
+        {/* Download search results */}
+        <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 2 }}>
           <DownloadButton
             data={filteredDatasets}
             filename={`datacatalogue_filtered_(${filteredDatasets.length}it).csv`}
           />
         </Box>
-
-        {pageCount > 1 && (
-          <TablePagination
-            component="div"
-            count={filteredDatasets.length}
-            page={currentPage - 1} // 0-based index
-            onPageChange={handlePageChange}
-            rowsPerPage={itemsPerPage}
-            onRowsPerPageChange={handleItemsPerPageChange}
-            rowsPerPageOptions={[5, 10, 20, 50]}
-          />
-        )}
-
-        <CatalogueList items={currentItems} onItemClick={handleItemClick} />
+        {/* Details Drawer */}
         <DetailsDrawer
           item={selectedDataset}
           open={isDrawerOpen}
