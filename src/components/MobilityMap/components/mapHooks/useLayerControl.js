@@ -1,21 +1,27 @@
 import { useEffect, useMemo, useState } from "react";
 import { layerConfig } from "../../../../config/map/mainLayerConfig";
 
+const isLeaf = (node) => !node.children || node.children.length === 0;
+
+const leafIdsOf = (node) =>
+  isLeaf(node) ? [node.id] : node.children.flatMap(leafIdsOf);
+
+const findInNode = (node, id) => {
+  if (node.id === id) return node;
+  if (node.children) {
+    for (const child of node.children) {
+      const found = findInNode(child, id);
+      if (found) return found;
+    }
+  }
+  return null;
+};
+
 const findLayerById = (id) => {
   for (const theme of layerConfig) {
-    for (const layer of theme.layers) {
-      if (layer.id === id) return layer;
-      if (layer.children) {
-        if (layer.isGroup) {
-          for (const subParent of layer.children) {
-            const found = subParent.children?.find((c) => c.id === id);
-            if (found) return found;
-          }
-        } else {
-          const found = layer.children.find((c) => c.id === id);
-          if (found) return found;
-        }
-      }
+    for (const root of theme.layers) {
+      const found = findInNode(root, id);
+      if (found) return found;
     }
   }
   return null;
@@ -28,24 +34,15 @@ export const useLayerControl = (onLayerToggle) => {
       const dropdowns = {};
       const open = {};
 
-      // A recursive helper function to process layers
-      const processLayer = (layer) => {
-        if (layer.defaultChecked) {
-          checked[layer.id] = true;
-        }
-        if (layer.isGroup) {
-          open[layer.id] = true;
-        }
-        if (layer.children) {
-          layer.children.forEach(processLayer);
-        }
+      const walk = (node) => {
+        if (node.isGroup) open[node.id] = true; 
+        if (isLeaf(node) && node.defaultChecked) checked[node.id] = true;
+        if (node.children) node.children.forEach(walk);
       };
 
       layerConfig.forEach((theme) => {
-        if (theme.controlType === "dropdown") {
-          dropdowns[theme.theme] = "none";
-        }
-        theme.layers.forEach(processLayer);
+        if (theme.controlType === "dropdown") dropdowns[theme.theme] = "none";
+        theme.layers.forEach(walk);
       });
 
       return {
@@ -61,59 +58,55 @@ export const useLayerControl = (onLayerToggle) => {
     useState(initialDropdownState);
 
   useEffect(() => {
-    Object.keys(initialCheckedState).forEach((layerId) => {
-      const layer = findLayerById(layerId);
-      if (layer) onLayerToggle(layer, true);
+    Object.entries(initialCheckedState).forEach(([leafId, val]) => {
+      const layer = findLayerById(leafId);
+      if (layer) onLayerToggle(layer, !!val);
     });
-  }, [initialCheckedState]);
+  }, []);
 
-  const handleParentChange = (parentLayer, isChecked) => {
-    const childUpdates = {};
-    parentLayer.children.forEach((child) => {
-      childUpdates[child.id] = isChecked;
-      onLayerToggle(child, isChecked);
+  // Toggle a node (group, parent, or leaf) -> affects only leaves
+  const toggleNode = (node, isChecked) => {
+    const leaves = leafIdsOf(node);
+
+    setCheckedState((prev) => {
+      const updates = {};
+      leaves.forEach((id) => (updates[id] = isChecked));
+      return { ...prev, ...updates };
     });
-    setCheckedState((prev) => ({ ...prev, ...childUpdates }));
-  };
-  
-  const handleGroupChange = (groupLayer, isChecked) => {
-    const childUpdates = {};
-    groupLayer.children.forEach((subParent) => {
-      if (subParent.children) {
-        subParent.children.forEach((child) => {
-          childUpdates[child.id] = isChecked;
-          onLayerToggle(child, isChecked);
-        });
-      }
+
+    leaves.forEach((leafId) => {
+      const layer = findLayerById(leafId);
+      if (layer) onLayerToggle(layer, isChecked);
     });
-    setCheckedState((prev) => ({ ...prev, ...childUpdates }));
   };
 
-  const handleGroupToggle = (groupId) => {
+  const computeNodeState = (node) => {
+    const leaves = leafIdsOf(node);
+    const count = leaves.filter((id) => !!checkedState[id]).length;
+    return {
+      checked: count > 0 && count === leaves.length,
+      indeterminate: count > 0 && count < leaves.length,
+    };
+  };
+
+  const handleGroupToggle = (groupId) =>
     setOpenGroups((prev) => ({ ...prev, [groupId]: !prev[groupId] }));
-  };
 
+  // Dropdown: switch parent nodes (turn off previous, turn on new)
   const handleDropdownChange = (event, theme) => {
-    const newSelectedParentId = event.target.value;
-    const currentSelection = dropdownSelection[theme.theme];
+    const newParentId = event.target.value;
+    const prevParentId = dropdownSelection[theme.theme];
 
-    if (currentSelection !== "none") {
-      const prevParentLayer = theme.layers.find(
-        (l) => l.id === currentSelection
-      );
-      if (prevParentLayer) handleParentChange(prevParentLayer, false);
+    if (prevParentId && prevParentId !== "none") {
+      const prevParent = theme.layers.find((l) => l.id === prevParentId);
+      if (prevParent) toggleNode(prevParent, false);
     }
 
-    setDropdownSelection((prev) => ({
-      ...prev,
-      [theme.theme]: newSelectedParentId,
-    }));
+    setDropdownSelection((prev) => ({ ...prev, [theme.theme]: newParentId }));
 
-    if (newSelectedParentId !== "none") {
-      const newParentLayer = theme.layers.find(
-        (l) => l.id === newSelectedParentId
-      );
-      if (newParentLayer) handleParentChange(newParentLayer, true);
+    if (newParentId !== "none") {
+      const nextParent = theme.layers.find((l) => l.id === newParentId);
+      if (nextParent) toggleNode(nextParent, true);
     }
   };
 
@@ -121,9 +114,9 @@ export const useLayerControl = (onLayerToggle) => {
     checkedState,
     openGroups,
     dropdownSelection,
-    handleParentChange,
-    handleGroupChange, 
-    handleGroupToggle, 
+    toggleNode,
+    computeNodeState,
+    handleGroupToggle,
     handleDropdownChange,
   };
 };

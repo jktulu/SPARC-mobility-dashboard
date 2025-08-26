@@ -1,103 +1,112 @@
 import { useCallback, useEffect, useState } from "react";
-import { flattenLayers, layerConfig } from "../../../../config/map/mainLayerConfig";
+import { layerConfig } from "../../../../config/map/mainLayerConfig";
 
+// Helper function to  get all layers
+const getAllLayers = (layers) => {
+  let result = [];
+  layers.forEach((layer) => {
+    result.push(layer);
+    if (layer.children) {
+      result = result.concat(getAllLayers(layer.children));
+    }
+  });
+  return result;
+};
+
+// Helper function to get all symbol layers with icons
+const getSymbolLayersWithIcons = (layers) => {
+  return getAllLayers(layers).filter(
+    (layer) => layer.type === "symbol" && layer.icon
+  );
+};
+
+// Custom hooks for map logic
 const useMapLogic = (visibleLayers, mapRef) => {
   const [geoJsonData, setGeoJsonData] = useState({});
   const [isFetching, setIsFetching] = useState(false);
   const [popupInfo, setPopupInfo] = useState(null);
-  const [selectedRouteId, setSelectedRouteId] = useState(null);
+  const [selectedRouteId, setSelectedRouteId] = useState(null); // or bus routes highlighting when selected
   const [error, setError] = useState(null);
 
-  // Fetch GeoJSON data for all visible layers
+  // Fetch GeoJSON data
   useEffect(() => {
-    const fetchDataForVisibleLayers = async () => {
-      const newLayersToFetch = visibleLayers.filter(
+    const fetchData = async () => {
+      const layersToFetch = visibleLayers.filter(
         (layer) => !geoJsonData[layer.file]
       );
-      if (newLayersToFetch.length === 0) return;
+      if (layersToFetch.length === 0) return;
 
       setIsFetching(true);
-      setError(null); // Reset error state on new fetch
+      setError(null);
+
       try {
-        const promises = newLayersToFetch.map((layer) =>
+        const promises = layersToFetch.map((layer) =>
           fetch(layer.file)
             .then((res) => {
-              if (!res.ok) {
-                throw new Error(`Failed to fetch ${layer.file}`);
-              }
+              if (!res.ok) throw new Error(`Failed to fetch ${layer.file}`);
               return res.json();
             })
             .then((data) => ({ file: layer.file, data }))
         );
+
         const results = await Promise.all(promises);
-        const newDataMap = results.reduce((acc, { file, data }) => {
+        const newData = results.reduce((acc, { file, data }) => {
           acc[file] = data;
           return acc;
         }, {});
-        setGeoJsonData((prev) => ({ ...prev, ...newDataMap }));
+        setGeoJsonData((prev) => ({ ...prev, ...newData }));
       } catch (err) {
-        console.error("Error fetching GeoJSON data:", err);
+        console.error("Error fetching GeoJSON:", err);
         setError("Could not load map data. Please try again later.");
       } finally {
         setIsFetching(false);
       }
     };
-    fetchDataForVisibleLayers();
+
+    fetchData();
   }, [visibleLayers, geoJsonData]);
 
-  // Load icons for all layers
+  // Load icons for all symbol layers
   const loadMapIcons = useCallback((map) => {
     if (!map) return;
-    const allLayers = flattenLayers(layerConfig);
-    const iconsToLoad = allLayers
-      .filter((layer) => layer.type === "symbol" && layer.icon)
-      .reduce((uniqueIcons, layer) => {
-        if (!uniqueIcons.has(layer.icon.id)) {
-          uniqueIcons.set(layer.icon.id, layer.icon.url);
-        }
-        return uniqueIcons;
-      }, new Map());
 
-    const iconLoadPromises = Array.from(iconsToLoad.entries()).map(
+    const allLayers = layerConfig.flatMap((theme) => theme.layers);
+    const symbolLayers = getSymbolLayersWithIcons(allLayers);
+
+    const iconsToLoad = new Map();
+    symbolLayers.forEach((layer) => {
+      if (!iconsToLoad.has(layer.icon.id)) {
+        iconsToLoad.set(layer.icon.id, layer.icon.url);
+      }
+    });
+
+    const iconPromises = Array.from(iconsToLoad.entries()).map(
       ([id, url]) =>
         new Promise((resolve, reject) => {
           if (map.hasImage(id)) return resolve(id);
-          map.loadImage(url, (error, image) => {
-            if (error) return reject(error);
-            if (!map.hasImage(id)) map.addImage(id, image);
+          map.loadImage(url, (err, img) => {
+            if (err) return reject(err);
+            if (!map.hasImage(id)) map.addImage(id, img);
             resolve(id);
           });
         })
     );
-    Promise.all(iconLoadPromises).catch((err) => {
-      console.error("An error occurred while loading icons.", err);
+
+    Promise.all(iconPromises).catch((err) => {
+      console.error("Error loading icons:", err);
       setError("Could not load map icons.");
     });
   }, []);
 
-  // Handle style data event to load icons only when the map style is ready
-  useEffect(() => {
-    const map = mapRef.current?.getMap();
-    if (!map) return;
-    const handleStyleData = () => {
-      const currentMap = mapRef.current?.getMap();
-      if (currentMap && currentMap.isStyleLoaded()) {
-        loadMapIcons(currentMap);
-      }
-    };
-    map.on("styledata", handleStyleData);
-    return () => map.off("styledata", handleStyleData);
-  }, [loadMapIcons, mapRef]);
-
-  // Handle map click to show popup and highlight bus routes
+  // Handle map click for popup and bus route highlighting
   const handleMapClick = useCallback(
     (event) => {
       const map = mapRef.current?.getMap();
       if (!map || !event.features) return;
 
-      const feature = event.features?.[0];
+      const feature = event.features[0]; // Topmost item considered only
 
-      // Always deselect the previous route first
+      // Deselect previous bus route
       if (selectedRouteId !== null && map.getSource("bus-routes")) {
         map.setFeatureState(
           { source: "bus-routes", id: selectedRouteId },
@@ -105,32 +114,33 @@ const useMapLogic = (visibleLayers, mapRef) => {
         );
         setSelectedRouteId(null);
       }
-
+      // If no feature clicked, close popup
       if (!feature) {
         setPopupInfo(null);
         return;
       }
-
-      // Handle bus route selection
+      // Highlight selected bus route
       if (feature.layer.id === "bus-routes") {
-        const newSelectedRouteId = feature.id;
+        const newId = feature.id;
         map.setFeatureState(
-          { source: "bus-routes", id: newSelectedRouteId },
+          { source: "bus-routes", id: newId },
           { selected: true }
         );
-        setSelectedRouteId(newSelectedRouteId);
+        setSelectedRouteId(newId);
       }
 
-      // Handle popup creation
-      const allLayers = flattenLayers(layerConfig);
-      const clickedLayer = allLayers.find((l) => l.id === feature.layer.id);
+      // Show popup if tooltipProperties exist
+      const allLayers = layerConfig.flatMap((theme) => theme.layers);
+      const clickedLayer = getAllLayers(allLayers).find(
+        (l) => l.id === feature.layer.id
+      );
 
       if (clickedLayer?.tooltipProperties) {
         setPopupInfo({
           longitude: event.lngLat.lng,
           latitude: event.lngLat.lat,
           layer: clickedLayer,
-          feature: feature,
+          feature,
         });
       } else {
         setPopupInfo(null);

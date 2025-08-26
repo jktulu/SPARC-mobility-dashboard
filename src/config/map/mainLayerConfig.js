@@ -473,29 +473,4 @@ export const layerConfig = [
       },
     ],
   },
-];
-
-// Helpers to flatten the layer
-export const flattenLayers = (config) => {
-  let allLayers = [];
-  config.forEach((theme) => {
-    theme.layers.forEach((layer) => {
-      if (layer.children) {
-        if (layer.isGroup) {
-          layer.children.forEach((childOfGroup) => {
-            if (childOfGroup.children) {
-              allLayers = allLayers.concat(childOfGroup.children);
-            } else {
-              allLayers.push(childOfGroup);
-            }
-          });
-        } else {
-          allLayers = allLayers.concat(layer.children);
-        }
-      } else {
-        allLayers.push(layer);
-      }
-    });
-  });
-  return allLayers;
-};
+]

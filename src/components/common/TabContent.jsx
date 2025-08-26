@@ -1,20 +1,43 @@
-import { Box, Link, Typography } from "@mui/material";
+import AssessmentIcon from "@mui/icons-material/Assessment";
+import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
+import MapIcon from "@mui/icons-material/Map";
+import MenuBookIcon from "@mui/icons-material/MenuBook";
+import { Link, Typography } from "@mui/material";
 
-const content = {
+const tabContent = {
   map: {
+    id: "map",
+    text: "Mobility Map",
+    icon: <MapIcon />,
     title: "Explore public transport in the Jaipur District",
-    description:
-      "With this interactive map, you can view bus, metro and train routes and stops. Contextualise the networks by adding administrative boundaries or urban activities.",
+    description: (
+      <Typography color="text.primary" gutterBottom>
+        With this interactive map, you can view bus, metro and train routes and
+        stops. Contextualise the networks by adding administrative boundaries or
+        urban activities.
+      </Typography>
+    ),
   },
   goals: {
+    id: "goals",
+    text: "Mobility Scorecard",
+    icon: <AssessmentIcon />,
     title: "Tracking Progress",
-    description:
-      "Track progress against mobility goals (aka Key Performance Indicators) that were deemed pressing in Jaipur. Explore their definitions, metrics and evolution, where this information is available.",
+    description: (
+      <Typography color="text.primary" gutterBottom>
+        Track progress against mobility goals (aka Key Performance Indicators)
+        that were deemed pressing in Jaipur. Explore their definitions, metrics
+        and evolution, where this information is available.
+      </Typography>
+    ),
   },
   catalogue: {
+    id: "catalogue",
+    text: "Data Catalogue",
+    icon: <MenuBookIcon />,
     title: "Screening for Open Data",
     description: (
-      <>
+      <Typography color="text.primary" gutterBottom>
         Explore our meta-data catalogue of data sets related to transport and
         mobility in Jaipur, which is aligned with the meta-data standards set
         out in India's{" "}
@@ -28,15 +51,18 @@ const content = {
         . Whether you are a planner, researcher or resident seeking to stay
         informed, we invite you to search, browse, check access and identify
         evidence gaps. Shape the debate of data sharing in the city.
-      </>
+      </Typography>
     ),
   },
   about: {
+    id: "about",
+    text: "About the Initiative",
+    icon: <InfoOutlinedIcon />,
     title: "About the Initiative",
     description: (
       <>
-        <Typography variant="body1" color="text.primary" gutterBottom>
-          The Smart Mobility Hub is a collaboration between the{" "}
+        <Typography color="text.primary" gutterBottom>
+          Jaipur Mobility Observatory is a collaboration between the{" "}
           <Link
             href="https://www.ucl.ac.uk/bartlett/casa"
             target="_blank"
@@ -64,11 +90,13 @@ const content = {
           the urban data landscape for one of India's smart cities. In parallel,
           we engaged with local urban stakeholders to define 16 Key Performance
           Indicators (KPIs) that reflect urgent mobility priorities in Jaipur.
+        </Typography>
+        <Typography variant="body1" color="text.primary" gutterBottom>
           This foundational work enables planners and policymakers to identify
           both existing data resources and critical gaps that hinder tracking of
           progress and effective decision-making. Ultimately, the Jaipur
-          Mobility Insights Hub aims to spark a city-wide conversation about
-          data sharing and collaboration to advance sustainable, inclusive and
+          Mobility Observatory aims to spark a city-wide conversation about data
+          sharing and collaboration to advance sustainable, inclusive and
           'datasmart' mobility in Jaipur.
         </Typography>
       </>
@@ -76,26 +104,4 @@ const content = {
   },
 };
 
-const LayerDescription = ({ activeLayer }) => {
-  const activeContent = content[activeLayer];
-  if (!activeContent) {
-    return null;
-  }
-
-  return (
-    <Box>
-      <Typography variant="h4" gutterBottom sx={{ color: "primary.dark" }}>
-        {activeContent.title}
-      </Typography>
-      {typeof activeContent.description === "string" ? (
-        <Typography variant="body1" color="text.primary">
-          {activeContent.description}
-        </Typography>
-      ) : (
-        activeContent.description
-      )}
-    </Box>
-  );
-};
-
-export default LayerDescription;
+export default tabContent;

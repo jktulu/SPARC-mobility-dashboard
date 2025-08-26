@@ -3,6 +3,7 @@ import { Box, IconButton, Paper } from "@mui/material";
 import "mapbox-gl/dist/mapbox-gl.css";
 import { useState } from "react";
 
+// Components
 import BigMap from "./components/BigMap";
 import LayerControl from "./components/LayerControl";
 
@@ -36,6 +37,7 @@ const MobilityMap = () => {
         <Box
           sx={{
             position: "absolute",
+            left: 0,
             top: "50%",
             zIndex: 2,
             display: "flex",

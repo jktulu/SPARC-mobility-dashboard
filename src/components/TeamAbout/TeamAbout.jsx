@@ -64,13 +64,12 @@ const TeamAbout = () => {
 
   return (
     <Box>
-
       {/* Team */}
       <Box sx={{ mb: 4 }}>
         <Typography
-          variant="h4"
+          variant="h5"
           gutterBottom
-          sx={{ color: "primary.dark", mb: 2 }}
+          sx={{ color: "primary.main", mb: 2 }}
         >
           Contributors
         </Typography>
@@ -83,7 +82,7 @@ const TeamAbout = () => {
                 flexDirection: "row",
                 my: 2,
               }}
-              size={{ xs: 12, sm: 6, md: 4 , lg: 3}}
+              size={{ xs: 12, sm: 6, md: 4, lg: 3 }}
             >
               <Avatar
                 alt={member.name}
@@ -112,7 +111,7 @@ const TeamAbout = () => {
 
       {/* Highlights */}
       <Box>
-        <Typography variant="h4" sx={{ color: "primary.dark", mb: 2 }}>
+        <Typography variant="h5" sx={{ color: "primary.main", mb: 2 }}>
           News & Highlights
         </Typography>
         <Grid>

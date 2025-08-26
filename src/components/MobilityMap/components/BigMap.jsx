@@ -3,10 +3,9 @@ import "mapbox-gl/dist/mapbox-gl.css";
 import { useCallback, useRef, useState } from "react";
 import { default as MapGL } from "react-map-gl/mapbox";
 
+import { layerConfig } from "../../../config/map/mainLayerConfig";
 import MapControls from "./mapComponents/MapControls";
 import MapLayers from "./mapComponents/MapLayers";
-import MapLegendProp from "./mapComponents/MapLegendProp";
-import { flattenLayers, layerConfig } from "../../../config/map/mainLayerConfig";
 import useMapLogic from "./mapHooks/useMapLogic";
 
 const MAPBOX_TOKEN = import.meta.env.VITE_MAPBOX_TOKEN;
@@ -16,9 +15,8 @@ const baseLayers = [
   { label: "Dark", value: "mapbox://styles/mapbox/dark-v11" },
 ];
 
-const LoadingSpinner = ({ isFetching }) => {
-  if (!isFetching) return null;
-  return (
+const LoadingSpinner = ({ isFetching }) =>
+  isFetching ? (
     <Box
       sx={{
         position: "absolute",
@@ -30,14 +28,23 @@ const LoadingSpinner = ({ isFetching }) => {
     >
       <CircularProgress />
     </Box>
-  );
+  ) : null;
+
+const getAllLayerIds = (layers) => {
+  return layers.reduce((acc, layer) => {
+    acc.push(layer.id);
+    if (layer.children) {
+      acc.push(...getAllLayerIds(layer.children));
+    }
+    return acc;
+  }, []);
 };
 
 const BigMap = ({ visibleLayers }) => {
   const mapRef = useRef(null);
   const [mapStyle, setMapStyle] = useState(baseLayers[0].value);
   const [viewport, setViewport] = useState({
-    longitude: 75.787,
+    longitude: 75.787, // Jaipur
     latitude: 26.912,
     zoom: 11,
     bearing: 0,
@@ -45,14 +52,8 @@ const BigMap = ({ visibleLayers }) => {
   });
   const [bearing, setBearing] = useState(0);
 
-  const {
-    geoJsonData,
-    isFetching,
-    popupInfo,
-    setPopupInfo,
-    loadMapIcons,
-    handleMapClick,
-  } = useMapLogic(visibleLayers, mapRef);
+  const { geoJsonData, isFetching, popupInfo, setPopupInfo, loadMapIcons, handleMapClick } =
+    useMapLogic(visibleLayers, mapRef);
 
   const handleMapLoad = useCallback(
     (event) => {
@@ -68,9 +69,10 @@ const BigMap = ({ visibleLayers }) => {
     mapRef.current?.easeTo({ bearing: 0, pitch: 0 });
   }, []);
 
+  const interactiveLayerIds = layerConfig.flatMap((theme) => getAllLayerIds(theme.layers));
+
   return (
     <Box sx={{ height: "100%", width: "100%", position: "relative" }}>
-      {/* Load map */}
       <LoadingSpinner isFetching={isFetching} />
       <MapGL
         ref={mapRef}
@@ -84,10 +86,9 @@ const BigMap = ({ visibleLayers }) => {
         style={{ width: "100%", height: "100%" }}
         mapStyle={mapStyle}
         mapboxAccessToken={MAPBOX_TOKEN}
-        interactiveLayerIds={flattenLayers(layerConfig).map((l) => l.id)}
+        interactiveLayerIds={interactiveLayerIds}
         cursor="pointer"
       >
-        {/* Draw layers + popup */}
         <MapLayers
           visibleLayers={visibleLayers}
           geoJsonData={geoJsonData}
@@ -96,7 +97,6 @@ const BigMap = ({ visibleLayers }) => {
         />
       </MapGL>
 
-      {/* Map controls and UI */}
       <MapControls
         mapStyle={mapStyle}
         onStyleChange={(e, newStyle) => newStyle && setMapStyle(newStyle)}
@@ -104,7 +104,6 @@ const BigMap = ({ visibleLayers }) => {
         onResetNorth={handleResetNorth}
         baseLayers={baseLayers}
       />
-      {/* <MapLegendProp visibleLayers={visibleLayers} /> */}
     </Box>
   );
 };

@@ -1,6 +1,5 @@
-import ExpandLess from "@mui/icons-material/ExpandLess";
-import ExpandMore from "@mui/icons-material/ExpandMore";
-import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
+// LayerControl.jsx
+import { ExpandLess, ExpandMore, InfoOutlined } from "@mui/icons-material";
 import {
   Box,
   Checkbox,
@@ -8,219 +7,191 @@ import {
   FormControl,
   FormControlLabel,
   FormGroup,
+  IconButton,
+  InputLabel,
   MenuItem,
   Select,
   Tooltip,
   Typography,
-  InputLabel,
-  Input,
 } from "@mui/material";
 import { layerConfig } from "../../../config/map/mainLayerConfig";
 import { useLayerControl } from "./mapHooks/useLayerControl";
 
-const ParentLayerControl = ({ layer, checkedState, onParentChange }) => {
-  const childIds = layer.children.map((c) => c.id);
-  const checkedCount = childIds.filter((id) => checkedState[id]).length;
-  const isIndeterminate = checkedCount > 0 && checkedCount < childIds.length;
-  const isChecked = checkedCount === childIds.length;
+// --- Row component ---
+const Row = ({
+  node,
+  computeNodeState,
+  toggleNode,
+  openGroups,
+  onToggleGroup,
+  hideChildrenForParents = true,
+}) => {
+  const { checked, indeterminate } = computeNodeState(node);
+  const isGroup = !!node.isGroup;
+  const hasChildren = !!node.children?.length;
 
-  return (
-    <FormControlLabel
-      label={
-        <Box
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            flexDirection: "column",
-          }}
-        >
-          <Typography variant="body2">{layer.name}</Typography>
-          {layer.infobox && (
-            <Tooltip title={layer.infobox} arrow>
-              <InfoOutlinedIcon
-                sx={{ fontSize: "1rem", color: "text.secondary" }}
-              />
-            </Tooltip>
-          )}
-        </Box>
-      }
-      sx={{ my: -0.75 }} // Reduce vertical spacing near the checkbox
-      control={
-        <Checkbox
-          checked={isChecked}
-          indeterminate={isIndeterminate}
-          onChange={(e) => onParentChange(layer, e.target.checked)}
-        />
-      }
+  const control = (
+    <Checkbox
+      checked={checked}
+      indeterminate={indeterminate}
+      onChange={(e) => toggleNode(node, e.target.checked)}
     />
   );
-};
 
-const GroupLayerControl = ({
-  layer,
-  checkedState,
-  openGroups,
-  onGroupChange,
-  onGroupToggle,
-  onParentChange,
-}) => {
-  const allChildIds = layer.children.flatMap(
-    (c) => c.children?.map((sc) => sc.id) || []
+  const label = (
+    <Box sx={{ display: "flex", alignItems: "center", gap: 1, minWidth: 0 }}>
+      <Typography variant="body2" noWrap title={node.name}>
+        {node.name}
+      </Typography>
+      {node.infobox && (
+        <Tooltip title={node.infobox} arrow>
+          <InfoOutlined sx={{ fontSize: "1rem", color: "text.secondary" }} />
+        </Tooltip>
+      )}
+      {isGroup && (
+        <IconButton
+          size="small"
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            onToggleGroup(node.id);
+          }}
+        >
+          {openGroups[node.id] ? <ExpandLess /> : <ExpandMore />}
+        </IconButton>
+      )}
+    </Box>
   );
-  const checkedCount = allChildIds.filter((id) => checkedState[id]).length;
-  const isIndeterminate = checkedCount > 0 && checkedCount < allChildIds.length;
-  const isChecked = checkedCount > 0 && checkedCount === allChildIds.length;
 
   return (
     <>
       <FormControlLabel
-        control={
-          <Checkbox
-            checked={isChecked}
-            indeterminate={isIndeterminate}
-            onChange={(e) => onGroupChange(layer, e.target.checked)}
-          />
-        }
-        label={
-          <Box
-            sx={{
-              display: "flex",
-              alignItems: "center",
-            }}
-          >
-            <Typography variant="body2">{layer.name}</Typography>
-            <Box
-              component="span"
-              onClick={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                onGroupToggle(layer.id);
-              }}
-              sx={{ display: "flex", alignItems: "center", pl: 1 }}
-            >
-              {openGroups[layer.id] ? <ExpandLess /> : <ExpandMore />}
-            </Box>
-          </Box>
-        }
-        sx={{ width: "100%", my: -0.75 }} // Reduce vertical spacing near the checkbox
+        sx={{ width: "100%", my: -0.5 }}
+        control={control}
+        label={label}
       />
-      <Collapse in={openGroups[layer.id]} timeout="auto" unmountOnExit>
-        <Box sx={{ pl: 4 }}>
-          {layer.children.map((subLayer) => (
-            <ParentLayerControl
-              key={subLayer.id}
-              layer={subLayer}
-              checkedState={checkedState}
-              onParentChange={onParentChange}
-            />
-          ))}
-        </Box>
-      </Collapse>
+
+      {/* Render logic:
+          - Groups: show sub-parents only within Collapse
+          - Parents (non-group) with children: hide children
+          - Leaves: Do not render
+      */}
+      {hasChildren &&
+        (isGroup ? (
+          <Collapse in={!!openGroups[node.id]} timeout="auto" unmountOnExit>
+            <Box sx={{ pl: 4 }}>
+              {node.children.map((child) => (
+                <Row
+                  key={child.id}
+                  node={child}
+                  computeNodeState={computeNodeState}
+                  toggleNode={toggleNode}
+                  openGroups={openGroups}
+                  onToggleGroup={onToggleGroup}
+                  hideChildrenForParents={true}
+                />
+              ))}
+            </Box>
+          </Collapse>
+        ) : hideChildrenForParents ? null : (
+          <Box sx={{ pl: 4 }}>
+            {node.children.map((child) => (
+              <Row
+                key={child.id}
+                node={child}
+                computeNodeState={computeNodeState}
+                toggleNode={toggleNode}
+                openGroups={openGroups}
+                onToggleGroup={onToggleGroup}
+                hideChildrenForParents={hideChildrenForParents}
+              />
+            ))}
+          </Box>
+        ))}
     </>
   );
 };
 
-const DropdownGroup = ({ theme, selection, onChange }) => {
-  const selectedLayer = theme.layers.find((l) => l.id === selection);
-  return (
-    <>
-      <FormControl fullWidth size="small" sx={{ mt: 2 }}>
-        <InputLabel>
-          Select a layer
-        </InputLabel>
-        <Select
-          value={selection}
-          onChange={(e) => onChange(e, theme)}
-          label="Select a layer"
-          sx={{
-            "& .MuiSelect-select": {
-              py: 0.75,
-            },
-          }}
-        >
-          <MenuItem value="none" dense>
-            <Typography variant="caption" sx={{ fontStyle: "italic" }}>
-              None
-            </Typography>
-          </MenuItem>
-          {theme.layers.map((layer) => (
-            <MenuItem key={layer.id} value={layer.id} dense>
-              <Typography variant="caption">{layer.name}</Typography>
-            </MenuItem>
-          ))}
-        </Select>
-      </FormControl>
-      {selectedLayer?.infobox && (
-        <Typography
-          variant="caption"
-          color="text.secondary"
-          sx={{ mt: 1.5, display: "block", px: "8px", lineHeight: 1.2 }}
-        >
-          {selectedLayer.infobox}
-        </Typography>
-      )}
-    </>
-  );
-};
-
-// --- Main Component ---
+// --- MAIN LayerControl component ---
 const LayerControl = ({ onLayerToggle }) => {
   const {
     checkedState,
     openGroups,
     dropdownSelection,
-    handleParentChange,
-    handleGroupChange,
+    toggleNode,
+    computeNodeState,
     handleGroupToggle,
     handleDropdownChange,
   } = useLayerControl(onLayerToggle);
+  const checkedCount = Object.values(checkedState).filter(Boolean).length;
 
   return (
     <Box>
+      {/* <Typography variant="caption" sx={{ mb: 1 }}>
+        Checked layers: {checkedCount}
+      </Typography> */}
       {layerConfig.map((theme) => (
-        <Box key={theme.theme} sx={{ mb: 1 }}>
-          <Typography
-            variant="subtitle1"
-            sx={{ fontWeight: "bold", color: "secondary.main" }}
-          >
-            {theme.theme}
-          </Typography>
+        <Box key={theme.theme} sx={{ mb: 1.5 }}>
+          {theme.theme && (
+            <Typography
+              variant="subtitle1"
+              sx={{ fontWeight: "bold", color: "secondary.main", mb: 0.5 }}
+            >
+              {theme.theme}
+            </Typography>
+          )}
+          {/* If type === dropdown */}
           {theme.controlType === "dropdown" ? (
-            <DropdownGroup
-              theme={theme}
-              selection={dropdownSelection[theme.theme] || "none"}
-              onChange={handleDropdownChange}
-            />
+            <FormControl fullWidth size="small" sx={{ mt: 1 }}>
+              <InputLabel>Select a layer</InputLabel>
+              <Select
+                label="Select a layer"
+                value={dropdownSelection[theme.theme] || "none"}
+                onChange={(e) => handleDropdownChange(e, theme)}
+                sx={{ "& .MuiSelect-select": { py: 0.75 } }}
+              >
+                <MenuItem value="none">
+                  <Typography variant="caption" sx={{ fontStyle: "italic" }}>
+                    None
+                  </Typography>
+                </MenuItem>
+                {theme.layers.map((parent) => (
+                  <MenuItem key={parent.id} value={parent.id}>
+                    <Typography variant="caption">{parent.name}</Typography>
+                  </MenuItem>
+                ))}
+              </Select>
+              {(() => {
+                const selectedParent = theme.layers.find(
+                  (l) => l.id === dropdownSelection[theme.theme]
+                );
+                return selectedParent?.infobox ? (
+                  <Typography
+                    variant="caption"
+                    color="text.secondary"
+                    sx={{ mt: 1, display: "block", px: "8px", lineHeight: 1.2 }}
+                  >
+                    {selectedParent.infobox}
+                  </Typography>
+                ) : null;
+              })()}
+            </FormControl>
           ) : (
+            // Else, render as checkbox list
             <FormGroup>
               {theme.layers
-                .filter((layer) => layer.showInControl !== false)
-                .map((layer) => {
-                  if (layer.isGroup) {
-                    return (
-                      <GroupLayerControl
-                        key={layer.id}
-                        layer={layer}
-                        checkedState={checkedState}
-                        openGroups={openGroups}
-                        onGroupChange={handleGroupChange}
-                        onGroupToggle={handleGroupToggle}
-                        onParentChange={handleParentChange}
-                      />
-                    );
-                  }
-                  if (layer.children) {
-                    return (
-                      <ParentLayerControl
-                        key={layer.id}
-                        layer={layer}
-                        checkedState={checkedState}
-                        onParentChange={handleParentChange}
-                      />
-                    );
-                  }
-                  return null;
-                })}
+                .filter((node) => node.showInControl !== false)
+                .map((node) => (
+                  <Row
+                    key={node.id}
+                    node={node}
+                    computeNodeState={computeNodeState}
+                    toggleNode={toggleNode}
+                    openGroups={openGroups}
+                    onToggleGroup={handleGroupToggle}
+                    hideChildrenForParents={true}
+                  />
+                ))}
             </FormGroup>
           )}
         </Box>
