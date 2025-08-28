@@ -1,5 +1,6 @@
 # Technical Handover Guide 
-**Project name:** Jaipur Mobility Observatory (UCL, MNIT)
+- **Project name:** Jaipur Mobility Observatory (UCL, MNIT)
+- **GitHub repo:** https://github.com/shaunhoang/mobility-dash/
 
 ## Table of Contents
 1. Project Overview
