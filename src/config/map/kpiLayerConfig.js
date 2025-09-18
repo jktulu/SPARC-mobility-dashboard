@@ -8,19 +8,25 @@ export const layerConfig = {
       "fill-color": [
         "interpolate",
         ["linear"],
-        ["get", "kpi_value"],
-        100, "#feebe2",
-        300, "#f768a1",
-        500, "#7a0177",
+        ["get", "pct_accessible"],
+        10, "#f7fbff",
+        20, "#deebf7",
+        30, "#c6dbef",
+        40, "#9ecae1",
+        50, "#6baed6",
+        60, "#4292c6",
+        70, "#2171b5",
+        80, "#08519c",
+        90, "#08306b"
       ],
       "fill-opacity": 0.8,
       "fill-outline-color": "#333333",
     },
     tooltipProperties: [
       {
-        label: "Density: ",
-        property: "kpi_value",
-        suffix: " /ha"
+        label: "Pop% with transit access: ",
+        property: "pct_accessible",
+        suffix: "%"
       },
     ],
   },
