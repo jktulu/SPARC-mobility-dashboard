@@ -21,7 +21,10 @@ const CatalogueListItem = ({ item, onClick }) => (
       }}
     >
       {/* Left: Content panel */}
-      <Grid size={{ sm: 12, md: 9 }} sx={{ pr: { md: 2 }, mb: { sm: 2, md: 0 } }}>
+      <Grid
+        size={{ sm: 12, md: 9 }}
+        sx={{ pr: { md: 2 }, mb: { sm: 2, md: 0 } }}
+      >
         <Box
           sx={{
             display: "flex",

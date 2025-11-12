@@ -29,7 +29,7 @@ const KpiRow = ({ kpis = [], onKpiSelect, selectedKpiCode }) => {
 
           return (
             <Grid
-              size={{ xs: 12, sm: 6, md: 4, lg: 3 }}
+              size={{ xs: 12, sm: 6, md: 4 }}
               key={kpi.code}
             >
               <Paper
@@ -57,6 +57,7 @@ const KpiRow = ({ kpis = [], onKpiSelect, selectedKpiCode }) => {
                     textAlign: "right",
                     display: "flex",
                     alignItems: "center",
+                    justifyContent: "flex-end",
                     pl: 0.5,
                     pr:0.5,
                   }}

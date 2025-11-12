@@ -14,40 +14,11 @@ import {
 import MetadataTable from "./MetadataTable";
 import pathConfig from "../../../config/path/pathConfig";
 
-const DetailsDrawer = ({ item, open, onClose }) => {
+const DetailsDrawer = ({ item, open, onClose, kpiDetails, kpiDomains }) => {
   const theme = useTheme();
   const domainColorMap = theme.kpiColorMap;
 
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
-  const [kpiDomains, setKpiDomains] = useState([]);
-  const [kpiDetails, setKpiDetails] = useState({});
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(null);
-
-  useEffect(() => {
-    Promise.all([
-      fetch(pathConfig.KPI_DOMAINS_PATH),
-      fetch(pathConfig.KPI_DETAILS_PATH),
-    ])
-      .then(async ([domainsResponse, detailsResponse]) => {
-        if (!domainsResponse.ok || !detailsResponse.ok) {
-          throw new Error("Network response was not ok for one or more files.");
-        }
-        const domainsData = await domainsResponse.json();
-        const detailsData = await detailsResponse.json();
-        return [domainsData, detailsData];
-      })
-      .then(([domainsData, detailsData]) => {
-        setKpiDomains(domainsData);
-        setKpiDetails(detailsData);
-        setIsLoading(false);
-      })
-      .catch((fetchError) => {
-        console.error("Failed to fetch initial data:", fetchError);
-        setError("Could not load required data. Please try again later.");
-        setIsLoading(false);
-      });
-  }, []);
 
   if (!item) return null;
 
@@ -97,14 +68,6 @@ const DetailsDrawer = ({ item, open, onClose }) => {
               <Typography variant="body1" color="text.secondary" sx={{ mr: 1 }}>
                 <strong>KPI:</strong>
               </Typography>
-              {isLoading && (
-                <Typography variant="body2">Loading KPIs...</Typography>
-              )}
-              {error && (
-                <Typography variant="body2" color="error">
-                  {error}
-                </Typography>
-              )}
               {!item.linked_to_kpi && (
                 <Typography
                   variant="body2"
@@ -113,8 +76,7 @@ const DetailsDrawer = ({ item, open, onClose }) => {
                   N/A
                 </Typography>
               )}
-              {!isLoading &&
-                !error &&
+              {kpiDetails &&
                 item.linked_to_kpi &&
                 (typeof item.linked_to_kpi === "string"
                   ? item.linked_to_kpi.split(",")
@@ -140,7 +102,7 @@ const DetailsDrawer = ({ item, open, onClose }) => {
                       size="small"
                       sx={{
                         backgroundColor: chipColor,
-                        color: theme.palette.getContrastText(chipColor),
+                        color: "white",
                         mr: 0.5,
                         mb: 0.5,
                       }}

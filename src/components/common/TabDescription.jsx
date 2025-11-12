@@ -1,9 +1,16 @@
+import { useState } from "react";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
-import { Box, Typography } from "@mui/material";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import { Box, Collapse, IconButton, Typography } from "@mui/material";
 
-const TabDescription = ({ activeLayer , tabContent }
-) => {
+const TabDescription = ({ activeLayer, tabContent }) => {
+  const [expanded, setExpanded] = useState(true);
   const activeContent = tabContent[activeLayer];
+
+  const handleToggle = () => {
+    setExpanded(!expanded);
+  };
+
   if (!activeContent) return null;
 
   return (
@@ -20,23 +27,44 @@ const TabDescription = ({ activeLayer , tabContent }
         <InfoOutlinedIcon
           sx={{
             position: "absolute",
-            left: -14, 
+            left: -14,
             top: 14,
             color: "primary.main",
-            backgroundColor: "background.default", 
+            backgroundColor: "background.default",
             borderRadius: "50%",
           }}
         />
-        <Typography variant="h5" fontWeight="bold" color="primary.main" mb={1}>
-          {activeContent.title}
-        </Typography>
-        {typeof activeContent.description === "string" ? (
-          <Typography variant="body2" color="text.secondary">
-            {activeContent.description}
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            cursor: "pointer",
+          }}
+          onClick={handleToggle}
+        >
+          <Typography variant="h5" fontWeight="bold" color="primary.main">
+            {activeContent.title}
           </Typography>
-        ) : (
-          activeContent.description
-        )}
+          <IconButton size="small">
+            <ExpandMoreIcon
+              sx={{
+                transform: expanded ? "rotate(0deg)" : "rotate(-90deg)",
+                transition: "transform 0.2s",
+              }}
+            />
+          </IconButton>
+        </Box>
+        
+        <Collapse in={expanded}>
+          {typeof activeContent.description === "string" ? (
+            <Typography variant="body2" color="text.secondary" sx={{ pt: 1 }}>
+              {activeContent.description}
+            </Typography>
+          ) : (
+            <Box sx={{ pt: 1 }}>{activeContent.description}</Box>
+          )}
+        </Collapse>
       </Box>
     </Box>
   );

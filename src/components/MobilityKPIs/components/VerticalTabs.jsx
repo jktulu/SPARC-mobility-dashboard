@@ -31,7 +31,7 @@ const VerticalTabs = ({ tabs, onTabChange, activeTab }) => {
       >
         <Tabs
           orientation="vertical"
-          variant="scrollable"
+          variant="fullWidth"
           value={activeTab !== null ? activeTab : false}
           onChange={handleChange}
         >
@@ -48,6 +48,7 @@ const VerticalTabs = ({ tabs, onTabChange, activeTab }) => {
           ))}
         </Tabs>
       </Paper>
+
       {/* Button */}
       <Box sx={{ display: "flex", justifyContent: "center" }}>
         <Button

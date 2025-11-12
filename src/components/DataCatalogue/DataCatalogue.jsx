@@ -18,6 +18,8 @@ import pathConfig from "../../config/path/pathConfig";
 
 const DataCatalogue = () => {
   const [datasets, setDatasets] = useState([]);
+  const [kpiDomains, setKpiDomains] = useState([]);
+  const [kpiDetails, setKpiDetails] = useState({});
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
@@ -26,6 +28,7 @@ const DataCatalogue = () => {
     granularity: [],
     sector: [],
     lastupdate: [],
+    kpi: [],
   });
   const [showFilters, setShowFilters] = useState(false);
   const [selectedDataset, setSelectedDataset] = useState(null);
@@ -35,54 +38,104 @@ const DataCatalogue = () => {
 
   // Data fetching
   useEffect(() => {
-    fetch(pathConfig.DATA_CATALOGUE_PATH)
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Cannot connnect to the server");
+    Promise.all([
+      fetch(pathConfig.DATA_CATALOGUE_PATH),
+      fetch(pathConfig.KPI_DOMAINS_PATH),
+      fetch(pathConfig.KPI_DETAILS_PATH),
+    ])
+      .then(async ([datasetsResponse, domainsResponse, detailsResponse]) => {
+        if (
+          !datasetsResponse.ok ||
+          !domainsResponse.ok ||
+          !detailsResponse.ok
+        ) {
+          throw new Error("Network response was not ok for one or more files.");
         }
-        return response.json();
+        const datasetsData = await datasetsResponse.json();
+        const domainsData = await domainsResponse.json();
+        const detailsData = await detailsResponse.json();
+        return [datasetsData, domainsData, detailsData];
       })
-      .then((data) => {
-        setDatasets(data);
+      .then(([datasetsData, domainsData, detailsData]) => {
+        setDatasets(datasetsData);
+        setKpiDomains(domainsData);
+        setKpiDetails(detailsData);
         setIsLoading(false);
       })
       .catch((fetchError) => {
-        console.error("Failed to fetch data catalogue:", fetchError);
-        setError("Could not load the data catalogue. Please try again later.");
+        console.error("Failed to fetch KPI data:", fetchError);
+        setError("Could not load required KPI data. Please try again later.");
         setIsLoading(false);
       });
   }, []);
 
   // Populate filter options based on fetched data
   const filterOptions = useMemo(() => {
-    if (!datasets || datasets.length === 0) {
-      return { formats: [], granularities: [], sectors: [], lastupdates: [] };
+    if (
+      !datasets ||
+      datasets.length === 0 ||
+      Object.keys(kpiDetails).length === 0
+    ) {
+      return {
+        formats: [],
+        granularities: [],
+        sectors: [],
+        lastupdates: [],
+        kpis: [],
+      };
     }
 
     const formats = new Set();
     const granularities = new Set();
     const sectors = new Set();
     const lastupdates = new Set();
+    const kpis = new Set();
 
     datasets.forEach((item) => {
       if (item.format) formats.add(item.format);
-      if (item.granularity__spatial)
-        granularities.add(item.granularity__spatial);
+      if (item.granularity__spatial) granularities.add(item.granularity__spatial);
       if (item.sector) sectors.add(item.sector);
       if (item.lastupdate) lastupdates.add(item.lastupdate);
+      if (item.linked_to_kpi) {
+        item.linked_to_kpi
+          .split(",")
+          .map((kpi) => kpi.trim())
+          .filter(Boolean)
+          .forEach((kpiCode) => {
+            if (kpiDetails[kpiCode]) {
+              const domain = kpiDomains.find((d) => d.kpis.includes(kpiCode));
+              if (domain) {
+                kpis.add(
+                  JSON.stringify({
+                    value: kpiCode,
+                    label: `${kpiDetails[kpiCode].title}`,
+                    domainId: domain.id,
+                  })
+                );
+              }
+            }
+          });
+      }
     });
 
     return {
       formats: [...formats].sort(),
       granularities: [...granularities].sort(),
       sectors: [...sectors].sort(),
+      kpis: [...kpis]
+        .map((item) => JSON.parse(item))
+        .sort((a, b) => {
+          if (a.domainId < b.domainId) return -1;
+          if (a.domainId > b.domainId) return 1;
+          return a.label.localeCompare(b.label);
+        }),
       lastupdates: [...lastupdates].sort((a, b) => {
         const numA = parseInt(a.match(/\d+/)[0], 10);
         const numB = parseInt(b.match(/\d+/)[0], 10);
         return numA - numB;
       }),
     };
-  }, [datasets]);
+  }, [datasets, kpiDetails]);
 
   // Event handlers
   const handleItemClick = (item) => {
@@ -117,13 +170,20 @@ const DataCatalogue = () => {
       const lastupdateMatch =
         filters.lastupdate.length === 0 ||
         filters.lastupdate.includes(item.lastupdate);
+      const kpiMatch = // Match against the KPI code, not the label texts
+        filters.kpi.length === 0 ||
+        item.linked_to_kpi
+          ?.split(",")
+          .map((k) => k.trim())
+          .filter(Boolean) 
+          .some((kpiCode) => filters.kpi.includes(kpiCode));
 
       // Search query logic (searches title and description and sector and keywords)
       const searchMatch = query
         ? item.title.toLowerCase().includes(query) ||
           item.description.toLowerCase().includes(query) ||
           item.sector.toLowerCase().includes(query) ||
-          item.keywords.toLowerCase().includes(query) 
+          item.keywords.toLowerCase().includes(query)
         : true;
 
       return (
@@ -131,6 +191,7 @@ const DataCatalogue = () => {
         granularityMatch &&
         sectorMatch &&
         lastupdateMatch &&
+        kpiMatch &&
         searchMatch
       );
     });
@@ -243,6 +304,8 @@ const DataCatalogue = () => {
           item={selectedDataset}
           open={isDrawerOpen}
           onClose={handleDrawerClose}
+          kpiDetails={kpiDetails}
+          kpiDomains={kpiDomains}
         />
       </Box>
     </Box>

@@ -10,11 +10,78 @@ import {
   ListItemText,
   MenuItem,
   Select,
+  useTheme,
 } from "@mui/material";
 
+// Filter dropdown component (used in FilterBar)
+const FilterDropdown = ({ config, value, onChange, onDelete }) => {
+  const { name, label, options } = config;
+  const theme = useTheme();
+  const domainColorMap = theme.kpiColorMap;
+  const isKpi = name === "kpi";
+
+  return (
+    <FormControl fullWidth size="small">
+      <InputLabel id={`${name}-select-label`}>{label}</InputLabel>
+      <Select
+        labelId={`${name}-select-label`}
+        id={`${name}-select`}
+        name={name}
+        value={value}
+        label={label}
+        multiple
+        onChange={onChange}
+        renderValue={(selected) => {
+          const displayValues = isKpi
+            ? selected.map(
+                (val) => options.find((opt) => opt.value === val)?.label || val
+              )
+            : selected;
+
+          return (
+            <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
+              {displayValues.map((displayValue, index) => (
+                <Chip
+                  key={selected[index]}
+                  label={displayValue}
+                  size="small"
+                  onDelete={onDelete(name, selected[index])}
+                  onMouseDown={(event) => event.stopPropagation()}
+                />
+              ))}
+            </Box>
+          );
+        }}
+      >
+        {options.map((option) => {
+          const optionValue = isKpi ? option.value : option;
+          const optionLabel = isKpi ? option.label : option;
+          return (
+            <MenuItem key={optionValue} value={optionValue}>
+              {isKpi && (
+                <Box
+                  component="span"
+                  sx={{
+                    width: 15,
+                    height: 15,
+                    borderRadius: "50%",
+                    backgroundColor: domainColorMap[option.domainId] || theme.palette.grey[400],
+                    mr: 1.5
+                  }}
+              />              
+              )}
+              <Checkbox checked={value.includes(optionValue)} sx={{ p: 0, mr: 1 }} />
+              <ListItemText primary={optionLabel} />
+            </MenuItem>
+          );
+        })}
+      </Select>
+    </FormControl>
+  );
+};
+
+// Filter bar component
 const FilterBar = ({ filters, onFilterChange, filterOptions }) => {
-  // --- Event handlers ---
-  // Delete Chip
   const handleDelete = (filterName, valueToDelete) => () => {
     onFilterChange({
       ...filters,
@@ -23,7 +90,6 @@ const FilterBar = ({ filters, onFilterChange, filterOptions }) => {
       ),
     });
   };
-  // Filter Change and Clear
   const handleChange = (event) => {
     const { name, value } = event.target;
     onFilterChange({
@@ -43,64 +109,60 @@ const FilterBar = ({ filters, onFilterChange, filterOptions }) => {
   );
 
   // Filter configurations
-  const filterConfigs = [
-    { name: "sector", label: "Sector", options: filterOptions.sectors },
+  const mainFilterConfigs = [
+    {
+      name: "sector",
+      label: "Sector",
+      options: filterOptions.sectors,
+    },
     {
       name: "granularity",
       label: "Granularity",
       options: filterOptions.granularities,
     },
     {
+      name: "format",
+      label: "Format",
+      options: filterOptions.formats,
+    },
+    {
       name: "lastupdate",
       label: "Last Updated",
       options: filterOptions.lastupdates,
     },
-    { name: "format", label: "Format", options: filterOptions.formats },
   ];
+
+  const kpiFilterConfig = {
+    name: "kpi",
+    label: "Associated KPI",
+    options: filterOptions.kpis,
+  };
 
   // --- Rendering ---
   return (
     <Box>
+      {/* Main filters */}
       <Grid container sx={{ display: "flex", mt: 2 }} spacing={2}>
-        {filterConfigs.map((config) => (
-          <Grid size={{ xs: 12, sm: 6, md: 3 }} key={config.name}>
-            <FormControl fullWidth size="small">
-              <InputLabel id={`${config.name}-select-label`}>
-                {config.label}
-              </InputLabel>
-              <Select
-                labelId={`${config.name}-select-label`}
-                id={`${config.name}-select`}
-                name={config.name}
-                value={filters[config.name]}
-                label={config.label}
-                multiple
-                onChange={handleChange}
-                renderValue={(selected) => (
-                  <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
-                    {selected.map((value) => (
-                      <Chip
-                        key={value}
-                        label={value}
-                        size="small"
-                        onDelete={handleDelete(config.name, value)}
-                        onMouseDown={(event) => event.stopPropagation()}
-                      />
-                    ))}
-                  </Box>
-                )}
-              >
-                {/* Map over the options for the current filter */}
-                {config.options.map((option) => (
-                  <MenuItem key={option} value={option}>
-                    <Checkbox checked={filters[config.name].includes(option)} />
-                    <ListItemText primary={option} />
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
+        {mainFilterConfigs.map((config) => (
+          <Grid size={{ xs: 12, md: 6, lg: 3 }} key={config.name}>
+            <FilterDropdown
+              config={config}
+              value={filters[config.name]}
+              onChange={handleChange}
+              onDelete={handleDelete}
+            />
           </Grid>
         ))}
+
+        {/* KPI Filter*/}
+        <Grid size={12} key={kpiFilterConfig.name}>
+          <FilterDropdown
+            config={kpiFilterConfig}
+            value={filters.kpi}
+            onChange={handleChange}
+            onDelete={handleDelete}
+          />
+        </Grid>
       </Grid>
       <Box>
         <Button
