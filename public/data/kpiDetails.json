@@ -27,8 +27,8 @@
     "code": "A04",
     "title": "Cycling infrastructure coverage",
     "description": "The provision of cycling facilities at a minimum level of quality, including cycling lanes and storage.",
-    "stat": "xx",
-    "unit": "km",
+    "stat": "3.3",
+    "unit": "per cent",
     "target": "200km of protected cycling lanes"
   },
   "A05": {
