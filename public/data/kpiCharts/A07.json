@@ -1,5 +1,5 @@
 [
-  { "item": "Expenditure on transport by mode per capita (public transport)", "value": 1.255 },
-  { "item": "Expenditure on transport by mode per capita (NMT)", "value": 0.002 },
-  { "item": "Expenditure on transport by mode per capita (road and parking)", "value": 0.132 }
+  { "year": "Expenditure on transport by mode per capita (public transport)", "value": 1.255 },
+  { "year": "Expenditure on transport by mode per capita (NMT)", "value": 0.002 },
+  { "year": "Expenditure on transport by mode per capita (road and parking)", "value": 0.132 }
 ]
