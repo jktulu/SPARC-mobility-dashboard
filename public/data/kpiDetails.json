@@ -4,7 +4,7 @@
     "title": "Public transport fleet supply",
     "description": "The supply of public buses indicates the capacity of public transport given the population. If other public transport modes are available (e.g. metro), these could be converted into bus equivalents.",
     "stat": "3.5",
-    "unit": "buses/100k",
+    "unit": "buses per 100k people",
     "target": "60 buses per 100k people"
   },
   "A02": {
