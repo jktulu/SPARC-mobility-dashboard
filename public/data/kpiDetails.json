@@ -4,7 +4,7 @@
     "title": "Public transport fleet supply",
     "description": "The supply of public buses indicates the capacity of public transport given the population. If other public transport modes are available (e.g. metro), these could be converted into bus equivalents.",
     "stat": "3.5",
-    "unit": "buses per 100k people",
+    "unit": "per 100k people",
     "target": "60 buses per 100k people"
   },
   "A02": {
@@ -59,7 +59,7 @@
     "code": "A08",
     "title": "Local traffic flows",
     "description": "Enforcement of traffic rules and regulations will ensure less traffic disorders at locations with high density of activities. Data about traffic flow can be collected more easily using sensors and cameras.",
-    "stat": "117.15",
+    "stat": "117",
     "unit": "seconds",
     "target": ""
   },
@@ -81,9 +81,9 @@
   },
   "B01": {
     "code": "B01",
-    "title": "Reduction of private vehicles",
+    "title": "Private motorisation rate",
     "description": "The vehicle (two and four wheelers) registrations rate indicates the level of private motorisation.",
-    "stat": "2409",
+    "stat": "2,409",
     "unit": "per 10k people",
     "target": ""
   },
@@ -92,7 +92,7 @@
     "title": "Reduction of motorised traffic",
     "description": "Traffic volumes relative to capacity at critical points in the network. A reduction in motor vehicle traffic reduces the risk of congestion across the network.",
     "stat": "1.49",
-    "unit": "volume/capacity ratio",
+    "unit": "volume/capacity",
     "target": "A ratio of 1.1 in peak hours."
   },
   "B03": {
@@ -100,7 +100,7 @@
     "title": "Decline in accidents",
     "description": "Accident rates result from the degree to which the transport system is well managed and regulations are enforced. Accidents should be broken down by socio-demographic groups.",
     "stat": "10.5",
-    "unit": "per 10k",
+    "unit": "per 10k people",
     "target": "2 accidents per 10,000 people per year"
   },
   "B04": {
