@@ -99,6 +99,17 @@ const tabContent = {
           sharing and collaboration to advance sustainable, inclusive and
           'datasmart' mobility in Jaipur.
         </Typography>
+          <Typography variant="body1" color="text.primary" gutterBottom>
+          The project is funded by the 
+          {" "}<Link href="https://ukieri.org/" target="_blank" rel="noopener noreferrer">
+          UK India Research Initiative</Link>{" "} 
+          (UKIERI), delivered by the 
+          {" "}<Link href="https://www.britishcouncil.org/" target="_blank" rel="noopener noreferrer">
+          British Council</Link>, and the 
+          {" "}<Link href="https://sparc.iitkgp.ac.in/" target="_blank" rel="noopener noreferrer">
+          Scheme for the Promotion of Academic Research Collaboration</Link>{" "}
+          (SPARC), run by India’s Ministry of Education.        
+          </Typography>
       </>
     ),
   },
