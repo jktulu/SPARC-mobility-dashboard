@@ -96,8 +96,7 @@ const tabContent = {
           both existing data resources and critical gaps that hinder tracking of
           progress and effective decision-making. Ultimately, the Jaipur
           Mobility Insights Hub aims to spark a city-wide conversation about data
-          sharing and collaboration to advance sustainable, inclusive and
-          'datasmart' mobility in Jaipur.
+          sharing and collaboration to advance sustainable and inclusive mobility in Jaipur.
         </Typography>
           <Typography variant="body1" color="text.primary" gutterBottom>
           The project is funded by the 
