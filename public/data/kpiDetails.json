@@ -5,7 +5,8 @@
     "description": "The supply of public buses indicates the capacity of public transport given the population. If other public transport modes are available (e.g. metro), these could be converted into bus equivalents.",
     "stat": "3.5",
     "unit": "per 100k people",
-    "target": "60 buses per 100k people"
+    "target": "60 buses per 100k people",
+    "datasets": "Buses Jaipur (2015-2017), smartcities.gov.in; Buses in Jaipur, Department of Transport Rajasthan"
   },
   "A02": {
     "code": "A02",
@@ -13,7 +14,8 @@
     "description": "The level of service and coverage of public transport networks. The policy goal in Jaipur is to supply 60% of people and 50% of jobs with high-frequency services within 500m.",
     "stat": "45",
     "unit": "per cent",
-    "target": "50% of population within 500m of public transit"
+    "target": "50% of population within 500m of public transit",
+    "datasets": "openstreetmap.org"
   },
   "A03": {
     "code": "A03",
@@ -21,7 +23,8 @@
     "description": "The provision of walking facilities at a minimum level of quality. This includes footpaths, crossings, signalling at junctions and access to PT stops. This indicator should be expanded to consider step-free access and inclusive design.",
     "stat": "19.3",
     "unit": "per cent",
-    "target": "85% of major roads equipped with continuous footpaths"
+    "target": "85% of major roads equipped with continuous footpaths",
+    "datasets": "?"
   },
   "A04": {
     "code": "A04",
@@ -29,7 +32,8 @@
     "description": "The provision of cycling facilities at a minimum level of quality, including cycling lanes and storage.",
     "stat": "3.3",
     "unit": "per cent",
-    "target": "200km of protected cycling lanes"
+    "target": "200km of protected cycling lanes",
+    "datasets": "?"
   },
   "A05": {
     "code": "A05",
@@ -37,7 +41,8 @@
     "description": "The provision of sufficient drainage to avoid disruptions that primarily affect non-motorised modes and thus encourage acquisition of a private vehicle.",
     "stat": "15",
     "unit": "per cent",
-    "target": "90% coverage of arterial roads with modern drainage"
+    "target": "90% coverage of arterial roads with modern drainage",
+    "datasets": "?"
   },
   "A06": {
     "code": "A06",
@@ -45,7 +50,8 @@
     "description": "Driver training is important for safe driving, which includes being considerate to non-motorised transport users.",
     "stat": "N/A",
     "unit": "",
-    "target": "100% of drivers certified in safety protocols"
+    "target": "100% of drivers certified in safety protocols",
+    "datasets": "?"
   },
   "A07": {
     "code": "A07",
@@ -53,7 +59,8 @@
     "description": "Expenditure on transport indicates to which extent an efficient transport system can be developed and maintained.",
     "stat": "1.39",
     "unit": "INR lakh",
-    "target": ""
+    "target": "",
+    "datasets": "?"
   },
   "A08": {
     "code": "A08",
@@ -61,7 +68,8 @@
     "description": "Enforcement of traffic rules and regulations will ensure less traffic disorders at locations with high density of activities. Data about traffic flow can be collected more easily using sensors and cameras.",
     "stat": "117",
     "unit": "seconds",
-    "target": ""
+    "target": "",
+    "datasets": "?"
   },
   "A09": {
     "code": "A09",
@@ -69,7 +77,8 @@
     "description": "This is the share of encroached footpaths by vendings stall, parking, debris or shop extension. Obstructions cause local traffic disorder on both footpaths and carraigeways.",
     "stat": "23.7",
     "unit": "per cent",
-    "target": "0% of unobstructed footpaths."
+    "target": "0% of unobstructed footpaths.",
+    "datasets": "?"
   },
   "A10": {
     "code": "A10",
@@ -77,15 +86,17 @@
     "description": "Managed parking spcaes. Parking rules enforcement is important to avoid local traffic disorder and protect and promote uninhibted non-motorised road use.",
     "stat": "13.1",
     "unit": "per 1k people",
-    "target": "100 car-equivalent managed parking spaces with fee collection"
+    "target": "100 car-equivalent managed parking spaces with fee collection",
+    "datasets": "?"
   },
   "B01": {
     "code": "B01",
     "title": "Private motorisation rate",
-    "description": "The vehicle (two and four wheelers) registrations rate indicates the level of private motorisation.",
-    "stat": "2,409",
-    "unit": "per 10k people",
-    "target": ""
+    "description": "The vehicle (two and four wheelers) registrations rate indicates the level of private motorisation. To calculate annual rates, population values have been linearly interpolated between Census years 2011-2021.",
+    "stat": "963",
+    "unit": "per 1,000 people",
+    "target": "",
+    "datasets": "No of registered vehicles in Jaipur city, Mehta (2019)"
   },
   "B02": {
     "code": "B02",
@@ -93,23 +104,26 @@
     "description": "Traffic volumes relative to capacity at critical points in the network. A reduction in motor vehicle traffic reduces the risk of congestion across the network.",
     "stat": "1.49",
     "unit": "volume/capacity",
-    "target": "A ratio of 1.1 in peak hours."
+    "target": "A ratio of 1.1 in peak hours.",
+    "datasets": "?"
   },
   "B03": {
     "code": "B03",
     "title": "Decline in accidents",
-    "description": "Accident rates result from the degree to which the transport system is well managed and regulations are enforced. Accidents should be broken down by socio-demographic groups.",
+    "description": "Accident rates result from the degree to which the transport system is well managed and regulations are enforced. Accidents should be broken down by socio-demographic groups. To calculate annual rates, population values have been linearly interpolated between Census years 2011-2021.",
     "stat": "10.5",
     "unit": "per 10k people",
-    "target": "2 accidents per 10,000 people per year"
+    "target": "2 accidents per 10,000 people per year",
+    "datasets": "?"
   },
   "B04": {
     "code": "B04",
     "title": "Walking and cycling share",
     "description": "Uptake of walking and cycling is a desirable mobility outcome.",
-    "stat": "32",
+    "stat": "22",
     "unit": "per cent",
-    "target": "35% of all trips involve walking and/or cycling"
+    "target": "35% of all trips involve walking and/or cycling",
+    "datasets": "Modal Share Of Transport, CMP ppt (n.d); Mode Distribution In Jaipur (Including Walk), JMRCL (2018)"
   },
   "B05": {
     "code": "B05",
@@ -117,14 +131,16 @@
     "description": "Public transport ridership suports the efficiency and environmental sustainability of travel. It is heavily affected by the level of services afforded by the transport system.",
     "stat": "19",
     "unit": "per cent",
-    "target": "50% of all trips made by public transport"
+    "target": "50% of all trips made by public transport",
+    "datasets": "Modal Share Of Transport, CMP ppt (n.d); Mode Distribution In Jaipur (Including Walk), JMRCL (2018)"
   },
   "B06": {
     "code": "B06",
     "title": "Intermediate public transport",
     "description": "Trips made by Intermediate Public Transport (IPT, e.g. auto rickshaws) relative to trips made by public tranpsort (PT). IPT should fill service gaps and offer last-mile mobility. Ideally, IPT is used for access and egress of public transport users.",
-    "stat": "5.3",
+    "stat": "4.6",
     "unit": "per 10 PT trips",
-    "target": "2 trips made by intermediate public transport per PT trip "
+    "target": "2 trips made by intermediate public transport per PT trip ",
+    "datasets": "Modal Share Of Transport, CMP ppt (n.d); Mode Distribution In Jaipur (Including Walk), JMRCL (2018)"
   }
 }

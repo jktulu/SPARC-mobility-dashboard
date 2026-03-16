@@ -124,9 +124,18 @@ const KpiDetailBox = ({ kpi }) => {
             component="span"
             sx={{ fontWeight: "bold", color: "text.primary" }}
           >
-            {"Progress (a/o '25): "}
+            {"Progress: "}
           </Box>
           {kpi.stat ? `${kpi.stat} ${kpi.unit}` : "No stats"}
+        </Typography>
+        <Typography variant="body1" color="text.secondary">
+          <Box
+            component="span"
+            sx={{ fontWeight: "bold", color: "text.primary" }}
+          >
+            {"Dataset(s): "}
+          </Box>
+          {kpi.datasets || "Coming soon..."}
         </Typography>
       </Box>
 
