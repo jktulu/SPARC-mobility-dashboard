@@ -24,7 +24,7 @@
     "stat": "19.3",
     "unit": "per cent",
     "target": "85% of major roads equipped with continuous footpaths",
-    "datasets": "?"
+    "datasets": "Coming soon..."
   },
   "A04": {
     "code": "A04",
@@ -33,7 +33,7 @@
     "stat": "3.3",
     "unit": "per cent",
     "target": "200km of protected cycling lanes",
-    "datasets": "?"
+    "datasets": "Coming soon..."
   },
   "A05": {
     "code": "A05",
@@ -42,7 +42,7 @@
     "stat": "15",
     "unit": "per cent",
     "target": "90% coverage of arterial roads with modern drainage",
-    "datasets": "?"
+    "datasets": "Coming soon..."
   },
   "A06": {
     "code": "A06",
@@ -51,7 +51,7 @@
     "stat": "N/A",
     "unit": "",
     "target": "100% of drivers certified in safety protocols",
-    "datasets": "?"
+    "datasets": "None currently available"
   },
   "A07": {
     "code": "A07",
@@ -69,7 +69,7 @@
     "stat": "117",
     "unit": "seconds",
     "target": "",
-    "datasets": "?"
+    "datasets": "Coming soon..."
   },
   "A09": {
     "code": "A09",
@@ -78,7 +78,7 @@
     "stat": "23.7",
     "unit": "per cent",
     "target": "0% of unobstructed footpaths.",
-    "datasets": "?"
+    "datasets": "Coming soon..."
   },
   "A10": {
     "code": "A10",
@@ -87,7 +87,7 @@
     "stat": "13.1",
     "unit": "per 1k people",
     "target": "100 car-equivalent managed parking spaces with fee collection",
-    "datasets": "?"
+    "datasets": "Coming soon..."
   },
   "B01": {
     "code": "B01",
@@ -105,7 +105,7 @@
     "stat": "1.49",
     "unit": "volume/capacity",
     "target": "A ratio of 1.1 in peak hours.",
-    "datasets": "?"
+    "datasets": "Coming soon..."
   },
   "B03": {
     "code": "B03",
@@ -114,7 +114,7 @@
     "stat": "10.5",
     "unit": "per 10k people",
     "target": "2 accidents per 10,000 people per year",
-    "datasets": "?"
+    "datasets": "Coming soon..."
   },
   "B04": {
     "code": "B04",
