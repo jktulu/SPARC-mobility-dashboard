@@ -10,6 +10,9 @@ npm-debug.log*
 yarn-error.log*
 yarn-debug.log*
 
+# input data for data analysis
+/bin/data-analysis/data
+
 # Local environment variables
 .env
 .env.local
