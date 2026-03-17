@@ -11,7 +11,7 @@ yarn-error.log*
 yarn-debug.log*
 
 # input data for data analysis
-/bin/data-analysis/data
+# /bin/data-analysis/data
 
 # Local environment variables
 .env

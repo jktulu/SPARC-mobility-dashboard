@@ -79,7 +79,7 @@ const CatalogueListItem = ({ item, onClick }) => (
             >
               <Public fontSize="small" color="secondary" />
               <Typography variant="inherit" color="text.secondary">
-                Granularity: {item.granularity__spatial}
+                Granularity: {item.granularity_spatial}
               </Typography>
             </Box>
             <Box
